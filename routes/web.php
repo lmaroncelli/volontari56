@@ -19,19 +19,29 @@ Auth::routes();
 Route::get('/','Auth\LoginController@showLoginForm');
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+////////////////////////////////
+// Disable registration route //
+////////////////////////////////
+Route::match(['get', 'post'], 'register', function(){
+    return redirect('/');
+});
+
+
+
+Route::get('admin/home', 'Admin\HomeController@index')->name('home');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ROUTE ACCESSIBILI SOLO AL PROFILO ADMIN: oltre a dover essere loggato perché estende AdminController, è in un  //
 // groupMiddleware che verifica se sono Admin                                                                     //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/*Route::group(['middleware' => ['admin']], function () {*/
+Route::group(['middleware' => ['admin']], function () {
 
 		Route::resource('admin/associazioni', 'Admin\AssociazioniController');
 		Route::resource('admin/volontari', 'Admin\VolontariController');
 
-/*});*/
+});
 
 	//////////////////////////////////////////////////
 	// fine ROUTE ACCESSIBILI SOLO AL PROFILO ADMIN	//

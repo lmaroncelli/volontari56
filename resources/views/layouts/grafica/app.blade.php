@@ -28,9 +28,9 @@
 
     <div class="wrapper">
         
-        @include('layouts.header')
+        @include('layouts.grafica.header')
 
-        @include('layouts.sidebar')
+        @include('layouts.grafica.sidebar')
         
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -42,8 +42,8 @@
                 @yield('content')
             </section>
         </div>   <!-- /.content-wrapper -->
-        @include('layouts.footer')
-        @include('layouts.aside')
+        @include('layouts.grafica.footer')
+        @include('layouts.grafica.aside')
         <div class="control-sidebar-bg"></div>
     </div> <!-- ./wrapper -->
     
