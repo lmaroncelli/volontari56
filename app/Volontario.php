@@ -15,6 +15,13 @@ class Volontario extends Model
   protected $dates = ['data_nascita'];
 
 
+
+  public function preventivi()
+    {
+    return $this->belongsToMany('App\Preventivo', 'tblPreventiviVolontari', 'volontario_id', 'preventivo_id');
+    }
+
+
   public function setDataNascitaAttribute($value)
    	{
     if ($value == '0000-00-00') 
