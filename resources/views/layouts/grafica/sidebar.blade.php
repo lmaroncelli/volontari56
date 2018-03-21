@@ -9,6 +9,7 @@
 
     {{-- ASSOCIAZIONE --}}
     <ul class="sidebar-menu" data-widget="tree">      
+    
       <li class="treeview @if (in_array('associazioni',Request::segments())) active @endif">
         <a href="#"><i class="fa fa-link"></i> <span>Associazioni</span>
           <span class="pull-right-container">
@@ -33,8 +34,23 @@
           <li><a href="{{ route('volontari.create') }}">Nuovo</a></li>
         </ul>
       </li>
+      
+      {{-- PREVENTIVI --}}
+      <li class="treeview @if (in_array('preventivi',Request::segments())) active @endif">
+        <a href="#"><i class="fa fa-link"></i> <span>Preventivi</span>
+          <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ route('preventivi.index') }}">Elenco</a></li>
+          <li><a href="{{ route('preventivi.create') }}">Nuovo</a></li>
+        </ul>
+      </li>
+    
     </ul>
     <!-- /.sidebar-menu -->
+
 
     
   </section>

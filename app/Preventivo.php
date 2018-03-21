@@ -17,4 +17,11 @@ class Preventivo extends Model
       {
       return $this->belongsToMany('App\Volontario', 'tblPreventiviVolontari', 'preventivo_id', 'volontario_id');
       }
+
+	   public function associazione()
+			{
+				return $this->belongsTo('App\Associazione','associazione_id','id');
+			}
+
+			
 }
