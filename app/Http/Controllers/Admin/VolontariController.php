@@ -17,7 +17,7 @@ class VolontariController extends AdminController
      */
     public function index()
     {
-    $volontari = Volontario::all();
+    $volontari = Volontario::paginate(15);
 
     return view('admin.volontari.index', compact('volontari'));
     }
