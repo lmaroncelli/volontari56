@@ -4,7 +4,8 @@
 @section('header_css')
 <!-- DataTables -->
 <link href="{{ asset('css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-    @endsection
+
+@endsection
 
 @section('briciole')
     <!-- Content Header (Page header) -->
@@ -42,6 +43,7 @@
         </p>
     </div>
     @else
+    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
     <div class="row">
         <div class="col-xs-12">
             <!-- /.box-header -->
@@ -90,14 +92,14 @@
                         @endforeach
                     </tbody>
                 </table>
+        		</div>
             </div>
             <!-- /.box-body -->
-        </div>
     </div>
     <div class="row">
         <div class="col-sm-5">
             <div aria-live="polite" class="dataTables_info" id="example2_info" role="status">
-                Showing 1 to 10 of 57 entries
+             	Pagina {{$volontari->currentPage()}} di {{$volontari->lastPage()}}
             </div>
         </div>
         <div class="col-sm-7">
@@ -105,6 +107,7 @@
         		{{ $volontari->links() }}
             </div>
         </div>
+    </div>
     </div>
     @endif
 @endsection
