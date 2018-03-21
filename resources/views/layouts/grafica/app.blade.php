@@ -43,7 +43,6 @@
             </section>
         </div>   <!-- /.content-wrapper -->
         @include('layouts.grafica.footer')
-        @include('layouts.grafica.aside')
         <div class="control-sidebar-bg"></div>
     </div> <!-- ./wrapper -->
     

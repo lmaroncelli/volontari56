@@ -35,3 +35,7 @@ If the guard defines the logic of authentication, the authentication provider is
 https://laracasts.com/series/laravel-from-scratch-2017/episodes/17
 
 https://laracasts.com/series/laravel-5-fundamentals/episodes/15
+
+
+
+https://git-scm.com/book/it/v1/Git-sul-Server
