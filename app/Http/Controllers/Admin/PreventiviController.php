@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Associazione;
 use App\Http\Controllers\Controller;
 use App\Preventivo;
 use Illuminate\Http\Request;
@@ -27,7 +28,12 @@ class PreventiviController extends Controller
      */
     public function create()
     {
-        //
+    $assos = Associazione::all()->pluck('nome', 'id')->toArray();
+    $volontari = [];
+    $volontari_associati = [];
+    $preventivo = new Preventivo;
+
+    return view('admin.preventivi.form', compact('preventivo','assos','volontari','volontari_associati'));
     }
 
     /**
@@ -60,7 +66,10 @@ class PreventiviController extends Controller
      */
     public function edit($id)
     {
-        //
+        $preventivo = Preventivo::find($id);
+        $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
+        $volontari = Volontario::get()->pluck('nome', 'id');
+        return view('admin.preventivi.form', compact('preventivo','volontari','volontari_associati'));
     }
 
     /**

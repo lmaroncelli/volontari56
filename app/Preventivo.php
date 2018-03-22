@@ -23,5 +23,31 @@ class Preventivo extends Model
 				return $this->belongsTo('App\Associazione','associazione_id','id');
 			}
 
+
+
+    public function getVolontariLista()
+      {
+      foreach ($this->volontari as $v) 
+        {
+        $v_arr[] = $v->nome;
+        }
+      return implode(', ', $v_arr);
+      }
+
+
+    public function getDalleAlle()
+      {
+      if ($this->dalle->toDateString() == $this->alle->toDateString()) 
+        {
+        return $this->dalle->format('d/m/Y'). ' dalle '.$this->dalle->format('H:i').' alle '.$this->alle->format('H:i'); 
+        } 
+      else 
+        {
+        return 'dal '. $this->dalle->format('d/m/Y H:i'). ' al '.$this->dalle->format('d/m/Y H:i'); 
+        
+        }
+      
+      }
+
 			
 }

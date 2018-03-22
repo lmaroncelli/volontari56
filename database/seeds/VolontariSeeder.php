@@ -37,7 +37,8 @@ class VolontariSeeder extends Seeder
 
     		foreach ($old_volontari as $old_v) 
     			{
-    			 $v['nome'] = $old_v->nome_volontari;
+                    $v['id'] = $old_v->id;
+    			    $v['nome'] = $old_v->nome_volontari;
 					$v['cognome'] = $old_v->cognome_volontari;
 					$v['nota'] = $old_v->note_volontari;
 					$v['registro'] = $old_v->registro_volontari;

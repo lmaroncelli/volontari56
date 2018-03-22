@@ -85,16 +85,16 @@
                                 </a>
                             </td>
                             <td>
-                                {{$preventivo->id}}
+                                {{$preventivo->getVolontariLista()}}
                             </td>
                             <td>
-                                {{$preventivo->id}}
+                                {{$preventivo->getDalleAlle()}}
                             </td>
                             <td>
-                                {{$preventivo->id}}
+                                {{$preventivo->localita}}
                             </td>
                             <td>
-                                {{$preventivo->id}}
+                                {{$preventivo->motivazioni}}
                             </td>
                         </tr>
                         @endforeach
