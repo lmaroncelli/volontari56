@@ -44,22 +44,16 @@
 					
 					<div class="form-group">
 					  <label for="associazione_id">Associazione</label>
-					  <select class="form-control select2" style="width: 100%;" name="associazione_id" id="associazione_id">
+					  <select class="form-control" style="width: 100%;" name="associazione_id" id="associazione_id">
 					    @foreach ($assos as $id => $nome)
 					    	<option value="{{$id}}" @if ($preventivo->associazione_id == $id) selected="selected" @endif>{{$nome}}</option>
 					    @endforeach
 					  </select>
 					</div>
-
-					<div class="form-group">
-				    	<label for="volontari">Volontari:</label>
-						<select multiple="multiple" name="volontari[]" id="volontari" class="form-control select2" data-placeholder="Seleziona i volontari" style="width: 100%;">
-						@foreach($volontari as $id => $nome)
-							<option value="{{$id}}" @if ( in_array($id, $volontari_associati) || collect(old('volontari'))->contains($id) ) selected="selected" @endif>{{$nome}}</option>
-						@endforeach
-						</select>
-				   </div>
 					
+					<div class="form-group" id="volontari_select">
+						@include('admin.preventivi.inc_volontari_select')
+					</div>
 					<div class="form-group">
 					  <label for="localita">Località</label>
 					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita"></textarea>
@@ -101,6 +95,26 @@
 	$(function () {
 	    //Initialize Select2 Elements
 	    $('.select2').select2();
+
+	    $('#associazione_id').change(function(){
+	    	var associazione_id = this.value;
+	    	var preventivo_id = '{{$preventivo->id}}';
+	    	jQuery.ajax({
+	    	        url: '<?=url("admin/preventivi/carica_volontari_ajax") ?>',
+	    	        type: "post",
+	    	        async: false,
+	    	        data : { 
+	    	               'associazione_id': associazione_id, 
+	    	               'preventivo_id': preventivo_id,
+	    	               '_token': jQuery('input[name=_token]').val()
+	    	               },
+	    	       success: function(data) {
+	    	         jQuery("#volontari_select").html(data);
+	    	         $('.select2').select2();
+	    	       }
+	    	      });
+	    });
+
 	});
 
 	//Date picker

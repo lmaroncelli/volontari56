@@ -28,7 +28,7 @@ class PreventiviController extends Controller
      */
     public function create()
     {
-    $assos = Associazione::all()->pluck('nome', 'id')->toArray();
+    $assos = ['0' => 'Seleziona'] + Associazione::all()->pluck('nome', 'id')->toArray();
     $volontari = [];
     $volontari_associati = [];
     $preventivo = new Preventivo;
@@ -94,4 +94,35 @@ class PreventiviController extends Controller
     {
         //
     }
+
+
+
+    /**
+     * [caricaVolontariAjax carica la combo dei volontari in funzione dell'associazione selezionata]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function caricaVolontariAjax(Request $request)
+      {
+      $associazione_id = $request->get('associazione_id');
+      $preventivo_id = $request->get('preventivo_id');
+
+      if ($associazione_id) 
+        {
+        $volontari = Associazione::find($associazione_id)->volontari()->pluck('nome', 'id')->toArray();
+        
+        if ($preventivo_id == '') 
+          {
+          $volontari_associati = [];
+          } 
+        else 
+          {
+          $preventivo = Preventivo::find($preventivo_id);
+          $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
+          }
+        
+
+        return view('admin.preventivi.inc_volontari_select', compact('volontari','volontari_associati'));
+        }
+      }
 }
