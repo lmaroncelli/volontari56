@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class VolontariController extends AdminController
 {
+
+  function __construct(Request $request)
+  {
+    $this->request = $request;
+  }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +23,16 @@ class VolontariController extends AdminController
      */
     public function index()
     {
-    $volontari = Volontario::paginate(15);
+
+    $order='cognome';
+
+    if ($this->request->filled('order_by')) 
+      {
+      $order_by=$this->request->get('order_by');
+      $order = $this->request->get('order');
+      }
+
+    $volontari = Volontario::orderBy($order_by, $order)->paginate(15);
 
     return view('admin.volontari.index', compact('volontari'));
     }

@@ -52,7 +52,14 @@
                     <thead>
                         <tr>
                             <th>
-                                Cognome
+                                @if (app('request')->has('order_by') && app('request')->get('order_by') == 'cognome')
+                                    @php
+                                        app('request')->get('order') == 'asc' ? $order = 'desc' : $order = 'asc';
+                                    @endphp
+                                    <a href="{{url()->current()}}?order_by=cognome&order={{$order}}">Cognome</a>
+                                @else
+                                    <a href="{{url()->full()}}?order_by=cognome&order=asc">Cognome</a>
+                                @endif
                             </th>
                             <th>
                                 Nome
