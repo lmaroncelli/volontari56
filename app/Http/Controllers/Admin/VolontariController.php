@@ -24,17 +24,19 @@ class VolontariController extends AdminController
     public function index()
     {
 
-    $order='cognome';
-
+    $order_by='cognome';
+    $order = 'asc';
+    $ordering = 0;
     if ($this->request->filled('order_by')) 
       {
       $order_by=$this->request->get('order_by');
       $order = $this->request->get('order');
+      $ordering = 1;
       }
 
     $volontari = Volontario::orderBy($order_by, $order)->paginate(15);
 
-    return view('admin.volontari.index', compact('volontari'));
+    return view('admin.volontari.index', compact('volontari','order_by','order','ordering'));
     }
 
     /**

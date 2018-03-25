@@ -54,11 +54,11 @@
                             <th>
                                 @if (app('request')->has('order_by') && app('request')->get('order_by') == 'cognome')
                                     @php
-                                        app('request')->get('order') == 'asc' ? $order = 'desc' : $order = 'asc';
+                                        app('request')->get('order') == 'asc' ? $new_order = 'desc' : $new_order = 'asc';
                                     @endphp
-                                    <a href="{{url()->current()}}?order_by=cognome&order={{$order}}">Cognome</a>
+                                    <a href="{{url()->current()}}?order_by=cognome&order={{$new_order}}">Cognome</a>
                                 @else
-                                    <a href="{{url()->full()}}?order_by=cognome&order=asc">Cognome</a>
+                                    <a href="{{url()->current()}}?order_by=cognome&order=asc">Cognome</a>
                                 @endif
                             </th>
                             <th>
@@ -111,7 +111,11 @@
         </div>
         <div class="col-sm-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-        		{{ $volontari->links() }}
+        		@if ($ordering)
+                    {{ $volontari->appends(['order_by' => $order_by, 'order' => $order])->links() }}
+                @else
+                    {{ $volontari->links() }}
+                @endif
             </div>
         </div>
     </div>
