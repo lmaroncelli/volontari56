@@ -51,50 +51,48 @@
                 <table class="table table-bordered table-hover" id="tbl_volontari">
                     <thead>
                         <tr>
-                            <th>
-                                @if (app('request')->has('order_by') && app('request')->get('order_by') == 'cognome')
+                            @foreach ($columns as $field => $name)
+                                @if (app('request')->has('order_by') && app('request')->get('order_by') == $field)
                                     @php
-                                        app('request')->get('order') == 'asc' ? $new_order = 'desc' : $new_order = 'asc';
+                                        if(app('request')->get('order') == 'desc')
+                                          {
+                                          $new_order = 'asc';
+                                          $class = "sorting_desc"; 
+                                          }
+                                        else
+                                          {
+                                          $new_order = 'desc';
+                                          $class = "sorting_asc"; 
+                                          }
+                                        
+                                        $link = "<a href='".url()->current()."?order_by=".$field."&order=".$new_order."'>".$name."</a>";
                                     @endphp
-                                    <a href="{{url()->current()}}?order_by=cognome&order={{$new_order}}">Cognome</a>
                                 @else
-                                    <a href="{{url()->current()}}?order_by=cognome&order=asc">Cognome</a>
+                                    @php
+                                        $link = "<a href='".url()->current()."?order_by=".$field."&order=desc'>".$name."</a>";
+                                        $class="sorting";
+                                    @endphp
                                 @endif
+                            <th class="{{$class}}">
+                                {!!$link!!}
                             </th>
-                            <th>
-                                Nome
-                            </th>
-                            <th>
-                                Nato il
-                            </th>
-                            <th>
-                                Registro
-                            </th>
-                            <th>
-                                Note
-                            </th>
+                            @endforeach
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($volontari as $volontario)
                         <tr>
-                            <td>
-                                <a class="volontario" href="{{ route('volontari.edit', $volontario->id) }}" title="Modifica volontariolontario">
-                                    {{$volontario->cognome}}
-                                </a>
-                            </td>
-                            <td>
-                                {{$volontario->nome}}
-                            </td>
-                            <td>
-                                {{$volontario->data_nascita}}
-                            </td>
-                            <td>
-                                {{$volontario->registro}}
-                            </td>
-                            <td>
-                                {{$volontario->nota}}
-                            </td>
+                            @foreach ($columns as $field => $name)
+                                <td>
+                                    @if ($field == 'cognome')
+                                        <a class="volontario" href="{{ route('volontari.edit', $volontario->id) }}" title="Modifica volontariolontario">
+                                            {{$volontario->nome}}
+                                        </a>
+                                    @else
+                                        {{$volontario->$field}}
+                                    @endif
+                                </td>
+                            @endforeach
                         </tr>
                         @endforeach
                     </tbody>
@@ -136,10 +134,10 @@
       'paging'      : false,
       'lengthChange': false,
       'searching'   : false,
-      'ordering'    : true,
+      'ordering'    : false,
       'info'        : false,
-      'autoWidth'   : true
-    })
+      'autoWidth'   : false
+    });
 	});
     </script>
     @endsection

@@ -49,7 +49,7 @@ class Volontario extends Model
 
   public function getNomeAttribute($value)
     {
-    return ucfirst(strtolower($value)) . ' ' . ucfirst(strtolower($this->cognome));
+    return ucfirst(strtolower($this->cognome)) . ' ' . ucfirst(strtolower($value));
     }
 
 	}

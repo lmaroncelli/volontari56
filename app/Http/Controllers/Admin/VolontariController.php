@@ -36,7 +36,13 @@ class VolontariController extends AdminController
 
     $volontari = Volontario::orderBy($order_by, $order)->paginate(15);
 
-    return view('admin.volontari.index', compact('volontari','order_by','order','ordering'));
+    $columns = [
+            'cognome' => 'Nominativo',
+            'registro' => 'Registro',
+            'data_nascita' => 'Data di nascita',
+    ];
+
+    return view('admin.volontari.index', compact('volontari','order_by','order','ordering', 'columns'));
     }
 
     /**
