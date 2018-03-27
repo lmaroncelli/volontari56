@@ -25,6 +25,26 @@
                 Volontari
             </li>
         </ol>
+        <form action="{{url()->current()}}" method="get">
+          {{ csrf_field() }}
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-2">
+              <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Cerca..." required>
+                <span class="input-group-btn">
+                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                </span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <select class="form-control" name="ricerca_campo" id="ricerca_campo">
+                @foreach (['volontario','associazione'] as $nome)
+                  <option value="{{$nome}}">{{$nome}}</option>
+                @endforeach
+              </select>
+            </div>
+        </div>
+        </form>
     </section>
     @endsection
 
@@ -58,25 +78,25 @@
                                         if(app('request')->get('order') == 'desc')
                                           {
                                           $new_order = 'asc';
-                                          $class = "sorting_desc"; 
+                                          $class = "sorting_desc";
                                           }
                                         else
                                           {
                                           $new_order = 'desc';
-                                          $class = "sorting_asc"; 
+                                          $class = "sorting_asc";
                                           }
-                                        
+
                                         $link = "<a href='".url()->current()."?order_by=".$field."&order=".$new_order."'>".$name."</a>";
                                     @endphp
                                 @else
                                     {{-- Se sono il cognome e non ho ordinamento , il default è per cognome asc, quindi metto ordinamento inverso --}}
                                     {{-- altrimenti anche il cognome ha ordinamento asc --}}
                                     @php
-                                        if ($field == 'cognome' && !app('request')->has('order_by')) 
+                                        if ($field == 'cognome' && !app('request')->has('order_by'))
                                           {
                                           $new_order = 'desc';
-                                          } 
-                                        else 
+                                          }
+                                        else
                                           {
                                           $new_order = 'asc';
                                           }

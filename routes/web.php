@@ -39,7 +39,8 @@ Route::get('admin/home', 'Admin\HomeController@index')->name('home');
 Route::group(['middleware' => ['admin']], function () {
 
 		Route::resource('admin/associazioni', 'Admin\AssociazioniController');
-		Route::resource('admin/volontari', 'Admin\VolontariController');
+
+    Route::resource('admin/volontari', 'Admin\VolontariController');
 
 		Route::any('admin/preventivi/carica_volontari_ajax', 'Admin\PreventiviController@caricaVolontariAjax');
 		Route::resource('admin/preventivi', 'Admin\PreventiviController');

@@ -25,17 +25,24 @@ class VolontariController extends AdminController
     public function index()
     {
 
+    // se è una rierca vuota anche se il campo nella view è required
+    // if ($this->request->has('search') && !$this->request->filled('q'))
+    //   {
+    //   return \redirect('index');
+    //   }
+
     $order_by='cognome';
     $order = 'asc';
     $ordering = 0;
-    if ($this->request->filled('order_by')) 
+
+    if ($this->request->filled('order_by'))
       {
       $order_by=$this->request->get('order_by');
       $order = $this->request->get('order');
       $ordering = 1;
       }
 
-    if ($order_by == 'associazione') 
+    if ($order_by == 'associazione')
       {
       $volontari = Volontario::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
                     {
@@ -44,8 +51,8 @@ class VolontariController extends AdminController
                     ->select('tblVolontari.*')
                     ->orderBy('tblAssociazioni.nome', $order)
                     ->paginate(15);
-      } 
-    else 
+      }
+    else
       {
       $volontari = Volontario::with(['associazione'])->orderBy($order_by, $order)->paginate(15);
       }
@@ -86,14 +93,14 @@ class VolontariController extends AdminController
     public function store(Request $request)
     {
     //dd($request->all());
-    
+
     /////////////////////////////////////////////////////////////////////
     // ho inserito il salvataggio della data come Carbon in un mutator //
     /////////////////////////////////////////////////////////////////////
     $volontario = Volontario::create($request->all());
     $volontario->save();
 
-    return redirect('admin/volontari')->with('status', 'Volontario creato correttamente!');  
+    return redirect('admin/volontari')->with('status', 'Volontario creato correttamente!');
 
     }
 
@@ -119,7 +126,7 @@ class VolontariController extends AdminController
         $volontario = Volontario::find($id);
         $assos = Associazione::orderBy('nome')->get()->pluck('nome', 'id')->toArray();
 
-        $assos = ['0' => 'Seleziona...'] + $assos; 
+        $assos = ['0' => 'Seleziona...'] + $assos;
 
         return view('admin.volontari.form', compact('assos','volontario'));
     }
@@ -140,7 +147,7 @@ class VolontariController extends AdminController
         $volontario->fill($request->all());
         $volontario->save();
 
-        return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');  
+        return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
     }
 
     /**
@@ -151,6 +158,6 @@ class VolontariController extends AdminController
      */
     public function destroy($id)
     {
-        
+
     }
 }
