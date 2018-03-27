@@ -100,7 +100,9 @@
                                             {{$volontario->$field}}
                                         </a>
                                     @elseif($field == 'associazione')
-                                        {{$volontario->$field->nome}}
+                                        @if ($volontario->has($field) && !is_null($volontario->$field))
+                                          {{$volontario->$field->nome}}
+                                        @endif
                                     @else
                                         {{$volontario->$field}}
                                     @endif

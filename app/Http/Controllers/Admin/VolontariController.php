@@ -117,7 +117,9 @@ class VolontariController extends AdminController
     public function edit($id)
     {
         $volontario = Volontario::find($id);
-        $assos = Associazione::all()->pluck('nome', 'id')->toArray();
+        $assos = Associazione::orderBy('nome')->get()->pluck('nome', 'id')->toArray();
+
+        $assos = ['0' => 'Seleziona...'] + $assos; 
 
         return view('admin.volontari.form', compact('assos','volontario'));
     }
