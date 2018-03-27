@@ -52,6 +52,7 @@
                     <thead>
                         <tr>
                             @foreach ($columns as $field => $name)
+                                {{-- se sono il campo per cui è ordinato il listing --}}
                                 @if (app('request')->has('order_by') && app('request')->get('order_by') == $field)
                                     @php
                                         if(app('request')->get('order') == 'desc')
@@ -68,8 +69,18 @@
                                         $link = "<a href='".url()->current()."?order_by=".$field."&order=".$new_order."'>".$name."</a>";
                                     @endphp
                                 @else
+                                    {{-- Se sono il cognome e non ho ordinamento , il default è per cognome asc, quindi metto ordinamento inverso --}}
+                                    {{-- altrimenti anche il cognome ha ordinamento asc --}}
                                     @php
-                                        $link = "<a href='".url()->current()."?order_by=".$field."&order=desc'>".$name."</a>";
+                                        if ($field == 'cognome' && !app('request')->has('order_by')) 
+                                          {
+                                          $new_order = 'desc';
+                                          } 
+                                        else 
+                                          {
+                                          $new_order = 'asc';
+                                          }
+                                        $link = "<a href='".url()->current()."?order_by=".$field."&order=$new_order'>".$name."</a>";
                                         $class="sorting";
                                     @endphp
                                 @endif
@@ -84,10 +95,12 @@
                         <tr>
                             @foreach ($columns as $field => $name)
                                 <td>
-                                    @if ($field == 'cognome')
+                                    @if ($field == 'cognome' || $field == 'nome')
                                         <a class="volontario" href="{{ route('volontari.edit', $volontario->id) }}" title="Modifica volontariolontario">
-                                            {{$volontario->nome}}
+                                            {{$volontario->$field}}
                                         </a>
+                                    @elseif($field == 'associazione')
+                                        {{$volontario->$field->nome}}
                                     @else
                                         {{$volontario->$field}}
                                     @endif

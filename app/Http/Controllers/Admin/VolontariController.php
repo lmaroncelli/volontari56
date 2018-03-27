@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Volontario;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VolontariController extends AdminController
 {
@@ -34,12 +35,28 @@ class VolontariController extends AdminController
       $ordering = 1;
       }
 
-    $volontari = Volontario::orderBy($order_by, $order)->paginate(15);
+    if ($order_by == 'associazione') 
+      {
+      $volontari = Volontario::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
+                    {
+                      $join->on('tblAssociazioni.id', '=', 'tblVolontari.associazione_id');
+                    })
+                    ->select('tblVolontari.*')
+                    ->orderBy('tblAssociazioni.nome', $order)
+                    ->paginate(15);
+      } 
+    else 
+      {
+      $volontari = Volontario::with(['associazione'])->orderBy($order_by, $order)->paginate(15);
+      }
+
 
     $columns = [
-            'cognome' => 'Nominativo',
+            'nome' => 'Nome',
+            'cognome' => 'Cognome',
             'registro' => 'Registro',
             'data_nascita' => 'Data di nascita',
+            'associazione' => 'Associazione',
     ];
 
     return view('admin.volontari.index', compact('volontari','order_by','order','ordering', 'columns'));
