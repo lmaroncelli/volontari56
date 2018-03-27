@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Requests\AssociazioneRequest;
 use App\Volontario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AssociazioniController extends AdminController
 {
@@ -67,10 +68,26 @@ class AssociazioniController extends AdminController
     public function edit($id)
       {
       $asso = Associazione::find($id);
+      $volontari = [];
+      
 
-      $volontari = Volontario::get()->pluck('nome', 'id');
-      $volontari_associati = $asso->volontari->pluck('id')->toArray();
-      return view('admin.associazioni.form', compact('asso','volontari','volontari_associati'));
+      // i volontari tra cui posso scegliere sono
+      // - quelli che NON SONO ASSOCIATI A NESSUNA ASSOCIAZIONE
+      // - quelli già associati 
+      
+      $volontari_liberi =  Volontario::doesntHave('associazione')->get();
+      $volontari_associati = $asso->volontari;
+
+      $volontari_totali = $volontari_liberi->merge($volontari_associati);
+
+      foreach ($volontari_totali as $v) 
+        {
+        $volontari[$v->id] = $v->cognome .' ' .$v->nome;
+        }
+      
+      $volontari_associati_ids = $volontari_associati->pluck('id')->toArray();
+
+      return view('admin.associazioni.form', compact('asso','volontari','volontari_associati_ids'));
       
       }
 
@@ -83,13 +100,51 @@ class AssociazioniController extends AdminController
      */
     public function update(AssociazioneRequest $request, $id)
       {
-
       $asso = Associazione::find($id);
       $asso->nome = $request->get('nome');
-      $asso->save();
+      
+      DB::beginTransaction();
+      $status = 'ok';
 
-      return redirect('admin/associazioni')->with('status', 'Associazione modificata correttamente!');  
+
+      try 
+        {
+
+        foreach ($asso->volontari as $v) 
+          {
+          $v->associazione_id = 0;
+          $v->save();
+          }
+
+        $volontari_da_asscociare_ids = $request->get('volontari');
+
+        foreach ($volontari_da_asscociare_ids as $id) 
+          {
+          $v = Volontario::find($id);
+          $asso->volontari()->save($v);
+          }
+        $asso->save();
+
+         DB::commit();
+        
+        } 
+      catch (\Exception $e)
+        {
+        $status = 'ko';
+        DB::rollback();
+        }
+
+      if ($status == 'ok') 
+        {
+        return redirect('admin/associazioni')->with('status', 'Associazione modificata correttamente!');  
+        }
+      else
+        {
+        return redirect('admin/associazioni')->with('status', 'ERRORE!');    
+        }
+
       }
+
 
     /**
      * Remove the specified resource from storage.
