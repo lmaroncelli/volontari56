@@ -72,41 +72,53 @@
                     <thead>
                         <tr>
                             @foreach ($columns as $field => $name)
-                                {{-- se sono il campo per cui è ordinato il listing --}}
-                                @if (app('request')->has('order_by') && app('request')->get('order_by') == $field)
-                                    @php
-                                        if(app('request')->get('order') == 'desc')
-                                          {
-                                          $new_order = 'asc';
-                                          $class = "sorting_desc";
-                                          }
-                                        else
-                                          {
-                                          $new_order = 'desc';
-                                          $class = "sorting_asc";
-                                          }
+                              
+                                @if (empty($field))
 
-                                        $link = "<a href='".url()->current()."?order_by=".$field."&order=".$new_order."'>".$name."</a>";
-                                    @endphp
+                                  <th>
+                                    {!!$field!!}
+                                  </th>
+
                                 @else
-                                    {{-- Se sono il cognome e non ho ordinamento , il default è per cognome asc, quindi metto ordinamento inverso --}}
-                                    {{-- altrimenti anche il cognome ha ordinamento asc --}}
-                                    @php
-                                        if ($field == 'cognome' && !app('request')->has('order_by'))
-                                          {
-                                          $new_order = 'desc';
-                                          }
-                                        else
-                                          {
-                                          $new_order = 'asc';
-                                          }
-                                        $link = "<a href='".url()->current()."?order_by=".$field."&order=$new_order'>".$name."</a>";
-                                        $class="sorting";
-                                    @endphp
+
+                                  {{-- se sono il campo per cui è ordinato il listing --}}
+                                  @if (app('request')->has('order_by') && app('request')->get('order_by') == $field)
+                                      @php
+                                          if(app('request')->get('order') == 'desc')
+                                            {
+                                            $new_order = 'asc';
+                                            $class = "sorting_desc";
+                                            }
+                                          else
+                                            {
+                                            $new_order = 'desc';
+                                            $class = "sorting_asc";
+                                            }
+
+                                          $link = "<a href='".url()->current()."?order_by=".$field."&order=".$new_order."'>".$name."</a>";
+                                      @endphp
+                                  @else
+                                      {{-- Se sono il cognome e non ho ordinamento , il default è per cognome asc, quindi metto ordinamento inverso --}}
+                                      {{-- altrimenti anche il cognome ha ordinamento asc --}}
+                                      @php
+                                          if ($field == 'cognome' && !app('request')->has('order_by'))
+                                            {
+                                            $new_order = 'desc';
+                                            }
+                                          else
+                                            {
+                                            $new_order = 'asc';
+                                            }
+                                          $link = "<a href='".url()->current()."?order_by=".$field."&order=$new_order'>".$name."</a>";
+                                          $class="sorting";
+                                      @endphp
+                                  @endif
+                                  <th class="{{$class}}">
+                                      {!!$link!!}
+                                  </th>
+
                                 @endif
-                            <th class="{{$class}}">
-                                {!!$link!!}
-                            </th>
+
                             @endforeach
                         </tr>
                     </thead>

@@ -22,19 +22,34 @@ class PreventiviController extends AdminController
         $order = 'desc';
         $ordering = 0;
 
-        if ($this->request->filled('order_by'))
-          {
-          $order_by=$this->request->get('order_by');
-          $order = $this->request->get('order');
-          }
+
+      if ($this->request->filled('order_by'))
+        {
+        $order_by=$this->request->get('order_by');
+        $order = $this->request->get('order');
+        $ordering = 1;
+        }
+
+      if ($order_by == 'associazione')
+        {
+        $order_by = "tblAssociazioni.nome";
+        }
 
 
-        $preventivi = Preventivo::orderBy($order_by, $order)->paginate(15);
+        $query = Preventivo::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
+                  {
+                    $join->on('tblAssociazioni.id', '=', 'tblPreventivi.associazione_id');
+                  })
+                  ->select('tblPreventivi.*','tblAssociazioni.nome as nome_asso');
+
+        $preventivi = $query
+                      ->orderBy($order_by, $order)
+                      ->paginate(15);
 
         $columns = [
             'id' => 'ID',
-            'nome_asso' => 'Associazione',
-            'nome_volonati' => 'Volontari',
+            'associazione' => 'Associazione',
+            '' => 'Volontari',
             'dalle' => 'Data',
             'localita' => 'Località',
             'motivazioni' => 'Motivazione',
