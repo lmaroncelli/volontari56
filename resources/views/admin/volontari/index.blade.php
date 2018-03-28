@@ -25,12 +25,12 @@
                 Volontari
             </li>
         </ol>
-        <form action="{{url()->current()}}" method="get">
+        <form action="{!! route('volontari.search') !!}" method="post">
           {{ csrf_field() }}
         <div class="row">
             <div class="col-sm-4 col-sm-offset-2">
               <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Cerca..." required>
+                <input type="text" name="q" class="form-control" placeholder="Cerca..." required value="{{$valore}}">
                 <span class="input-group-btn">
                   <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                 </span>
@@ -38,8 +38,8 @@
             </div>
             <div class="col-sm-4">
               <select class="form-control" name="ricerca_campo" id="ricerca_campo">
-                @foreach (['volontario','associazione'] as $nome)
-                  <option value="{{$nome}}">{{$nome}}</option>
+                @foreach (['nome' => 'nome volontario','cognome' => 'cognome volontario', 'nome_asso' => 'associazione'] as $key => $nome)
+                  <option value="{{$key}}" @if ($campo == $key) selected="selected" @endif>{{$nome}}</option>
                 @endforeach
               </select>
             </div>

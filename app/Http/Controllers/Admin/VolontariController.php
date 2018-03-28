@@ -22,14 +22,33 @@ class VolontariController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($query_id = 0)
     {
 
-    // se è una rierca vuota anche se il campo nella view è required
-    // if ($this->request->has('search') && !$this->request->filled('q'))
-    //   {
-    //   return \redirect('index');
-    //   }
+
+
+    $campo = "";
+    $valore = "";
+
+    if ($query_id > 0)
+      {
+
+      $query = DB::table('tblQueryString')->where('id', $query_id)->first();
+
+
+      $qs_arr = [];
+
+      if (!is_null($query))
+        {
+        parse_str($query->query_string, $qs_arr);
+        }
+
+      $this->request->request->add($qs_arr);
+
+      }
+
+
+
 
     $order_by='cognome';
     $order = 'asc';
@@ -44,18 +63,52 @@ class VolontariController extends AdminController
 
     if ($order_by == 'associazione')
       {
-      $volontari = Volontario::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
-                    {
-                      $join->on('tblAssociazioni.id', '=', 'tblVolontari.associazione_id');
-                    })
-                    ->select('tblVolontari.*')
-                    ->orderBy('tblAssociazioni.nome', $order)
-                    ->paginate(15);
+      $order_by = "tblAssociazioni.nome";
       }
-    else
+
+
+    $query = Volontario::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
+    {
+      $join->on('tblAssociazioni.id', '=', 'tblVolontari.associazione_id');
+    })
+    ->select('tblVolontari.*','tblAssociazioni.nome as nome_asso');
+
+
+    if ( $this->request->has('ricerca_campo') && $this->request->filled('q') )
       {
-      $volontari = Volontario::with(['associazione'])->orderBy($order_by, $order)->paginate(15);
+
+      $campo = $this->request->get('ricerca_campo');
+      $valore = $this->request->get('q');
+
+
+      if ($campo == 'nome_asso')
+        {
+        $campo = 'tblAssociazioni.nome';
+        }
+      elseif ($campo == 'nome')
+        {
+        $campo = 'tblVolontari.nome';
+        }
+
+
+      $query->where($campo, 'LIKE', "%$valore%");
+
+      if ($campo == 'tblAssociazioni.nome')
+        {
+        $campo = 'nome_asso';
+        }
+      elseif ($campo == 'tblVolontari.nome')
+        {
+        $campo = 'nome';
+        }
+
       }
+
+
+    $volontari = $query
+                  ->orderBy($order_by, $order)
+                  ->paginate(15);
+
 
 
     $columns = [
@@ -66,7 +119,7 @@ class VolontariController extends AdminController
             'associazione' => 'Associazione',
     ];
 
-    return view('admin.volontari.index', compact('volontari','order_by','order','ordering', 'columns'));
+    return view('admin.volontari.index', compact('volontari','order_by','order','ordering', 'columns','campo', 'valore'));
     }
 
     /**
@@ -160,4 +213,25 @@ class VolontariController extends AdminController
     {
 
     }
+
+
+
+    public function search()
+      {
+      if ($this->request->has('search') && $this->request->filled('q'))
+        {
+
+        $query_array = [
+           'ricerca_campo' => $this->request->get('ricerca_campo'),
+            'q' => $this->request->get('q'),
+            ];
+
+        $query_id = DB::table('tblQueryString')->insertGetId(
+              ['query_string' => http_build_query($query_array)]
+              );
+
+        return redirect("admin/volontari/$query_id");
+
+        }
+      }
 }

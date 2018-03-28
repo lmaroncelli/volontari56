@@ -40,7 +40,9 @@ Route::group(['middleware' => ['admin']], function () {
 
 		Route::resource('admin/associazioni', 'Admin\AssociazioniController');
 
-    Route::resource('admin/volontari', 'Admin\VolontariController');
+    Route::post('admin/volontari/search', ['uses' => 'Admin\VolontariController@search', 'as' => 'volontari.search']);
+    Route::get('admin/volontari/{query_id?}', ['uses' => 'Admin\VolontariController@index', 'as' => 'volontari.index']);
+    Route::resource('admin/volontari', 'Admin\VolontariController', ['except' => ['index']]);
 
 		Route::any('admin/preventivi/carica_volontari_ajax', 'Admin\PreventiviController@caricaVolontariAjax');
 		Route::resource('admin/preventivi', 'Admin\PreventiviController');
