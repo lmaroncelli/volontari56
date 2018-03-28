@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Associazione;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use Illuminate\Http\Request;
 
-class PreventiviController extends Controller
+class PreventiviController extends AdminController
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,31 @@ class PreventiviController extends Controller
      */
     public function index()
         {
-        $preventivi = Preventivo::paginate(15);
 
-        return view('admin.preventivi.index', compact('preventivi'));
+
+        $order_by='id';
+        $order = 'desc';
+        $ordering = 0;
+
+        if ($this->request->filled('order_by'))
+          {
+          $order_by=$this->request->get('order_by');
+          $order = $this->request->get('order');
+          }
+
+
+        $preventivi = Preventivo::orderBy($order_by, $order)->paginate(15);
+
+        $columns = [
+            'id' => 'ID',
+            'nome_asso' => 'Associazione',
+            'nome_volonati' => 'Volontari',
+            'dalle' => 'Data',
+            'localita' => 'Località',
+            'motivazioni' => 'Motivazione',
+        ];
+
+        return view('admin.preventivi.index', compact('preventivi', 'columns'));
         }
 
     /**
@@ -107,20 +129,20 @@ class PreventiviController extends Controller
       $associazione_id = $request->get('associazione_id');
       $preventivo_id = $request->get('preventivo_id');
 
-      if ($associazione_id) 
+      if ($associazione_id)
         {
         $volontari = Associazione::find($associazione_id)->volontari()->pluck('nome', 'id')->toArray();
-        
-        if ($preventivo_id == '') 
+
+        if ($preventivo_id == '')
           {
           $volontari_associati = [];
-          } 
-        else 
+          }
+        else
           {
           $preventivo = Preventivo::find($preventivo_id);
           $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
           }
-        
+
 
         return view('admin.preventivi.inc_volontari_select', compact('volontari','volontari_associati'));
         }
