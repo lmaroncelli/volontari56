@@ -5,6 +5,10 @@
 @section('header_css')
 	<!-- bootstrap datepicker -->
 	<link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+	
+	<!-- Bootstrap time Picker -->
+	<link href="{{ asset('css/bootstrap-timepicker.min.css') }}" rel="stylesheet">
+
 	<!-- Select2 -->
 	<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
 @endsection
@@ -54,6 +58,46 @@
 					<div class="form-group" id="volontari_select">
 						@include('admin.preventivi.inc_volontari_select')
 					</div>
+
+					
+					{{-- UNICA RIGA --}}
+					<div class="row form-group">
+						
+						<div class="col-md-4">
+							<label>Date:</label>
+
+							<div class="input-group date">
+							  <div class="input-group-addon">
+							    <i class="fa fa-calendar"></i>
+							  </div>
+							  <input type="text" name="data" class="form-control pull-right" id="datepicker">
+							</div>
+						</div>
+						
+						<div class="col-md-4 bootstrap-timepicker">
+							<label>Dalle:</label>
+							<div class="input-group">
+							  <input type="text" name="dal" class="form-control timepicker">
+
+							  <div class="input-group-addon">
+							    <i class="fa fa-clock-o"></i>
+							  </div>
+							</div>
+						</div>
+						
+						<div class="col-md-4 bootstrap-timepicker">
+							<label>Alle:</label>
+							<div class="input-group">
+							  <input type="text" name="al" class="form-control timepicker">
+
+							  <div class="input-group-addon">
+							    <i class="fa fa-clock-o"></i>
+							  </div>
+							</div>
+						</div>
+
+					</div>
+
 					<div class="form-group">
 					  <label for="localita">Località</label>
 					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita"></textarea>
@@ -90,6 +134,9 @@
 <!-- bootstrap datepicker -->
 <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
 
+<!-- bootstrap time picker -->
+<script src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
+
 
 <script type="text/javascript">
 	$(function () {
@@ -108,20 +155,24 @@
 	    	               'preventivo_id': preventivo_id,
 	    	               '_token': jQuery('input[name=_token]').val()
 	    	               },
-	    	       success: function(data) {
+	    	       	success: function(data) {
 	    	         jQuery("#volontari_select").html(data);
 	    	         $('.select2').select2();
 	    	       }
-	    	      });
+	    	 });
 	    });
 
 	});
 
-	//Date picker
-	$('#datepicker').datepicker({
+	$("#datepicker").datepicker({
 		format: 'dd/mm/yyyy',
 	  	autoclose: true,
 	});
+
+	//Timepicker
+	$('.timepicker').timepicker({
+	  showInputs: false
+	})
 
 </script>
 

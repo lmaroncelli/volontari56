@@ -31,3 +31,10 @@ nel Controller VolontariController@index viene verificato il parametro query_id 
 
 quindi si verificano i parametri "ricerca_campo" e "q" ed eventualmente si filtra la query sui volontari
 
+
+
+
+
+*__Preventivi__*
+
+Siccome i preventivi si possono ordinare anche per associazione, la query per trovare i preventivi ha un left join con le associazioni 

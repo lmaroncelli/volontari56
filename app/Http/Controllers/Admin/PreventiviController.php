@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Associazione;
 use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
+use App\Volontario;
 use Illuminate\Http\Request;
 
 class PreventiviController extends AdminController
