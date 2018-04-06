@@ -15,7 +15,7 @@ class Associazione extends Model
 
 	public function volontari()
 		{
-			return $this->hasMany('App\Volontario','associazione_id','id');
+			return $this->hasMany('App\Volontario','associazione_id','id')->orderBy('cognome');;
 		}
 
 
@@ -29,5 +29,16 @@ class Associazione extends Model
 			return $this->belongsTo('App\User','user_id','id');
 		}
 
+
+
+	public function getVolontariFullName()
+		{
+    $volontari = [];
+		foreach (self::volontari()->get() as $v) 
+		  {
+		  $volontari[$v->id] = $v->cognome .' ' .$v->nome;
+		  }
+		return $volontari;
+		}
 
 	}	

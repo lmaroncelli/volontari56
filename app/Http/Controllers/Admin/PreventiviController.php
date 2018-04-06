@@ -56,7 +56,14 @@ class PreventiviController extends AdminController
             'motivazioni' => 'Motivazione',
         ];
 
-        return view('admin.preventivi.index', compact('preventivi', 'columns'));
+        if ($order_by == 'tblAssociazioni.nome')
+        {
+        $order_by = "associazione";
+        }
+
+        return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns'));
+
+
         }
 
     /**
@@ -106,8 +113,9 @@ class PreventiviController extends AdminController
     {
         $preventivo = Preventivo::find($id);
         $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
-        $volontari = Volontario::get()->pluck('nome', 'id');
-        return view('admin.preventivi.form', compact('preventivo','volontari','volontari_associati'));
+        $volontari = $preventivo->associazione()->first()->getVolontariFullName();
+        $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->get()->pluck('nome', 'id')->toArray();
+        return view('admin.preventivi.form', compact('preventivo', 'assos', 'volontari','volontari_associati'));
     }
 
     /**
@@ -147,7 +155,7 @@ class PreventiviController extends AdminController
 
       if ($associazione_id)
         {
-        $volontari = Associazione::find($associazione_id)->volontari()->pluck('nome', 'id')->toArray();
+        $volontari = Associazione::find($associazione_id)->getVolontariFullName();
 
         if ($preventivo_id == '')
           {

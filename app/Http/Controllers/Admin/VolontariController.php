@@ -121,6 +121,11 @@ class VolontariController extends AdminController
             'associazione' => 'Associazione',
     ];
 
+    if ($order_by == 'tblAssociazioni.nome')
+      {
+      $order_by = "associazione";
+      }
+
     return view('admin.volontari.index', compact('volontari','order_by','order','ordering', 'columns','campo', 'valore'));
     }
 

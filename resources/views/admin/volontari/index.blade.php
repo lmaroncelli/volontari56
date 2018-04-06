@@ -156,7 +156,7 @@
         </div>
         <div class="col-sm-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-        		@if ($ordering)
+        		    @if ($ordering)
                     {{ $volontari->appends(['order_by' => $order_by, 'order' => $order])->links() }}
                 @else
                     {{ $volontari->links() }}

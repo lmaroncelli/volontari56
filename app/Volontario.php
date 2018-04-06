@@ -60,4 +60,15 @@ class Volontario extends Model
     }
 
 
+  public static function getAllFullNames()
+    {
+    $volontari = [];
+    foreach (self::all() as $v) 
+      {
+      $volontari[$v->id] = $v->cognome .' ' .$v->nome;
+      }
+    return $volontari;
+    }
+
+
 	}

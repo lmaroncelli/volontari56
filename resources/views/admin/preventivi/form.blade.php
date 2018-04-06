@@ -70,14 +70,14 @@
 							  <div class="input-group-addon">
 							    <i class="fa fa-calendar"></i>
 							  </div>
-							  <input type="text" name="data" class="form-control pull-right" id="datepicker">
+							  <input type="text" name="data" @if ($preventivo->exists) value="{{$preventivo->dalle->format('d/m/Y')}}" @endif class="form-control pull-right" id="datepicker">
 							</div>
 						</div>
 						
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Dalle:</label>
 							<div class="input-group">
-							  <input type="text" name="dal" class="form-control timepicker">
+							  <input type="text" name="dal" @if ($preventivo->exists) value="{{$preventivo->dalle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -88,7 +88,7 @@
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Alle:</label>
 							<div class="input-group">
-							  <input type="text" name="al" class="form-control timepicker">
+							  <input type="text" name="al" @if ($preventivo->exists) value="{{$preventivo->alle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -171,7 +171,8 @@
 
 	//Timepicker
 	$('.timepicker').timepicker({
-	  showInputs: false
+	  showInputs: false,
+	  showMeridian: false
 	})
 
 </script>
