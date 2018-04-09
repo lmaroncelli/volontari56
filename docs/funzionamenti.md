@@ -38,3 +38,31 @@ quindi si verificano i parametri "ricerca_campo" e "q" ed eventualmente si filtr
 *__Preventivi__*
 
 Siccome i preventivi si possono ordinare anche per associazione, la query per trovare i preventivi ha un left join con le associazioni 
+
+
+
+
+*__Preventivi__ Global Scope "PreventiviOwnedByScope"*
+
+L'elenco dei preventivi deve essere filtrato se sono un'associazione: se sono admin li vedo tutti, se sono associazione vedo solo "i miei". Si utilizza un GlobalScope sulla model Preventivo in modo che i preventivi VENGONO SEMPRE E COMUNQUE FILTRATI IN AUTOMATICO (se sono associazione) 
+
+
+class PreventiviOwnedByScope implements Scope
+.....
+if(Auth::user()->hasRole('associazione'))
+  {
+  $builder->where('associazione_id', '=', Auth::user()->associazione->id);  
+  }
+
+
+class Preventivo extends Model
+.....
+protected static function boot()
+	{
+	    parent::boot();
+
+	    static::addGlobalScope(new PreventiviOwnedByScope);
+	}
+
+
+
