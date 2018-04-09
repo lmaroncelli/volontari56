@@ -29,6 +29,12 @@ class User extends Authenticatable
     ];
 
 
+    public function hasRole($role)
+      {
+      return strtolower($role) === strtolower($this->ruolo);
+      }
+
+
 
     public function getAuthIdentifierName()
     {

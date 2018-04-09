@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Scopes\PreventiviOwnedByScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Preventivo extends Model
@@ -11,6 +12,20 @@ class Preventivo extends Model
     protected $guarded = ['id'];
 
     protected $dates = ['dalle','alle'];
+
+
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new PreventiviOwnedByScope);
+    }
 
 
     public function volontari()
@@ -53,6 +68,12 @@ class Preventivo extends Model
         }
       
       }
+
+
+      public function ownedBy()
+        {
+
+        }
 
 			
 }
