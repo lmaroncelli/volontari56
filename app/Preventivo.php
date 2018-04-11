@@ -39,15 +39,15 @@ class Preventivo extends Model
 			}
 
 
-
-    public function getVolontariLista()
+    public function getVolontariFullName()
+    {
+    $volontari = [];
+    foreach (self::volontari()->get() as $v) 
       {
-      foreach ($this->volontari as $v) 
-        {
-        $v_arr[] = $v->nome;
-        }
-      return implode(', ', $v_arr);
+      $volontari[$v->id] = $v->cognome .' ' .$v->nome;
       }
+    return $volontari;
+    }
 
 
     public function getDalleAlle()

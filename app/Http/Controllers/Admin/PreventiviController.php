@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use App\Volontario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PreventiviController extends AdminController
 {
@@ -111,11 +112,21 @@ class PreventiviController extends AdminController
      */
     public function edit($id)
     {
+
         $preventivo = Preventivo::find($id);
-        $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
         $volontari = $preventivo->associazione()->first()->getVolontariFullName();
-        $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->get()->pluck('nome', 'id')->toArray();
-        return view('admin.preventivi.form', compact('preventivo', 'assos', 'volontari','volontari_associati'));
+        
+        if (Auth::user()->hasRole('admin')) 
+            {
+            $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
+            $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->get()->pluck('nome', 'id')->toArray();
+            return view('admin.preventivi.form', compact('preventivo', 'assos', 'volontari','volontari_associati'));
+            } 
+        else 
+            {
+            return view('admin.preventivi.form_asso', compact('preventivo', 'volontari'));
+            }
+        
     }
 
     /**

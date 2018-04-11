@@ -116,7 +116,7 @@
                                 </a>
                             </td>
                             <td>
-                                {{$preventivo->getVolontariLista()}}
+                                {{ implode( ', ', $preventivo->getVolontariFullName() ) }}
                             </td>
                             <td>
                                 {{$preventivo->getDalleAlle()}}
