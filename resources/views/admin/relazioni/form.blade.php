@@ -18,30 +18,39 @@
 @section('briciole')
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-	  @if ($preventivo->exists)
-	  	<h1>Modifica Preventivo</h1>
+	  @if ($relazione->exists)
+	  	<h1>Modifica Relazione</h1>
 	  @else
-	  	<h1>Crea Nuova Preventivo</h1>
+	  	<h1>Crea Nuova Relazione</h1>
 	  @endif
 	  <ol class="breadcrumb">
 	    <li><a href="#"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Preventivi</li>
+	    <li class="active">Relazioni</li>
 	  </ol>
 	</section>
 @endsection
 
 
 @section('content')
+	
+	@if ($relazione->exists)
+	  <form action="{{ route('preventivi.destroy', $relazione->id) }}" method="POST" id="record_delete">
+	  	{{ method_field('DELETE') }}
+	    {!! csrf_field() !!}
+	    <input type="hidden" name="id" value="{{$relazione->id}}">
+	  </form>
+	@endif
+
     <div class="row">
       <!-- left column -->
       <div class="col-md-6">
         <!-- general form elements -->
         <div class="box box-primary">
-	  		@if ($preventivo->exists)
-	        	<form role="form" action="{{ route('volontari.update', $preventivo->id) }}" method="POST">
+	  		@if ($relazione->exists)
+	        	<form role="form" action="{{ route('relazioni.update', $relazione->id) }}" method="POST">
 	        	{{ method_field('PUT') }}
 			@else
-	        	<form role="form" action="{{ route('volontari.store') }}" method="POST">
+	        	<form role="form" action="{{ route('relazioni.store') }}" method="POST">
 	        @endif
 	        	{!! csrf_field() !!}
 				<div class="box-body">
@@ -50,7 +59,7 @@
 					  <label for="associazione_id">Associazione</label>
 					  <select class="form-control" style="width: 100%;" name="associazione_id" id="associazione_id">
 					    @foreach ($assos as $id => $nome)
-					    	<option value="{{$id}}" @if ($preventivo->associazione_id == $id) selected="selected" @endif>{{$nome}}</option>
+					    	<option value="{{$id}}" @if ($relazione->associazione_id == $id) selected="selected" @endif>{{$nome}}</option>
 					    @endforeach
 					  </select>
 					</div>
@@ -70,14 +79,14 @@
 							  <div class="input-group-addon">
 							    <i class="fa fa-calendar"></i>
 							  </div>
-							  <input type="text" name="data" @if ($preventivo->exists) value="{{$preventivo->dalle->format('d/m/Y')}}" @endif class="form-control pull-right" id="datepicker">
+							  <input type="text" name="data" @if ($relazione->exists) value="{{$relazione->dalle->format('d/m/Y')}}" @endif class="form-control pull-right" id="datepicker">
 							</div>
 						</div>
 						
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Dalle:</label>
 							<div class="input-group">
-							  <input type="text" name="dal" @if ($preventivo->exists) value="{{$preventivo->dalle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="dal" @if ($relazione->exists) value="{{$relazione->dalle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -88,7 +97,7 @@
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Alle:</label>
 							<div class="input-group">
-							  <input type="text" name="al" @if ($preventivo->exists) value="{{$preventivo->alle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="al" @if ($relazione->exists) value="{{$relazione->alle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -99,24 +108,32 @@
 					</div>
 
 					<div class="form-group">
-					  <label for="localita">Località</label>
-					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita"></textarea>
+					  <label for="note">Note</label>
+					  <textarea class="form-control" rows="3" placeholder="Note ..." name="note" id="note">{{$relazione->note}}</textarea>
 					</div>
 
 					<div class="form-group">
-					  <label for="motivazione">Motivazione</label>
-					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione"></textarea>
+					  <label for="rapporto">Rapporto</label>
+					  <textarea class="form-control" rows="3" placeholder="Rapporto ..." name="rapporto" id="rapporto">{{$relazione->rapporto}}</textarea>
+					</div>
+
+					<div class="form-group">
+					  <label for="auto">Auto</label>
+					  <textarea class="form-control" rows="3" placeholder="Auto ..." name="auto" id="auto">{{$relazione->auto}}</textarea>
 					</div>
 
 				</div> <!-- /.box-body -->
 				<div class="box-footer">
 				<button type="submit" class="btn btn-primary">
-					@if ($preventivo->exists)
+					@if ($relazione->exists)
 						Modifica
 					@else
 						Crea
 					@endif
 				</button>
+				@if ($relazione->exists)
+					@include('admin.admin_inc_delete_button')
+				@endif
 				</div>
         	</form>
       	</div> <!-- /.box -->
@@ -145,14 +162,14 @@
 
 	    $('#associazione_id').change(function(){
 	    	var associazione_id = this.value;
-	    	var preventivo_id = '{{$preventivo->id}}';
+	    	var relazione_id = '{{$relazione->id}}';
 	    	jQuery.ajax({
 	    	        url: '<?=url("admin/preventivi/carica_volontari_ajax") ?>',
 	    	        type: "post",
 	    	        async: false,
 	    	        data : { 
 	    	               'associazione_id': associazione_id, 
-	    	               'preventivo_id': preventivo_id,
+	    	               'relazione_id': relazione_id,
 	    	               '_token': jQuery('input[name=_token]').val()
 	    	               },
 	    	       	success: function(data) {

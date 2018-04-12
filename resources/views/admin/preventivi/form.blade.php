@@ -110,12 +110,12 @@
 
 					<div class="form-group">
 					  <label for="localita">Località</label>
-					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita"></textarea>
+					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita">{{$preventivo->localita}}</textarea>
 					</div>
 
 					<div class="form-group">
 					  <label for="motivazione">Motivazione</label>
-					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione"></textarea>
+					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione">{{$preventivo->motivazione}}</textarea>
 					</div>
 
 				</div> <!-- /.box-body -->
