@@ -2,12 +2,12 @@
 
 namespace App;
 
-use App\Scopes\PreventiviOwnedByScope;
+use App\Scopes\RelazioniOwnedByScope;
 use Illuminate\Database\Eloquent\Model;
 
-class Preventivo extends Model
+class Relazione extends Model
 {
-    protected $table = 'tblPreventivi';
+    protected $table = 'tblRelazioni';
 
     protected $guarded = ['id'];
 
@@ -24,13 +24,13 @@ class Preventivo extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(new PreventiviOwnedByScope);
+        static::addGlobalScope(new RelazioniOwnedByScope);
     }
 
 
     public function volontari()
       {
-      return $this->belongsToMany('App\Volontario', 'tblPreventiviVolontari', 'preventivo_id', 'volontario_id');
+      return $this->belongsToMany('App\Volontario', 'tblRelazioniVolontari', 'preventivo_id', 'volontario_id');
       }
 
 	   public function associazione()
