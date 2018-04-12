@@ -32,16 +32,25 @@
 
 
 @section('content')
+	
+	@if ($preventivo->exists)
+	  <form action="{{ route('preventivi.destroy') }}" method="POST" id="record_delete">
+	  	{{ method_field('DELETE') }}
+	    {!! csrf_field() !!}
+	    <input type="hidden" name="id" value="{{$preventivo->id}}">
+	  </form>
+	@endif
+
     <div class="row">
       <!-- left column -->
       <div class="col-md-6">
         <!-- general form elements -->
         <div class="box box-primary">
 	  		@if ($preventivo->exists)
-	        	<form role="form" action="{{ route('volontari.update', $preventivo->id) }}" method="POST">
+	        	<form role="form" action="{{ route('preventivi.update', $preventivo->id) }}" method="POST">
 	        	{{ method_field('PUT') }}
 			@else
-	        	<form role="form" action="{{ route('volontari.store') }}" method="POST">
+	        	<form role="form" action="{{ route('preventivi.store') }}" method="POST">
 	        @endif
 	        	{!! csrf_field() !!}
 				<div class="box-body">
@@ -117,6 +126,9 @@
 						Crea
 					@endif
 				</button>
+				@if ($preventivo->exists)
+					@include('admin.admin_inc_delete_button')
+				@endif
 				</div>
         	</form>
       	</div> <!-- /.box -->

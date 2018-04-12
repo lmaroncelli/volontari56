@@ -11,6 +11,23 @@ use Illuminate\Support\Facades\Auth;
 
 class PreventiviController extends AdminController
 {
+
+
+    public function _savePreventivo(&$preventivo, $request)
+      {
+        $dalle = $request-get('data'). ' ' . $request-get('dal');
+        $alle = $request-get('data'). ' ' . $request-get('al');
+
+        $preventivo->associazione_id = $request-get('associazione_id');
+        $preventivo->dalle = Utility::getCarbonDateTime($dalle);
+        $preventivo->alle = Utility::getCarbonDateTime($alle);
+        $preventivo->localita = $request-get('localita');
+        $preventivo->motivazioni = $request-get('motivazioni');
+        $preventivo->volontari()->sync($request-get('volontari'));
+        $preventivo->save();
+      }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -90,7 +107,27 @@ class PreventiviController extends AdminController
      */
     public function store(Request $request)
     {
-        //
+        /*
+        dd($request->all());
+        array:8 [▼
+          "_token" => "cpHqOGMoOa2k2PFcCB9OWThKcDJy95t1OvMoXVNb"
+          "associazione_id" => "2"
+          "volontari" => array:2 [▼
+            0 => "1295"
+            1 => "1297"
+          ]
+          "data" => "27/04/2018"
+          "dal" => "10:00"
+          "al" => "10:00"
+          "localita" => "asas"
+          "motivazione" => "ddd"
+        ]
+         */
+      $preventivo = new Preventivo;
+      $this->_savePreventivo($preventivo, $request);
+
+      return redirect('admin/preventivi')->with('status', 'Preventivo creato correttamente!');
+
     }
 
     /**
@@ -138,7 +175,11 @@ class PreventiviController extends AdminController
      */
     public function update(Request $request, $id)
     {
-        //
+        $preventivo = Preventivo::find($id);
+        $this->_savePreventivo($preventivo, $request);
+
+        return redirect('admin/preventivi')->with('status', 'Preventivo modificato correttamente!');
+
     }
 
     /**

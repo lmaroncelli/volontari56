@@ -69,4 +69,79 @@ class Utility extends Model
 			}
 		return $diff;
 		}
+
+
+	/**
+	 * Accetta una strina nel formato dd/mm/yyyy e la trasforma in un oggetto data Carbon; se la stringa è vuota o malformata restituisce l'oggetto Carbon da $y=0-$m=0-$d=0.
+	 * 
+	 * @access public
+	 * @static
+	 * @param string $data_str (default: "")
+	 * @return void
+	 */
+	 
+	public static function getCarbonDate($data_str = "")
+	{
+		try {
+
+			$data_str = trim($data_str);
+			if ($data_str == '') {
+				$data_carbon = Carbon::createFromDate(0, 0, 0);
+			}
+			else {
+				list($d, $m, $y) = explode('/', $data_str);
+				$data_carbon = Carbon::createFromDate($y, $m, $d);
+			}
+
+
+			return $data_carbon;
+
+		} catch (\Exception $e) {
+
+			return Carbon::now();
+
+		}
+
+	}
+
+	/**
+	 * Accetta una strina nel formato dd/mm/yyyy H:i e la trasforma in un oggetto data Carbon; se la stringa è vuota o malformata restituisce l'oggetto Carbon da $y=0-$m=0-$d=0.
+	 * Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')
+	 * @access public
+	 * @static
+	 * @param string $data_str (default: "")
+	 * @return void
+	 */
+	
+	public static function getCarbonDateTime($data_str = "")
+	{
+		try {
+
+			$data_str = trim($data_str);
+			if ($data_str == '') {
+				$data_carbon = Carbon::now();
+			}
+			else {
+				list($data, $time) = explode(' ', $data_str);
+
+				list($d, $m, $y) = explode('/', $data);
+				list($h, $m) = explode(':', $time);
+
+				$data_carbon = Carbon::createFromFormat('Y-m-d H i', "$y-$m-$d $h $m");
+			}
+
+
+			return $data_carbon;
+
+		} catch (\Exception $e) {
+
+			return Carbon::now();
+
+		}
+
+	}
+
+
+
+
 }
