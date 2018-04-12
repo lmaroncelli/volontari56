@@ -30,7 +30,7 @@ class Relazione extends Model
 
     public function volontari()
       {
-      return $this->belongsToMany('App\Volontario', 'tblRelazioniVolontari', 'preventivo_id', 'volontario_id');
+      return $this->belongsToMany('App\Volontario', 'tblRelazioniVolontari', 'relazione_id', 'volontario_id');
       }
 
 	   public function associazione()

@@ -11,7 +11,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Elenco Preventivi
+            Elenco Relazioni
         </h1>
         <ol class="breadcrumb">
             <li>
@@ -22,7 +22,7 @@
                 </a>
             </li>
             <li class="active">
-                Preventivi
+                Relazioni
             </li>
         </ol>
     </section>
@@ -30,14 +30,14 @@
 
 
 @section('content')
-	@if (!$preventivi->count())
+	@if (!$relazioni->count())
     <div class="callout callout-info">
         <h4>
-            Nessuna volontariolontario presente!
+            Nessuna relazione presente!
         </h4>
         <p>
-            Creane un
-            <a href="{{ route('preventivi.create') }}" title="Crea preventivo">
+            Creane una relazione
+            <a href="{{ route('relazioni.create') }}" title="Crea relazione">
                 adesso
             </a>
         </p>
@@ -48,7 +48,7 @@
         <div class="col-xs-12">
             <!-- /.box-header -->
             <div class="box-body">
-                <table class="table table-bordered table-hover" id="tbl_preventivi">
+                <table class="table table-bordered table-hover" id="tbl_relazioni">
                     <thead>
                         <tr>
                             @foreach ($columns as $field => $name)
@@ -103,29 +103,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($preventivi as $preventivo)
+                        @foreach ($relazioni as $relazione)
                         <tr>
                             <td>
-                                <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
-                                    {{$preventivo->id}}
+                                <a class="relazione" href="{{ route('relazioni.edit', $relazione->id) }}" title="Modifica relazione">
+                                    {{$relazione->id}}
                                 </a>
                             </td>
                             <td>
-                                <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
-                                    {{$preventivo->associazione->nome}}
+                                <a class="relazione" href="{{ route('relazioni.edit', $relazione->id) }}" title="Modifica relazione">
+                                    {{$relazione->associazione->nome}}
                                 </a>
                             </td>
                             <td>
-                                {{ implode( ', ', $preventivo->getVolontariFullName() ) }}
+                                {{ implode( ', ', $relazione->getVolontariFullName() ) }}
                             </td>
                             <td>
-                                {{$preventivo->getDalleAlle()}}
+                                {{$relazione->getDalleAlle()}}
                             </td>
                             <td>
-                                {{$preventivo->localita}}
+                                {{$relazione->note}}
                             </td>
                             <td>
-                                {{$preventivo->motivazioni}}
+                                {{$relazione->rapporto}}
+                            </td>
+                            <td>
+                                {{$relazione->auto}}
                             </td>
                         </tr>
                         @endforeach
@@ -138,15 +141,15 @@
     <div class="row">
         <div class="col-sm-5">
             <div aria-live="polite" class="dataTables_info" id="example2_info" role="status">
-             	Pagina {{$preventivi->currentPage()}} di {{$preventivi->lastPage()}}
+             	Pagina {{$relazioni->currentPage()}} di {{$relazioni->lastPage()}}
             </div>
         </div>
         <div class="col-sm-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
         		@if ($ordering)
-                    {{ $preventivi->appends(['order_by' => $order_by, 'order' => $order])->links() }}
+                    {{ $relazioni->appends(['order_by' => $order_by, 'order' => $order])->links() }}
                 @else
-                    {{ $preventivi->links() }}
+                    {{ $relazioni->links() }}
                 @endif
             </div>
         </div>
@@ -164,7 +167,7 @@
     </script>
     <script type="text/javascript">
         $(function () {
-	    $('#tbl_preventivi').DataTable({
+	    $('#tbl_relazioni').DataTable({
       'paging'      : false,
       'lengthChange': false,
       'searching'   : false,

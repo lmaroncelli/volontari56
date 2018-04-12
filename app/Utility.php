@@ -125,9 +125,9 @@ class Utility extends Model
 				list($data, $time) = explode(' ', $data_str);
 
 				list($d, $m, $y) = explode('/', $data);
-				list($h, $m) = explode(':', $time);
+				list($h, $min) = explode(':', $time);
 
-				$data_carbon = Carbon::createFromFormat('Y-m-d H i', "$y-$m-$d $h $m");
+				$data_carbon = Carbon::createFromFormat('Y-m-d H i', "$y-$m-$d $h $min");
 			}
 
 

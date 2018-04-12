@@ -51,7 +51,19 @@
           <li><a href="{{ route('preventivi.create') }}">Nuovo</a></li>
         </ul>
       </li>
-    
+
+      {{-- RELAZIONI --}}
+      <li class="treeview @if (in_array('relazioni',Request::segments())) active @endif">
+        <a href="#"><i class="fa fa-link"></i> <span>Relazioni</span>
+          <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ route('relazioni.index') }}">Elenco</a></li>
+          <li><a href="{{ route('relazioni.create') }}">Nuovo</a></li>
+        </ul>
+      </li>
     </ul>
     <!-- /.sidebar-menu -->
 

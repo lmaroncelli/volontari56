@@ -25,10 +25,10 @@ class RelazioniSeeder extends Seeder
        	else 
        		{
 	       	$data_relazioni = substr($old_r->data_relazioni,0,10);
-	       	$dal_servizi = substr($old_r->da_ora_servizi,11);
-	       	$al_servizi = substr($old_r->a_ora_servizi,11);
-	       	$p['dalle'] = $data_relazioni.' '.$dal_servizi; 
-	       	$p['alle'] = $data_relazioni.' '.$al_servizi; 
+	       	$dal_relazioni = substr($old_r->da_ora_relazioni,11);
+	       	$al_relazioni = substr($old_r->a_ora_relazioni,11);
+	       	$p['dalle'] = $data_relazioni.' '.$dal_relazioni; 
+	       	$p['alle'] = $data_relazioni.' '.$al_relazioni; 
        		}
        	
        	$p['preventivo_id'] = $old_r->id_servizi; 

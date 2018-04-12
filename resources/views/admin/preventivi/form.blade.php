@@ -28,6 +28,7 @@
 	    <li class="active">Preventivi</li>
 	  </ol>
 	</section>
+
 @endsection
 
 
@@ -134,6 +135,7 @@
       	</div> <!-- /.box -->
       </div><!-- /.col -->
      </div> <!-- /.row -->
+     
 @endsection
 
 

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Associazione;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\AdminController;
+use App\Relazione;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class RelazioniController extends Controller
+class RelazioniController extends AdminController
 {
 
     public function creaDaPreventivo()
@@ -54,7 +56,7 @@ class RelazioniController extends Controller
             'associazione' => 'Associazione',
             '' => 'Volontari',
             'dalle' => 'Data',
-            'localita' => 'Località',
+            'note' => 'Note',
             'rapporto' => 'Rapporto',
             'auto' => 'Auto',
         ];

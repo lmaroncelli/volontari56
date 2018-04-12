@@ -18,7 +18,6 @@ class PreventiviController extends AdminController
       {
         $dalle = $request->get('data'). ' ' . $request->get('dal');
         $alle = $request->get('data'). ' ' . $request->get('al');
-        dd($dalle);
         $preventivo->associazione_id = $request->get('associazione_id');
         $preventivo->dalle = Utility::getCarbonDateTime($dalle);
         $preventivo->alle = Utility::getCarbonDateTime($alle);

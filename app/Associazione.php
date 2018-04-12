@@ -24,6 +24,11 @@ class Associazione extends Model
 			return $this->hasMany('App\Preventivo','associazione_id','id');
 		}
 
+	public function relazioni()
+		{
+			return $this->hasMany('App\Relazione','associazione_id','id');
+		}
+
 	public function utente()
 		{
 			return $this->belongsTo('App\User','user_id','id');
