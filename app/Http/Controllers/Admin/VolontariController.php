@@ -136,7 +136,7 @@ class VolontariController extends AdminController
      */
     public function create()
     {
-    $assos = Associazione::all()->pluck('nome', 'id')->toArray();
+    $assos = Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
 
     $volontario = new Volontario;
 
@@ -184,7 +184,7 @@ class VolontariController extends AdminController
     public function edit($id)
     {
         $volontario = Volontario::find($id);
-        $assos = Associazione::orderBy('nome')->get()->pluck('nome', 'id')->toArray();
+        $assos = Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
 
         $assos = ['0' => 'Seleziona...'] + $assos;
 

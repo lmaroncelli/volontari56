@@ -74,7 +74,7 @@ class RelazioniController extends Controller
      */
     public function create()
     {
-      $assos = ['0' => 'Seleziona'] + Associazione::all()->pluck('nome', 'id')->toArray();
+      $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
       $volontari = [];
       $volontari_associati = [];
       $relazione = new Relazione;
@@ -118,7 +118,7 @@ class RelazioniController extends Controller
       if (Auth::user()->hasRole('admin')) 
           {
           $volontari_associati = $relazione->volontari->pluck('id')->toArray();
-          $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->get()->pluck('nome', 'id')->toArray();
+          $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
           return view('admin.relazioni.form', compact('relazione', 'assos', 'volontari','volontari_associati'));
           } 
       else 

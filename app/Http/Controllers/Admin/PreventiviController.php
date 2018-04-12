@@ -91,7 +91,7 @@ class PreventiviController extends AdminController
      */
     public function create()
     {
-    $assos = ['0' => 'Seleziona'] + Associazione::all()->pluck('nome', 'id')->toArray();
+    $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
     $volontari = [];
     $volontari_associati = [];
     $preventivo = new Preventivo;
