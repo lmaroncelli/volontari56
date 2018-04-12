@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Associazione;
 use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
+use App\Utility;
 use App\Volontario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,16 +16,16 @@ class PreventiviController extends AdminController
 
     public function _savePreventivo(&$preventivo, $request)
       {
-        $dalle = $request-get('data'). ' ' . $request-get('dal');
-        $alle = $request-get('data'). ' ' . $request-get('al');
-
-        $preventivo->associazione_id = $request-get('associazione_id');
+        $dalle = $request->get('data'). ' ' . $request->get('dal');
+        $alle = $request->get('data'). ' ' . $request->get('al');
+        dd($dalle);
+        $preventivo->associazione_id = $request->get('associazione_id');
         $preventivo->dalle = Utility::getCarbonDateTime($dalle);
         $preventivo->alle = Utility::getCarbonDateTime($alle);
-        $preventivo->localita = $request-get('localita');
-        $preventivo->motivazioni = $request-get('motivazioni');
-        $preventivo->volontari()->sync($request-get('volontari'));
+        $preventivo->localita = $request->get('localita');
+        $preventivo->motivazioni = $request->get('motivazioni');
         $preventivo->save();
+        $preventivo->volontari()->sync($request->get('volontari'));
       }
 
 

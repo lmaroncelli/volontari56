@@ -34,7 +34,7 @@
 @section('content')
 	
 	@if ($preventivo->exists)
-	  <form action="{{ route('preventivi.destroy') }}" method="POST" id="record_delete">
+	  <form action="{{ route('preventivi.destroy', $preventivo->id) }}" method="POST" id="record_delete">
 	  	{{ method_field('DELETE') }}
 	    {!! csrf_field() !!}
 	    <input type="hidden" name="id" value="{{$preventivo->id}}">
