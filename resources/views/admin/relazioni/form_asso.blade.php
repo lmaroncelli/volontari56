@@ -18,10 +18,10 @@
 @section('briciole')
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-	  <h1>Preventivo</h1>
+	  <h1>Relazione</h1>
 	  <ol class="breadcrumb">
 	    <li><a href="#"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Preventivi</li>
+	    <li class="active">Relazioni</li>
 	  </ol>
 	</section>
 @endsection
@@ -38,7 +38,7 @@
 					
 					<div class="form-group">
 					  <label for="associazione_id">Associazione</label>
-					  {{$preventivo->associazione->nome}}
+					  {{$relazione->associazione->nome}}
 					</div>
 					
 					<div class="form-group" id="volontari_select">
@@ -51,40 +51,46 @@
 						
 						<div class="col-md-4">
 							<label>Data:</label>
-							 {{$preventivo->dalle->format('d/m/Y')}}
+							 {{$relazione->dalle->format('d/m/Y')}}
 						</div>
 						
 						<div class="col-md-3 bootstrap-timepicker">
 							<label>Dalle:</label>
-							{{$preventivo->dalle->format('H:i')}}
+							{{$relazione->dalle->format('H:i')}}
 						</div>
 						
 						<div class="col-md-3 bootstrap-timepicker">
 							<label>Alle:</label>
-							{{$preventivo->alle->format('H:i')}}
+							{{$relazione->alle->format('H:i')}}
 						</div>
 
 						<div class="col-md-2 bootstrap-timepicker">
-							{{Utility::diff_dalle_alle($preventivo->dalle, $preventivo->alle)}}
+							{{Utility::diff_dalle_alle($relazione->dalle, $relazione->alle)}}
 						</div>
 
 					</div>
 
+
 					<div class="form-group">
-					  <label for="localita">Località</label>
-					  {{$preventivo->localita}}
+					  <label for="rapporto">Rapporto</label>
+					  {{$relazione->rapporto}}
 					</div>
 
 					<div class="form-group">
-					  <label for="motivazione">Motivazione</label>
-					  {{$preventivo->motivazioni}}
+					  <label for="auto">Auto</label>
+					  {{$relazione->auto}}
+					</div>
+
+					<div class="form-group">
+					  <label for="note">Note</label>
+					  {{$relazione->note}}
 					</div>
 
 				</div> <!-- /.box-body -->
 				<div class="box-footer">
-				<form role="form" action="{{ route('volontari.store') }}" method="POST">
+				<form role="form" action="{{ route('relazioni.store') }}" method="POST">
 					<button type="submit" class="btn btn-primary">
-						@if ($preventivo->exists)
+						@if ($relazione->exists)
 							Modifica
 						@else
 							Crea

@@ -50,8 +50,8 @@ Route::group(['middleware' => ['admin']], function () {
 Route::any('admin/preventivi/carica_volontari_ajax', 'Admin\PreventiviController@caricaVolontariAjax');
 Route::resource('admin/preventivi', 'Admin\PreventiviController');
 
-Route::post('admin/relazioni/crea-da-preventivo', ['uses' => 'Admin\RelazioniController@creaDaPreventivo', 'as' => 'relazioni.crea-da-preventivo']);
-Route::resource('admin/relazioni', 'Admin\RelazioniController');
+Route::post('admin/relazioni/crea-da-preventivo/{preventivo_id}', ['uses' => 'Admin\RelazioniController@creaDaPreventivo', 'as' => 'relazioni.crea-da-preventivo']);
+Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['create']);
 
 
 	//////////////////////////////////////////////////

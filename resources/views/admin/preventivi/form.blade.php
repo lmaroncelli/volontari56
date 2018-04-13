@@ -120,6 +120,7 @@
 
 				</div> <!-- /.box-body -->
 				<div class="box-footer">
+	
 				<button type="submit" class="btn btn-primary">
 					@if ($preventivo->exists)
 						Modifica
@@ -127,9 +128,17 @@
 						Crea
 					@endif
 				</button>
+				
+				@if ($preventivo->exists)
+					<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" title="Crea una relazione di servizio" class="btn btn-default">
+						Crea una relazione di servizio
+					</a>
+				@endif
+
 				@if ($preventivo->exists)
 					@include('admin.admin_inc_delete_button')
 				@endif
+	
 				</div>
         	</form>
       	</div> <!-- /.box -->

@@ -61,7 +61,6 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ route('relazioni.index') }}">Elenco</a></li>
-          <li><a href="{{ route('relazioni.create') }}">Nuovo</a></li>
         </ul>
       </li>
     </ul>
