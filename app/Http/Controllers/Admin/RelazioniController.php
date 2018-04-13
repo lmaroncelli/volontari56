@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Associazione;
 use App\Http\Controllers\Admin\AdminController;
+use App\Preventivo;
 use App\Relazione;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +12,18 @@ use Illuminate\Support\Facades\Auth;
 class RelazioniController extends AdminController
 {
 
-    public function creaDaPreventivo()
+    public function creaDaPreventivo(Request $request, $preventivo_id)
       {
-      dd('To do');
+      $preventivo = Preventivo::find($preventivo_id);
+      $relazione = new Relazione;
+
+      $relazione->preventivo_id = $preventivo_id;
+      $relazione->associazione_id = $preventivo->associazione_id;
+      $relazione->dalle = $preventivo->dalle;
+      $relazione->alle = $preventivo->alle;
+      $relazione->save();
+      $relazione->volontari()->sync($preventivo->volontari->pluck('id')->toArray());
+      return redirect()->route('relazioni', [$relazione->id]);
       }
 
     /**
@@ -116,17 +126,11 @@ class RelazioniController extends AdminController
     {
       $relazione = Relazione::find($id);
       $volontari = $relazione->associazione()->first()->getVolontariFullName();
+
+      $volontari_associati = $relazione->volontari->pluck('id')->toArray();
+      $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
+      return view('admin.relazioni.form', compact('relazione', 'assos', 'volontari','volontari_associati'));
       
-      if (Auth::user()->hasRole('admin')) 
-          {
-          $volontari_associati = $relazione->volontari->pluck('id')->toArray();
-          $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
-          return view('admin.relazioni.form', compact('relazione', 'assos', 'volontari','volontari_associati'));
-          } 
-      else 
-          {
-          return view('admin.relazioni.form_asso', compact('relazione', 'volontari'));
-          }
     }
 
     /**

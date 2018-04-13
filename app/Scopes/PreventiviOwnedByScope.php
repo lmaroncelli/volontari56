@@ -17,10 +17,13 @@ class PreventiviOwnedByScope implements Scope
      * @return void
      */
     public function apply(Builder $builder, Model $model)
-    {
-        if(Auth::user()->hasRole('associazione'))
+    {   
+        if (Auth::check()) 
           {
-          $builder->where('associazione_id', '=', Auth::user()->associazione->id);  
+          if(Auth::user()->hasRole('associazione'))
+            {
+            $builder->where('associazione_id', '=', Auth::user()->associazione->id);  
+            }
           }
     }
 }
