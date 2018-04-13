@@ -23,7 +23,7 @@ class RelazioniController extends AdminController
       $relazione->alle = $preventivo->alle;
       $relazione->save();
       $relazione->volontari()->sync($preventivo->volontari->pluck('id')->toArray());
-      return redirect()->route('relazioni', [$relazione->id]);
+      return redirect()->route('relazioni.edit', [$relazione->id]);
       }
 
     /**
