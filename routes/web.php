@@ -54,6 +54,12 @@ Route::get('admin/relazioni/crea-da-preventivo/{preventivo_id}', ['uses' => 'Adm
 Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['create']);
 
 
+Route::get('admin/pdf', function(){
+	$pdf = PDF::loadHTML('<h1>Test</h1>');
+	return $pdf->stream();
+});
+
+
 	//////////////////////////////////////////////////
 	// fine ROUTE ACCESSIBILI SOLO AL PROFILO ADMIN	//
 	/////////////////////////////////////////////////

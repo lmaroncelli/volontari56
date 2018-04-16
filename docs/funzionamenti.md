@@ -66,3 +66,28 @@ protected static function boot()
 
 
 
+
+
+*Creazione PDF*
+
+
+https://github.com/barryvdh/laravel-dompdf
+
+After updating composer, add the ServiceProvider to the providers array in config/app.php
+
+> Barryvdh\DomPDF\ServiceProvider::class,
+
+You can optionally use the facade for shorter code. Add this to your facades:
+
+> 'PDF' => Barryvdh\DomPDF\Facade::class,
+
+
+Use php artisan vendor:publish to create a config file located at config/dompdf.php which will allow you to define local configurations to change some settings (default paper etc). You can also use your ConfigProvider to set certain keys.
+
+Configuration
+The defaults configuration settings are set in config/dompdf.php. Copy this file to your own config directory to modify the values. You can publish the config using this command:
+
+> php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
+
+You can still alter the dompdf options in your code before generating the pdf using this command:
+> PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
