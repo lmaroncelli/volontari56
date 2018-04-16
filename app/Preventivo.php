@@ -4,6 +4,7 @@ namespace App;
 
 use App\Scopes\PreventiviOwnedByScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Preventivo extends Model
 {
@@ -11,7 +12,7 @@ class Preventivo extends Model
 
     protected $guarded = ['id'];
 
-    protected $dates = ['dalle','alle'];
+    protected $dates = ['dalle','alle','deleted_at'];
 
 
 
