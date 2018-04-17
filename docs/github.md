@@ -35,7 +35,7 @@ Branch master set up to track remote branch master from origin.
 
 To grab a complete copy of another user's repository, use git clone like this:
 
-$ git clone https://github.com/lmaroncelli/volontari.git
+$ git clone https://github.com/lmaroncelli/volontari56.git
 # Clones a repository to your computer
 
 git pull remotename branchname
