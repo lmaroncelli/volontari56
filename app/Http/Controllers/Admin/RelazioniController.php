@@ -55,6 +55,7 @@ class RelazioniController extends AdminController
                   {
                     $join->on('tblAssociazioni.id', '=', 'tblRelazioni.associazione_id');
                   })
+                  ->withTrashed()
                   ->select('tblRelazioni.*','tblAssociazioni.nome as nome_asso');
 
         $relazioni = $query
@@ -153,7 +154,11 @@ class RelazioniController extends AdminController
      */
     public function destroy($id)
     {
-        //
+      $relazione = Relazione::find($id);
+      // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
+      // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
+      $relazione->delete();
+      return redirect('admin/relazioni')->with('status', 'Relazione eliminata!');
     }
 
     /**

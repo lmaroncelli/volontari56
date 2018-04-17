@@ -104,7 +104,7 @@
                     </thead>
                     <tbody>
                         @foreach ($preventivi as $preventivo)
-                        <tr>
+                        <tr @if ($preventivo->trashed()) class="deleted" @endif>
                             <td>
                                 <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
                                     {{$preventivo->id}}

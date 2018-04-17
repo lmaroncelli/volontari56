@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Relazione extends Model
 {
+
+    use SoftDeletes;
+
+    
     protected $table = 'tblRelazioni';
 
     protected $guarded = ['id'];

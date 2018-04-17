@@ -3,3 +3,18 @@ a.asso, a.asso:hover {
 	font-weight: bold;
 	text-decoration: none;
 }
+
+
+tr.deleted {
+	background-color: #E14343; 
+	color:#fff;
+}
+
+tr.deleted a {
+	color:#fff;
+}
+
+
+tr.deleted:hover {
+    background-color: #E14343!important;
+}

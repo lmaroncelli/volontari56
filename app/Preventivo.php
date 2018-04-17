@@ -3,11 +3,16 @@
 namespace App;
 
 use App\Scopes\PreventiviOwnedByScope;
+use App\Scopes\SoftDeletedScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Preventivo extends Model
 {
+
+    use SoftDeletes;
+    
+
     protected $table = 'tblPreventivi';
 
     protected $guarded = ['id'];
@@ -25,6 +30,7 @@ class Preventivo extends Model
     {
         parent::boot();
 
+        //static::addGlobalScope(new SoftDeletedScope);
         static::addGlobalScope(new PreventiviOwnedByScope);
     }
 
