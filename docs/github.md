@@ -3,11 +3,11 @@
 git init
 git add README.md
 git commit -m "first commit"
-git remote add origin https://github.com/lmaroncelli/volontari.git
+git remote add origin https://github.com/lmaroncelli/volontari56.git
 git push -u origin master
 …or push an existing repository from the command line
 ￼
-git remote add origin https://github.com/lmaroncelli/volontari.git
+git remote add origin https://github.com/lmaroncelli/volontari56.git
 git push -u origin master
 …or import code from another repository
 You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
@@ -26,7 +26,7 @@ Compressing objects: 100% (3/3), done.
 Writing objects: 100% (4/4), 689 bytes | 689.00 KiB/s, done.
 Total 4 (delta 1), reused 0 (delta 0)
 remote: Resolving deltas: 100% (1/1), completed with 1 local object.
-To https://github.com/lmaroncelli/volontari.git
+To https://github.com/lmaroncelli/volontari56.git
    e723211..591afa5  master -> master
 Branch master set up to track remote branch master from origin.
 
