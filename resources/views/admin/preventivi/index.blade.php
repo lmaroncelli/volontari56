@@ -25,6 +25,26 @@
                 Preventivi
             </li>
         </ol>
+        <form action="{!! route('preventivi.search') !!}" method="post">
+          {{ csrf_field() }}
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-2">
+              <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Cerca..." required value="{{$valore}}">
+                <span class="input-group-btn">
+                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                </span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <select class="form-control" name="ricerca_campo" id="ricerca_campo">
+                @foreach (['nome_asso' => 'associazione', 'volontario' => 'elenco volontari', 'localita' => 'località'] as $key => $nome)
+                  <option value="{{$key}}" @if ($campo == $key) selected="selected" @endif>{{$nome}}</option>
+                @endforeach
+              </select>
+            </div>
+        </div>
+        </form>
     </section>
     @endsection
 

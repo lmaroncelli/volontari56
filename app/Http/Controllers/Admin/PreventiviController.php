@@ -33,26 +33,40 @@ class PreventiviController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($query_id = 0)
         {
 
+        //  ricerca
+        //
+        $campo = "";
+        $valore = "";
 
+        if ($query_id > 0)
+          {
+
+          Utility::addQueryStringToRequest($query_id,$this->request);
+
+          }
+
+
+        //////////////////
+        // ordinamento  //
+        //////////////////
         $order_by='id';
         $order = 'desc';
         $ordering = 0;
 
+        if ($this->request->filled('order_by'))
+          {
+          $order_by=$this->request->get('order_by');
+          $order = $this->request->get('order');
+          $ordering = 1;
+          }
 
-      if ($this->request->filled('order_by'))
-        {
-        $order_by=$this->request->get('order_by');
-        $order = $this->request->get('order');
-        $ordering = 1;
-        }
-
-      if ($order_by == 'associazione')
-        {
-        $order_by = "tblAssociazioni.nome";
-        }
+        if ($order_by == 'associazione')
+          {
+          $order_by = "tblAssociazioni.nome";
+          }
 
 
         $query = Preventivo::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
@@ -61,6 +75,54 @@ class PreventiviController extends AdminController
                   })
                   ->withTrashed()
                   ->select('tblPreventivi.*','tblAssociazioni.nome as nome_asso');
+
+
+        /////////////
+        // ricerca //
+        /////////////
+        if ( $this->request->has('ricerca_campo') && $this->request->filled('q') )
+          {
+
+          $campo = $this->request->get('ricerca_campo');
+          $valore = $this->request->get('q');
+
+
+          if ($campo == 'nome_asso')
+            {
+            $campo = 'tblAssociazioni.nome';
+            $query->where($campo, 'LIKE', "%$valore%");
+            }
+          elseif ($campo == 'volontario')
+            {
+            $assos = Associazione::all();
+            $asso_ids = [];
+            foreach ($assos as $asso) 
+              {
+              $volonari_str = implode(',', $asso->getVolontariFullName());
+              if(strpos($volonari_str, $valore) !== false)
+                {
+                $asso_ids[] = $asso->id;
+                }
+              }
+              //$query->whereRaw('orders.user_id = users.id');
+              $query->whereIn('tblAssociazioni.id', $asso_ids);
+            }
+
+
+
+          if ($campo == 'tblAssociazioni.nome')
+            {
+            $campo = 'nome_asso';
+            }
+          elseif ($campo == 'tblVolontari.nome')
+            {
+            $campo = 'nome';
+            }
+
+          }
+
+
+
 
         $preventivi = $query
                       ->orderBy($order_by, $order)
@@ -80,7 +142,7 @@ class PreventiviController extends AdminController
         $order_by = "associazione";
         }
 
-        return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns'));
+        return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore'));
 
 
         }
@@ -228,4 +290,20 @@ class PreventiviController extends AdminController
         return view('admin.preventivi.inc_volontari_select', compact('volontari','volontari_associati'));
         }
       }
+
+
+    public function search()
+      {
+      if ($this->request->has('search') && $this->request->filled('q'))
+        {
+        $query_id = Utility::createQueryStringSearch($this->request);
+        return redirect("admin/preventivi/$query_id");
+        }
+      else
+        {
+        return redirect("admin/preventivi");
+        }
+      }
+
+
 }

@@ -48,7 +48,9 @@ Route::group(['middleware' => ['admin']], function () {
 });
 
 Route::any('admin/preventivi/carica_volontari_ajax', 'Admin\PreventiviController@caricaVolontariAjax');
-Route::resource('admin/preventivi', 'Admin\PreventiviController');
+Route::post('admin/preventivi/search', ['uses' => 'Admin\PreventiviController@search', 'as' => 'preventivi.search']);
+Route::get('admin/preventivi/{query_id?}', ['uses' => 'Admin\PreventiviController@index', 'as' => 'preventivi.index']);
+Route::resource('admin/preventivi', 'Admin\PreventiviController', ['except' => ['index']]);
 
 Route::get('admin/relazioni/crea-da-preventivo/{preventivo_id}', ['uses' => 'Admin\RelazioniController@creaDaPreventivo', 'as' => 'relazioni.crea-da-preventivo']);
 Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['create']);

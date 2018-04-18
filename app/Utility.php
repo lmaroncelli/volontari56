@@ -142,6 +142,37 @@ class Utility extends Model
 	}
 
 
+	public static function createQueryStringSearch($request)
+		{
+		$query_array = [
+		   'ricerca_campo' => $request->get('ricerca_campo'),
+		    'q' => $request->get('q'),
+		    ];
+
+		$query_id = DB::table('tblQueryString')->insertGetId(
+		      ['query_string' => http_build_query($query_array)]
+		      );
+
+		return $query_id;
+		
+		} 
+
+	public static function addQueryStringToRequest($query_id,&$request)
+		{
+			$query = DB::table('tblQueryString')->where('id', $query_id)->first();
+
+
+			$qs_arr = [];
+
+			if (!is_null($query))
+			  {
+			  parse_str($query->query_string, $qs_arr);
+			  }
+
+			$request->request->add($qs_arr);
+		}
+
+
 
 
 }

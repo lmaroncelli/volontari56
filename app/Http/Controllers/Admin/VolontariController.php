@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Associazione;
 use App\Http\Controllers\Admin\AdminController;
+use App\Utility;
 use App\Volontario;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -34,24 +35,15 @@ class VolontariController extends AdminController
     if ($query_id > 0)
       {
 
-      $query = DB::table('tblQueryString')->where('id', $query_id)->first();
-
-
-      $qs_arr = [];
-
-      if (!is_null($query))
-        {
-        parse_str($query->query_string, $qs_arr);
-        }
-
-      $this->request->request->add($qs_arr);
+      Utility::addQueryStringToRequest($query_id,$this->request);
 
       }
 
 
 
-    // ordinamento
-    // 
+    /////////////////
+    // ordinamento //
+    /////////////////
     $order_by='cognome';
     $order = 'asc';
     $ordering = 0;
@@ -75,7 +67,9 @@ class VolontariController extends AdminController
     })
     ->select('tblVolontari.*','tblAssociazioni.nome as nome_asso');
 
-
+    /////////////
+    // ricerca //
+    /////////////
     if ( $this->request->has('ricerca_campo') && $this->request->filled('q') )
       {
 
@@ -227,18 +221,12 @@ class VolontariController extends AdminController
       {
       if ($this->request->has('search') && $this->request->filled('q'))
         {
-
-        $query_array = [
-           'ricerca_campo' => $this->request->get('ricerca_campo'),
-            'q' => $this->request->get('q'),
-            ];
-
-        $query_id = DB::table('tblQueryString')->insertGetId(
-              ['query_string' => http_build_query($query_array)]
-              );
-
+        $query_id = Utility::createQueryStringSearch($this->request);
         return redirect("admin/volontari/$query_id");
-
+        }
+      else
+        {
+        return redirect("admin/volontari");
         }
       }
 }
