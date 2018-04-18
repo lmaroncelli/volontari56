@@ -92,33 +92,45 @@ class PreventiviController extends AdminController
             $campo = 'tblAssociazioni.nome';
             $query->where($campo, 'LIKE', "%$valore%");
             }
+          elseif ($campo == 'localita') 
+            {
+            $campo = 'tblPreventivi.localita';
+            $query->where($campo, 'LIKE', "%$valore%");
+            }
           elseif ($campo == 'volontario')
             {
-            $assos = Associazione::all();
-            $asso_ids = [];
-            foreach ($assos as $asso) 
+            $preventivi = Preventivo::with(['associazione', 'volontari'])->get();
+            $preventivo_ids = [];
+            foreach ($preventivi as $preventivo) 
               {
-              $volonari_str = implode(',', $asso->getVolontariFullName());
+              // devo trovare la stringa dei volontari TRA QUELLI ASSOCIATI in QUESTO PREVENTIVO!!! 
+              // non tra quelli nell'associazione !!!!              
+              $volontari_prev = [];
+              foreach ($preventivo->volontari as $v) 
+                {
+                $volontari_prev[] = $v->cognome .' ' .$v->nome;
+                }
+              
+              $volonari_str = implode(',', $volontari_prev);
+
               if(strpos($volonari_str, $valore) !== false)
                 {
-                $asso_ids[] = $asso->id;
+                $preventivo_ids[] = $preventivo->id;
                 }
               }
-              //$query->whereRaw('orders.user_id = users.id');
-              $query->whereIn('tblAssociazioni.id', $asso_ids);
+              $query->whereIn('tblPreventivi.id', $preventivo_ids);
             }
-
-
 
           if ($campo == 'tblAssociazioni.nome')
             {
             $campo = 'nome_asso';
             }
-          elseif ($campo == 'tblVolontari.nome')
-            {
-            $campo = 'nome';
-            }
 
+          if($campo == 'tblPreventivi.localita')
+            {
+            $campo = 'localita';
+            }
+        
           }
 
 
@@ -142,6 +154,7 @@ class PreventiviController extends AdminController
         $order_by = "associazione";
         }
 
+        
         return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore'));
 
 
