@@ -53,7 +53,9 @@ Route::get('admin/preventivi/{query_id?}', ['uses' => 'Admin\PreventiviControlle
 Route::resource('admin/preventivi', 'Admin\PreventiviController', ['except' => ['index']])->middleware('log');
 
 Route::get('admin/relazioni/crea-da-preventivo/{preventivo_id}', ['uses' => 'Admin\RelazioniController@creaDaPreventivo', 'as' => 'relazioni.crea-da-preventivo']);
-Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['create']);
+Route::post('admin/relazioni/search', ['uses' => 'Admin\RelazioniController@search', 'as' => 'relazioni.search'])->middleware('log');
+Route::get('admin/relazioni/{query_id?}', ['uses' => 'Admin\RelazioniController@index', 'as' => 'relazioni.index'])->middleware('log');
+Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create']);
 
 
 Route::get('admin/pdf', function(){

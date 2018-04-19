@@ -36,8 +36,10 @@ class PreventiviController extends AdminController
     public function index($query_id = 0)
         {
 
-        //  ricerca
-        //
+        //////////////
+        //  ricerca //
+        //////////////
+        
         $campo = "";
         $valore = "";
 

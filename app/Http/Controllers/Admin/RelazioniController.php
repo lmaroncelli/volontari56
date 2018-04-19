@@ -6,6 +6,7 @@ use App\Associazione;
 use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use App\Relazione;
+use App\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,8 +32,25 @@ class RelazioniController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($query_id = 0)
     {
+
+
+        //////////////
+        //  ricerca //
+        //////////////
+
+        $campo = "";
+        $valore = "";
+
+        if ($query_id > 0)
+          {
+
+          Utility::addQueryStringToRequest($query_id,$this->request);
+
+          }
+
+
         $order_by='id';
         $order = 'desc';
         $ordering = 0;
@@ -58,6 +76,86 @@ class RelazioniController extends AdminController
                   ->withTrashed()
                   ->select('tblRelazioni.*','tblAssociazioni.nome as nome_asso');
 
+
+
+          /////////////
+          // ricerca //
+          /////////////
+          if ( $this->request->has('ricerca_campo') && $this->request->filled('q') )
+            {
+
+            $campo = $this->request->get('ricerca_campo');
+            $valore = $this->request->get('q');
+
+
+            if ($campo == 'nome_asso')
+              {
+              $campo = 'tblAssociazioni.nome';
+              $query->where($campo, 'LIKE', "%$valore%");
+              }
+            elseif ($campo == 'note') 
+              {
+              $campo = 'tblRelazioni.note';
+              $query->where($campo, 'LIKE', "%$valore%");
+              }
+            elseif ($campo == 'rapporto') 
+              {
+              $campo = 'tblRelazioni.rapporto';
+              $query->where($campo, 'LIKE', "%$valore%");
+              }
+            elseif ($campo == 'auto') 
+              {
+              $campo = 'tblRelazioni.auto';
+              $query->where($campo, 'LIKE', "%$valore%");
+              }
+            elseif ($campo == 'volontario')
+              {
+              $relazioni = Relazione::with(['associazione', 'volontari'])->get();
+              $relazioni_ids = [];
+              foreach ($relazioni as $relazione) 
+                {
+                // devo trovare la stringa dei volontari TRA QUELLI ASSOCIATI in QUESTA RELAZIONE!!! 
+                // non tra quelli nell'associazione !!!!              
+                $volontari_prev = [];
+                foreach ($relazione->volontari as $v) 
+                  {
+                  $volontari_prev[] = $v->cognome .' ' .$v->nome;
+                  }
+                
+                $volonari_str = implode(',', $volontari_prev);
+
+                if(strpos($volonari_str, $valore) !== false)
+                  {
+                  $relazioni_ids[] = $relazione->id;
+                  }
+                }
+                $query->whereIn('tblRelazioni.id', $relazioni_ids);
+              }
+
+            if ($campo == 'tblAssociazioni.nome')
+              {
+              $campo = 'nome_asso';
+              }
+
+            if($campo == 'tblRelazioni.note')
+              {
+              $campo = 'note';
+              }
+
+            if($campo == 'tblRelazioni.rapporto')
+              {
+              $campo = 'rapporto';
+              }
+
+            if($campo == 'tblRelazioni.auto')
+              {
+              $campo = 'auto';
+              }
+          
+            }
+
+
+
         $relazioni = $query
                       ->orderBy($order_by, $order)
                       ->paginate(15);
@@ -77,7 +175,7 @@ class RelazioniController extends AdminController
         $order_by = "associazione";
         }
 
-        return view('admin.relazioni.index', compact('relazioni','order_by','order','ordering','columns'));
+        return view('admin.relazioni.index', compact('relazioni','order_by','order','ordering','columns', 'campo', 'valore'));
     }
 
     /**
@@ -186,7 +284,21 @@ class RelazioniController extends AdminController
           }
 
 
-        return view('admin.preventivi.inc_volontari_select', compact('volontari','volontari_associati'));
+        return view('admin.relazioni.inc_volontari_select', compact('volontari','volontari_associati'));
+        }
+      }
+
+
+    public function search()
+      {
+      if ($this->request->has('search') && $this->request->filled('q'))
+        {
+        $query_id = Utility::createQueryStringSearch($this->request);
+        return redirect("admin/relazioni/$query_id");
+        }
+      else
+        {
+        return redirect("admin/relazioni");
         }
       }
 }
