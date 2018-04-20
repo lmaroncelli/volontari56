@@ -16,6 +16,11 @@
     <link href="{{ asset('css/ionicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/skins/skin-blue.min.css') }}" rel="stylesheet">
 
+     <!-- daterange picker -->
+  <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     
     @yield('header_css')

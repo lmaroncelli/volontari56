@@ -309,7 +309,7 @@ class PreventiviController extends AdminController
 
     public function search()
       {
-      if ($this->request->has('search') && $this->request->filled('q'))
+      if ( ($this->request->has('search') && $this->request->filled('q')) ||  ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')))
         {
         $query_id = Utility::createQueryStringSearch($this->request);
         return redirect("admin/preventivi/$query_id");

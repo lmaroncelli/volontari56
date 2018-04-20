@@ -27,8 +27,10 @@
         </ol>
         <form action="{!! route('preventivi.search') !!}" method="post">
           {{ csrf_field() }}
+          <input type="hidden" name="cerca_dal" id="cerca_dal" value="">
+          <input type="hidden" name="cerca_al" id="cerca_al" value="">
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-2">
+            <div class="col-sm-3 col-sm-offset-2">
               <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Cerca..." required value="{{$valore}}">
                 <span class="input-group-btn">
@@ -36,12 +38,20 @@
                 </span>
               </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <select class="form-control" name="ricerca_campo" id="ricerca_campo">
                 @foreach (['nome_asso' => 'associazione', 'volontario' => 'elenco volontari', 'localita' => 'località', 'motivazione' => 'motivazione'] as $key => $nome)
                   <option value="{{$key}}" @if ($campo == $key) selected="selected" @endif>{{$nome}}</option>
                 @endforeach
               </select>
+            </div>
+            <div class="col-sm-4">
+              <button type="button" class="btn btn-default" id="daterange-btn">
+                <span>
+                  <i class="fa fa-calendar"></i> Date range picker
+                </span>
+                <i class="fa fa-caret-down"></i>
+              </button>
             </div>
         </div>
         </form>
@@ -182,17 +192,54 @@
     </script>
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}">
     </script>
+
+    <!-- date-range-picker -->
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+    <!-- bootstrap datepicker -->
+    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+
     <script type="text/javascript">
         $(function () {
-	    $('#tbl_preventivi').DataTable({
-      'paging'      : false,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : false,
-      'info'        : false,
-      'autoWidth'   : false
-    })
-	});
+
+    	    $('#tbl_preventivi').DataTable({
+              'paging'      : false,
+              'lengthChange': false,
+              'searching'   : false,
+              'ordering'    : false,
+              'info'        : false,
+              'autoWidth'   : false
+            });
+
+
+            //Date range as a button
+            $('#daterange-btn').daterangepicker(
+
+              {
+                locale : {
+                    customRangeLabel: 'Seleziona periodo',
+                    format: 'DD/MM/YYYY',
+                },
+                ranges   : {
+                  'Oggi'       : [moment(), moment()],
+                  'Ieri'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                  'Ultimi 7 Giorni' : [moment().subtract(6, 'days'), moment()],
+                  'Ultimi 30 Giorni': [moment().subtract(29, 'days'), moment()],
+                  'Questo Mese'  : [moment().startOf('month'), moment().endOf('month')],
+                  'Mese Scorso'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate  : moment()
+              },
+              function (start, end) {
+                $('#daterange-btn span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+                $('#cerca_dal').val(start.format('DD/MM/YYYY'));
+                $('#cerca_al').val(end.format('DD/MM/YYYY'));
+              }
+
+            )
+
+    	});
     </script>
     @endsection
 </link>

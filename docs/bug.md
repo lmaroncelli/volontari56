@@ -1,6 +1,5 @@
 
-1. la Relazione non ha il create() ma il creaDaPreventivo() [la relazione si crea solo dal preventivo e non in modo autonomo] 
 
+1. Chiedere a Gupi se va bene la ricerca come è stata fatta (inserisci una porzione di nome e scegli su cosa ricercare; non hai una lista di associazioni come prima però hai l'ordinamento delle colonne)
 
-2. ::withTrashed() nelle model Preventivo e Relazione nel global scope in modo che prenda anche quelle cancellate logicamente e poi nel loop faccio un check sul campo deleted_at per vedere se sono cancellate logicamente (oppure di default le escludo e poi le metto come filtro per inserirle ??)
 

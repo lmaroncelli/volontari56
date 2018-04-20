@@ -147,6 +147,8 @@ class Utility extends Model
 		$query_array = [
 		   'ricerca_campo' => $request->get('ricerca_campo'),
 		    'q' => $request->get('q'),
+		    'cerca_dal' => $request->get('cerca_dal'),
+		    'cerca_al' => $request->get('cerca_al'),
 		    ];
 
 		$query_id = DB::table('tblQueryString')->insertGetId(
