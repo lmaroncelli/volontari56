@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use App\Utility;
 use App\Volontario;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,6 +43,8 @@ class PreventiviController extends AdminController
         
         $campo = "";
         $valore = "";
+        $dal = "";
+        $al = "";
 
         if ($query_id > 0)
           {
@@ -136,6 +139,16 @@ class PreventiviController extends AdminController
           }
 
 
+        if ( $this->request->filled('cerca_dal') && $this->request->filled('cerca_al') )
+          {
+          $dal = $this->request->get('cerca_dal');
+          $al = $this->request->get('cerca_al');
+          $dal_c = Carbon::createFromFormat('d/m/Y H i', $this->request->get('cerca_dal').' 0 00');
+          $al_c = Carbon::createFromFormat('d/m/Y H i', $this->request->get('cerca_al').' 23 59');
+          $query->where('dalle','>=',$dal_c);
+          $query->where('alle','<=',$al_c);
+          }
+
 
 
         $preventivi = $query
@@ -157,7 +170,7 @@ class PreventiviController extends AdminController
         }
 
         
-        return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore'));
+        return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al'));
 
 
         }

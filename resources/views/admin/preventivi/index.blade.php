@@ -27,12 +27,12 @@
         </ol>
         <form action="{!! route('preventivi.search') !!}" method="post">
           {{ csrf_field() }}
-          <input type="hidden" name="cerca_dal" id="cerca_dal" value="">
-          <input type="hidden" name="cerca_al" id="cerca_al" value="">
+          <input type="hidden" name="cerca_dal" id="cerca_dal" value="{{$dal}}">
+          <input type="hidden" name="cerca_al" id="cerca_al" value="{{$al}}">
         <div class="row">
             <div class="col-sm-3 col-sm-offset-2">
               <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Cerca..." required value="{{$valore}}">
+                <input type="text" name="q" class="form-control" placeholder="Cerca..." value="{{$valore}}">
                 <span class="input-group-btn">
                   <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                 </span>
@@ -219,6 +219,8 @@
                 locale : {
                     customRangeLabel: 'Seleziona periodo',
                     format: 'DD/MM/YYYY',
+                    applyLabel: 'Conferma',
+                    cancelLabel: 'Annulla',
                 },
                 ranges   : {
                   'Oggi'       : [moment(), moment()],
@@ -238,6 +240,12 @@
               }
 
             )
+
+        @if ($dal != '' &&  $al != '')
+            var _dal = '{{$dal}}';
+            var _al = '{{$al}}';
+            $('#daterange-btn span').html(_dal + ' - ' + _al);
+        @endif
 
     	});
     </script>
