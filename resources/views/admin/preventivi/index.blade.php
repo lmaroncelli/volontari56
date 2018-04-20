@@ -31,12 +31,7 @@
           <input type="hidden" name="cerca_al" id="cerca_al" value="{{$al}}">
         <div class="row">
             <div class="col-sm-3 col-sm-offset-2">
-              <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Cerca..." value="{{$valore}}">
-                <span class="input-group-btn">
-                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                </span>
-              </div>
             </div>
             <div class="col-sm-3">
               <select class="form-control" name="ricerca_campo" id="ricerca_campo">
@@ -52,6 +47,9 @@
                 </span>
                 <i class="fa fa-caret-down"></i>
               </button>
+              <span class="">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+              </span>
             </div>
         </div>
         </form>
