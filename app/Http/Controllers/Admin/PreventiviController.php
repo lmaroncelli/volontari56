@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use App\Utility;
 use App\Volontario;
+use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,34 @@ class PreventiviController extends AdminController
     public function index($query_id = 0)
         {
 
+        $export_pdf = 0;
+        /////////////////////////////////////////////////////////////////
+        // verifico se l'url ha un paramentro "pdf" nella query string //
+        /////////////////////////////////////////////////////////////////
+        if($this->request->has('pdf'))
+          {
+          $export_pdf = 1;
+          }
+         
+
+        if(!$export_pdf)
+          {
+          // SE NON HO QUERY STRING 
+          if ($this->request->fullUrl() == $this->request->url()) 
+            {
+            $pdf_export_url = $this->request->url() .'?pdf'; 
+            } 
+          else 
+            {
+            $pdf_export_url = $this->request->fullUrl() .'&pdf'; 
+            }    
+          }
+        else
+          {
+          $pdf_export_url = $this->request->fullUrl();
+          }
+        
+        
         //////////////
         //  ricerca //
         //////////////
@@ -170,7 +199,17 @@ class PreventiviController extends AdminController
         }
 
         
-        return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al'));
+        //return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url'));
+
+        if($export_pdf)
+          {
+          $pdf = PDF::loadView('admin.preventivi.pdf', compact('preventivi','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url'));
+          return $pdf->stream();
+          }
+        else
+          {
+          return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url'));
+          }
 
 
         }

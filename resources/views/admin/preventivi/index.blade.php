@@ -30,7 +30,7 @@
           <input type="hidden" name="cerca_dal" id="cerca_dal" value="{{$dal}}">
           <input type="hidden" name="cerca_al" id="cerca_al" value="{{$al}}">
         <div class="row">
-            <div class="col-sm-3 col-sm-offset-2">
+            <div class="col-sm-3 col-sm-offset-1">
                 <input type="text" name="q" class="form-control" placeholder="Cerca..." value="{{$valore}}">
             </div>
             <div class="col-sm-3">
@@ -40,7 +40,7 @@
                 @endforeach
               </select>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-2">
               <button type="button" class="btn btn-default" id="daterange-btn">
                 <span>
                   <i class="fa fa-calendar"></i> Date range picker
@@ -50,6 +50,9 @@
               <span class="">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>
+            </div>
+            <div class="col-sm-2 text-left">
+              <a href="{{$pdf_export_url}}" title="Esporta">esporta</a>
             </div>
         </div>
         </form>
@@ -61,7 +64,7 @@
 	@if (!$preventivi->count())
     <div class="callout callout-info">
         <h4>
-            Nessuna volontariolontario presente!
+            Nessuna volontario presente!
         </h4>
         <p>
             Creane un
