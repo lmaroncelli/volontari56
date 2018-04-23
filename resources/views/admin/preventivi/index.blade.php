@@ -52,7 +52,7 @@
               </span>
             </div>
             <div class="col-sm-2 text-left">
-              <a href="{{$pdf_export_url}}" title="Esporta">esporta</a>
+              <a href="{{$pdf_export_url}}" title="Esporta" target="_blank">esporta</a>
             </div>
         </div>
         </form>

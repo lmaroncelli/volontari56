@@ -179,10 +179,17 @@ class PreventiviController extends AdminController
           }
 
 
+        $query->orderBy($order_by, $order);
 
-        $preventivi = $query
-                      ->orderBy($order_by, $order)
-                      ->paginate(15);
+        if($export_pdf)
+          {
+          $preventivi = $query->get();
+          }
+        else
+          {
+          $preventivi = $query->paginate(15);
+          }
+
 
         $columns = [
             'id' => 'ID',

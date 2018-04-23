@@ -1,4 +1,6 @@
+@extends('layouts.grafica.app_pdf')
 
+@section('content')
 	@if (!$preventivi->count())
     <div class="callout callout-info">
         <h4>
@@ -13,9 +15,10 @@
     </div>
     @else
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+    @foreach ($preventivi->chunk(5) as $key => $chunk)
     <div class="row">
+        <p>Pagina {{$key+1}} di {{ count($preventivi->chunk(5)) }}</p>
         <div class="col-xs-12">
-            <!-- /.box-header -->
             <div class="box-body">
                 <table class="table table-bordered table-hover" id="tbl_preventivi">
                     <thead>
@@ -28,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($preventivi as $preventivo)
+                        @foreach ($chunk as $preventivo)
                         <tr @if ($preventivo->trashed()) class="deleted" @endif>
                             <td>
                                 {{$preventivo->id}}
@@ -53,28 +56,19 @@
                     </tbody>
                 </table>
         		</div>
-            </div>
-            <!-- /.box-body -->
+        </div>
     </div>
-    {{-- <div class="row">
-        <div class="col-sm-5">
-            <div aria-live="polite" class="dataTables_info" id="example2_info" role="status">
-             	Pagina {{$preventivi->currentPage()}} di {{$preventivi->lastPage()}}
-            </div>
-        </div>
-        <div class="col-sm-7">
-            <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-        		@if ($ordering)
-                    {{ $preventivi->appends(['order_by' => $order_by, 'order' => $order])->links() }}
-                @else
-                    {{ $preventivi->links() }}
-                @endif
-            </div>
-        </div>
-    </div> --}}
+    @if ($key+1 < count($preventivi->chunk(5)))
+     <div class="row">
+          <div class="col-xs-12">
+            <div class="page-break"></div>
+          </div>
+      </div>
+    @endif
+    @endforeach
     </div>
     @endif
-
+@endsection
 
 
 
