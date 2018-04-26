@@ -11,7 +11,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Elenco Preventivi
+            Elenco Preventivi <span class="badge bg-blue">{{$preventivi->total()}}</span>
         </h1>
         <ol class="breadcrumb">
             <li>
@@ -25,37 +25,9 @@
                 Preventivi
             </li>
         </ol>
-        <form action="{!! route('preventivi.search') !!}" method="post">
-          {{ csrf_field() }}
-          <input type="hidden" name="cerca_dal" id="cerca_dal" value="{{$dal}}">
-          <input type="hidden" name="cerca_al" id="cerca_al" value="{{$al}}">
-        <div class="row">
-            <div class="col-sm-3 col-sm-offset-1">
-                <input type="text" name="q" class="form-control" placeholder="Cerca..." value="{{$valore}}">
-            </div>
-            <div class="col-sm-3">
-              <select class="form-control" name="ricerca_campo" id="ricerca_campo">
-                @foreach (['nome_asso' => 'associazione', 'volontario' => 'elenco volontari', 'localita' => 'località', 'motivazione' => 'motivazione'] as $key => $nome)
-                  <option value="{{$key}}" @if ($campo == $key) selected="selected" @endif>{{$nome}}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-default" id="daterange-btn">
-                <span>
-                  <i class="fa fa-calendar"></i> Date range picker
-                </span>
-                <i class="fa fa-caret-down"></i>
-              </button>
-              <span class="">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-            <div class="col-sm-2 text-left">
-              <a href="{{$pdf_export_url}}" title="Esporta" target="_blank">esporta</a>
-            </div>
-        </div>
-        </form>
+
+        @include('admin.preventivi.search')
+    
     </section>
     @endsection
 

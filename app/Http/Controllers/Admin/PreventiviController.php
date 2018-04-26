@@ -74,6 +74,10 @@ class PreventiviController extends AdminController
         $valore = "";
         $dal = "";
         $al = "";
+        $associazione_id = 0;
+        $assos = Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
+        $assos = ['0' => 'Seleziona...'] + $assos;
+
 
         if ($query_id > 0)
           {
@@ -81,7 +85,6 @@ class PreventiviController extends AdminController
           Utility::addQueryStringToRequest($query_id,$this->request);
 
           }
-
 
         //////////////////
         // ordinamento  //
@@ -179,6 +182,13 @@ class PreventiviController extends AdminController
           }
 
 
+        if( $this->request->has('associazione_id') && $this->request->get('associazione_id') != 0 )
+          {
+          $associazione_id = $this->request->get('associazione_id');
+          $query->where('tblPreventivi.associazione_id', $associazione_id);
+          }
+
+
         $query->orderBy($order_by, $order);
 
         if($export_pdf)
@@ -215,7 +225,7 @@ class PreventiviController extends AdminController
           }
         else
           {
-          return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url'));
+          return view('admin.preventivi.index', compact('preventivi','assos', 'associazione_id', 'order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url','query_id'));
           }
 
 
@@ -368,7 +378,11 @@ class PreventiviController extends AdminController
 
     public function search()
       {
-      if ( ($this->request->has('search') && $this->request->filled('q')) ||  ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')))
+      if ( 
+          ($this->request->has('search') && $this->request->filled('q')) ||  
+          ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')) ||
+          ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
+         )
         {
         $query_id = Utility::createQueryStringSearch($this->request);
         return redirect("admin/preventivi/$query_id");
