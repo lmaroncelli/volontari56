@@ -148,9 +148,9 @@ class PreventiviController extends AdminController
                 $volontari_prev[] = $v->cognome .' ' .$v->nome;
                 }
               
-              $volonari_str = implode(',', $volontari_prev);
+              $volonari_str = strtoupper(implode(',', $volontari_prev));
 
-              if(strpos($volonari_str, $valore) !== false)
+              if(strpos($volonari_str, strtoupper($valore)) !== false)
                 {
                 $preventivo_ids[] = $preventivo->id;
                 }

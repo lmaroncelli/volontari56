@@ -73,5 +73,11 @@ class Relazione extends Model
         }
       
       }
+
+
+    public function getHours()
+      {
+      return $this->dalle->diffInHours($this->alle);
+      }
 			
 }

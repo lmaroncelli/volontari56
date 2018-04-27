@@ -25,26 +25,9 @@
                 Relazioni
             </li>
         </ol>
-        <form action="{!! route('relazioni.search') !!}" method="post">
-          {{ csrf_field() }}
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-2">
-              <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Cerca..." required value="{{$valore}}">
-                <span class="input-group-btn">
-                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                </span>
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <select class="form-control" name="ricerca_campo" id="ricerca_campo">
-                @foreach (['nome_asso' => 'associazione', 'volontario' => 'elenco volontari', 'note' => 'note', 'rapporto' => 'rapporto', 'auto' => 'auto'] as $key => $nome)
-                  <option value="{{$key}}" @if ($campo == $key) selected="selected" @endif>{{$nome}}</option>
-                @endforeach
-              </select>
-            </div>
-        </div>
-        </form>
+
+        @include('admin.relazioni.search')
+
     </section>
     @endsection
 
@@ -55,12 +38,6 @@
         <h4>
             Nessuna relazione presente!
         </h4>
-        <p>
-            Creane una relazione
-            <a href="{{ route('relazioni.create') }}" title="Crea relazione">
-                adesso
-            </a>
-        </p>
     </div>
     @else
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -185,17 +162,62 @@
     </script>
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}">
     </script>
+
+    <!-- date-range-picker -->
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+    <!-- bootstrap datepicker -->
+    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+
+
     <script type="text/javascript">
         $(function () {
+
 	    $('#tbl_relazioni').DataTable({
-      'paging'      : false,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : false,
-      'info'        : false,
-      'autoWidth'   : false
-    })
-	});
+          'paging'      : false,
+          'lengthChange': false,
+          'searching'   : false,
+          'ordering'    : false,
+          'info'        : false,
+          'autoWidth'   : false
+        })
+
+        //Date range as a button
+        $('#daterange-btn').daterangepicker(
+
+          {
+            locale : {
+                customRangeLabel: 'Seleziona periodo',
+                format: 'DD/MM/YYYY',
+                applyLabel: 'Conferma',
+                cancelLabel: 'Annulla',
+            },
+            ranges   : {
+              'Oggi'       : [moment(), moment()],
+              'Ieri'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+              'Ultimi 7 Giorni' : [moment().subtract(6, 'days'), moment()],
+              'Ultimi 30 Giorni': [moment().subtract(29, 'days'), moment()],
+              'Questo Mese'  : [moment().startOf('month'), moment().endOf('month')],
+              'Mese Scorso'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            startDate: moment().subtract(29, 'days'),
+            endDate  : moment()
+          },
+          function (start, end) {
+            $('#daterange-btn span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+            $('#cerca_dal').val(start.format('DD/MM/YYYY'));
+            $('#cerca_al').val(end.format('DD/MM/YYYY'));
+          }
+
+        )
+
+        @if ($dal != '' &&  $al != '')
+            var _dal = '{{$dal}}';
+            var _al = '{{$al}}';
+            $('#daterange-btn span').html(_dal + ' - ' + _al);
+        @endif
+	   
+       });
     </script>
     @endsection
 </link>

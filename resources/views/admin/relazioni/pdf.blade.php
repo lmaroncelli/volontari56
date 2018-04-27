@@ -1,20 +1,20 @@
 @extends('layouts.grafica.app_pdf')
 
 @section('content')
-	@if (!$preventivi->count())
+	@if (!$relazioni->count())
     <div class="callout callout-info">
         <h4>
-            Nessun preventivo presente!
+            Nessuna relazione presente!
         </h4>
     </div>
     @else
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-    @foreach ($preventivi->chunk(5) as $key => $chunk)
+    @foreach ($relazioni->chunk(5) as $key => $chunk)
     <div class="row">
-        <p>Pagina {{$key+1}} di {{ count($preventivi->chunk(5)) }}</p>
+        <p>Pagina {{$key+1}} di {{ count($relazioni->chunk(5)) }}</p>
         <div class="col-xs-12">
             <div class="box-body">
-                <table class="table table-bordered table-hover" id="tbl_preventivi">
+                <table class="table table-bordered table-hover" id="tbl_relazioni">
                     <thead>
                         <tr>
                             @foreach ($columns as $field => $name)
@@ -25,25 +25,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($chunk as $preventivo)
+                        @foreach ($chunk as $relazione)
                         <tr @if ($preventivo->trashed()) class="deleted" @endif>
                             <td>
-                                {{$preventivo->id}}
+                                {{$relazione->id}}
                             </td>
                             <td>
-                                {{$preventivo->associazione->nome}}
+                                {{$relazione->associazione->nome}}
                             </td>
                             <td>
-                                {{ implode( ', ', $preventivo->getVolontariFullName() ) }}
+                               {{ implode( ', ', $relazione->getVolontariFullName() ) }}
                             </td>
                             <td>
-                                {{$preventivo->getDalleAlle()}}
+                               {{$relazione->getDalleAlle()}}
                             </td>
                             <td>
-                                {{$preventivo->localita}}
+                               {{$relazione->note}}
                             </td>
                             <td>
-                                {{$preventivo->motivazioni}}
+                               {{$relazione->rapporto}}
+                            </td>
+                            <td>
+                               {{$relazione->auto}}
                             </td>
                         </tr>
                         @endforeach
@@ -52,7 +55,7 @@
         		</div>
         </div>
     </div>
-    @if ($key+1 < count($preventivi->chunk(5)))
+    @if ($key+1 < count($relazioni->chunk(5)))
      <div class="row">
           <div class="col-xs-12">
             <div class="page-break"></div>

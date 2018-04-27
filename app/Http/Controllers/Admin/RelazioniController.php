@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use App\Relazione;
 use App\Utility;
+use PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,6 +37,53 @@ class RelazioniController extends AdminController
     public function index($query_id = 0)
     {
 
+        $export_pdf = 0;
+        $export_pdf_ore = 0;
+        /////////////////////////////////////////////////////////////////
+        // verifico se l'url ha un paramentro "pdf" nella query string //
+        /////////////////////////////////////////////////////////////////
+        if($this->request->has('pdf'))
+          {
+          $export_pdf = 1;
+          }
+        elseif ($this->request->has('pdf_ore')) 
+          {
+          $export_pdf_ore = 1;
+          }
+
+        if(!$export_pdf)
+          {
+          // SE NON HO QUERY STRING 
+          if ($this->request->fullUrl() == $this->request->url()) 
+            {
+            $pdf_export_url = $this->request->url() .'?pdf'; 
+            } 
+          else 
+            {
+            $pdf_export_url = $this->request->fullUrl() .'&pdf'; 
+            }    
+          }
+        else
+          {
+          $pdf_export_url = $this->request->fullUrl();
+          }
+
+         if(!$export_pdf_ore)
+          {
+          // SE NON HO QUERY STRING 
+          if ($this->request->fullUrl() == $this->request->url()) 
+            {
+            $pdf_ore_export_url = $this->request->url() .'?pdf_ore'; 
+            } 
+          else 
+            {
+            $pdf_ore_export_url = $this->request->fullUrl() .'&pdf_ore'; 
+            }    
+          }
+        else
+          {
+          $pdf_ore_export_url = $this->request->fullUrl();
+          }
 
         //////////////
         //  ricerca //
@@ -42,6 +91,11 @@ class RelazioniController extends AdminController
 
         $campo = "";
         $valore = "";
+        $dal = "";
+        $al = "";
+        $associazione_id = 0;
+        $assos = Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
+        $assos = ['0' => 'Seleziona...'] + $assos;
 
         if ($query_id > 0)
           {
@@ -50,10 +104,12 @@ class RelazioniController extends AdminController
 
           }
 
-
-        $order_by='id';
-        $order = 'desc';
-        $ordering = 0;
+      //////////////////
+      // ordinamento  //
+      //////////////////    
+      $order_by='id';
+      $order = 'desc';
+      $ordering = 0;
 
 
       if ($this->request->filled('order_by'))
@@ -69,7 +125,7 @@ class RelazioniController extends AdminController
         }
 
 
-        $query = Relazione::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
+        $query = Relazione::with(['associazione','volontari'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
                   {
                     $join->on('tblAssociazioni.id', '=', 'tblRelazioni.associazione_id');
                   })
@@ -122,9 +178,9 @@ class RelazioniController extends AdminController
                   $volontari_prev[] = $v->cognome .' ' .$v->nome;
                   }
                 
-                $volonari_str = implode(',', $volontari_prev);
+                $volonari_str = strtoupper(implode(',', $volontari_prev));
 
-                if(strpos($volonari_str, $valore) !== false)
+                if(strpos($volonari_str, strtoupper($valore)) !== false)
                   {
                   $relazioni_ids[] = $relazione->id;
                   }
@@ -155,10 +211,65 @@ class RelazioniController extends AdminController
             }
 
 
+        if ( $this->request->filled('cerca_dal') && $this->request->filled('cerca_al') )
+          {
+          $dal = $this->request->get('cerca_dal');
+          $al = $this->request->get('cerca_al');
+          $dal_c = Carbon::createFromFormat('d/m/Y H i', $this->request->get('cerca_dal').' 0 00');
+          $al_c = Carbon::createFromFormat('d/m/Y H i', $this->request->get('cerca_al').' 23 59');
+          $query->where('dalle','>=',$dal_c);
+          $query->where('alle','<=',$al_c);
+          }
 
-        $relazioni = $query
-                      ->orderBy($order_by, $order)
-                      ->paginate(15);
+        if( $this->request->has('associazione_id') && $this->request->get('associazione_id') != 0 )
+          {
+          $associazione_id = $this->request->get('associazione_id');
+          $query->where('tblRelazioni.associazione_id', $associazione_id);
+          }
+
+
+        $query->orderBy($order_by, $order);
+
+
+        if($export_pdf || $export_pdf_ore)
+          {
+          $relazioni = $query->get();
+          }
+        else
+          {
+          $relazioni = $query->paginate(15);
+          }
+        
+
+        //////////////////////////////////
+        // stampa delle ore di servizio //
+        //////////////////////////////////
+        if ($export_pdf_ore) 
+          {
+          $volontari = [];
+          $columns_pdf = ['Associazione','Volontario','Totale ore'];
+          foreach ($relazioni as $relazione) 
+            {
+            foreach ($relazione->volontari as $v) 
+              {
+              if (array_key_exists($v->id,$volontari)) 
+                {
+                $volontari[$v->id]['Totale ore'] += $relazione->getHours();
+                } 
+              else 
+                {
+                $volontari[$v->id]['Associazione'] = $v->associazione->nome;
+                $volontari[$v->id]['Volontario'] = $v->cognome .' ' .$v->nome;
+                $volontari[$v->id]['Totale ore'] = $relazione->getHours();
+                }
+              } // end volontari
+
+            } // end relazioni
+            
+          }
+
+
+
 
         $columns = [
             'id' => 'ID',
@@ -175,7 +286,25 @@ class RelazioniController extends AdminController
         $order_by = "associazione";
         }
 
-        return view('admin.relazioni.index', compact('relazioni','order_by','order','ordering','columns', 'campo', 'valore'));
+
+        //return view('admin.relazioni.index', compact('relazioni','assos','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'pdf_export_url', 'query_id'));
+
+
+        if($export_pdf)
+          {
+          $pdf = PDF::loadView('admin.relazioni.pdf', compact('relazioni','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url'));
+          return $pdf->stream();
+          }
+        elseif ($export_pdf_ore) 
+          {
+          $pdf = PDF::loadView('admin.relazioni.pdf_ore', compact('volontari','columns_pdf'));
+          return $pdf->stream();
+          }
+        else
+          {
+          return view('admin.relazioni.index', compact('relazioni','assos','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'pdf_export_url','pdf_ore_export_url', 'query_id'));
+          }
+    
     }
 
     /**
@@ -291,7 +420,12 @@ class RelazioniController extends AdminController
 
     public function search()
       {
-      if ($this->request->has('search') && $this->request->filled('q'))
+
+      if ( 
+          ($this->request->has('search') && $this->request->filled('q')) ||  
+          ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')) ||
+          ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
+         )
         {
         $query_id = Utility::createQueryStringSearch($this->request);
         return redirect("admin/relazioni/$query_id");
@@ -300,5 +434,6 @@ class RelazioniController extends AdminController
         {
         return redirect("admin/relazioni");
         }
+
       }
 }
