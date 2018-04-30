@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Scopes\AssociazioneOwnedByScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Associazione extends Model
 	{
@@ -11,6 +13,35 @@ class Associazione extends Model
 	protected $guarded = ['id','user_id'];
 
 
+
+	/**
+	 * The "booting" method of the model.
+	 *
+	 * @return void
+	 */
+	protected static function boot()
+	{
+	    parent::boot();
+
+	    //static::addGlobalScope(new AssociazioneOwnedByScope);
+	}
+
+
+
+	public function scopeFiltered($query)
+    {		
+    	if (Auth::check()) 
+    	  {
+    	  if(Auth::user()->hasRole('associazione'))
+    	    {
+    	    return $query->where('id', Auth::user()->associazione->id);  
+    	    }
+    	  }
+    	 else
+  	 		{
+        return $query;
+  	 		}
+    }
 
 
 	public function volontari()
@@ -44,6 +75,17 @@ class Associazione extends Model
 		  $volontari[$v->id] = $v->cognome .' ' .$v->nome;
 		  }
 		return $volontari;
+		}
+
+
+	public static function getForSelect() 
+		{
+		
+		$assos = self::filtered()->orderBy('nome')->pluck('nome', 'id')->toArray();
+    $assos = ['0' => 'Seleziona...'] + $assos;
+
+    return $assos;
+		
 		}
 
 	}	

@@ -1,6 +1,5 @@
 
 
-1. Chiedere a Gupi se va bene la ricerca come è stata fatta (inserisci una porzione di nome e scegli su cosa ricercare; non hai una lista di associazioni come prima però hai l'ordinamento delle colonne)
+1. Nell'elenco delle relazioni di servizio, per ogni relazione, ci deve essere l'ID del preventivo che l'ha generata (ordinabile) 
 
-2: Stampe
-
+2. La stampa elenco volontari (di un'associazione) vuole la data: stampa cmq i volonari associati a quell'associazione ADESSSO, oppure si deve tenere traccia di tutti i volontari passati e prendere quelli risalenti a quel periodo ?

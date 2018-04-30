@@ -75,8 +75,7 @@ class PreventiviController extends AdminController
         $dal = "";
         $al = "";
         $associazione_id = 0;
-        $assos = Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
-        $assos = ['0' => 'Seleziona...'] + $assos;
+        $assos = Associazione::getForSelect();
 
 
         if ($query_id > 0)
@@ -238,7 +237,7 @@ class PreventiviController extends AdminController
      */
     public function create()
     {
-    $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
+    $assos = Associazione::getForSelect();
     $volontari = [];
     $volontari_associati = [];
     $preventivo = new Preventivo;
@@ -303,7 +302,7 @@ class PreventiviController extends AdminController
         if (Auth::user()->hasRole('admin')) 
             {
             $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
-            $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->get()->pluck('nome', 'id')->toArray();
+            $assos = Associazione::getForSelect();
             return view('admin.preventivi.form', compact('preventivo', 'assos', 'volontari','volontari_associati'));
             } 
         else 

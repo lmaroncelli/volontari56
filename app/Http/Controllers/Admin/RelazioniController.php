@@ -94,9 +94,8 @@ class RelazioniController extends AdminController
         $dal = "";
         $al = "";
         $associazione_id = 0;
-        $assos = Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
-        $assos = ['0' => 'Seleziona...'] + $assos;
-
+        $assos = Associazione::getForSelect();
+        
         if ($query_id > 0)
           {
 
