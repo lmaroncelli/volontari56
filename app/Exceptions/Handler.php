@@ -2,8 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Mail\ErrorNotification;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
+use Request;
 
 class Handler extends ExceptionHandler
 {
@@ -26,6 +29,28 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+
+
+    private function _getMyLog(Exception $e)
+      {
+      $file = $e->getFile();
+      $line = $e->getLine();
+      $msg = $e->getMessage();
+      $url = Request::fullUrl();
+     
+
+
+      $trace =  "
+      url: $url
+      file : $file 
+      line: $line
+      exception: $msg 
+      ";
+
+      return $trace;
+
+      }
+
     /**
      * Report or log an exception.
      *
@@ -35,7 +60,11 @@ class Handler extends ExceptionHandler
      * @return void
      */
     public function report(Exception $exception)
-    {
+    {   
+        //$myLog = $this->_getMyLog($exception);
+        //Log::critical($myLog);
+        
+        \Mail::to('lmaroncelli@gmail.com')->send(new ErrorNotification($exception));
         parent::report($exception);
     }
 

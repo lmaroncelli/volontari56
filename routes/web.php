@@ -41,6 +41,13 @@ Route::get('admin/home', 'Admin\HomeController@index')->name('home');
 
 Route::group(['middleware' => ['admin']], function () {
 
+		
+
+		Route::get('/admin/prova/', function(){
+			Volontario::all();
+		});
+
+
 		Route::resource('admin/associazioni', 'Admin\AssociazioniController');
 
     Route::post('admin/volontari/search', ['uses' => 'Admin\VolontariController@search', 'as' => 'volontari.search']);
