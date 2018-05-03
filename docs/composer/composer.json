@@ -1,0 +1,7 @@
+{
+    "require": {
+        "raveren/kint": "0.9",
+        "phpunit/php-timer": "^2.0",
+        "components/jquery": "^3.3"
+    }
+}
