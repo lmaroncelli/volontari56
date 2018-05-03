@@ -7,3 +7,9 @@
 3. ~~Logging error system~~
 
 4. verifica file .env PRIMA DI ANDARE IN PRODUZIONE
+
+
+5. Mappa per caricamento località 
+
+> http://blog.chapagain.com.np/google-maps-get-latitudelongitude-value-on-click-and-on-mouse-move/
+
