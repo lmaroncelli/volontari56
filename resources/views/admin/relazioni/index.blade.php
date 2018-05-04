@@ -127,6 +127,9 @@
                             <td>
                                 {{$relazione->auto}}
                             </td>
+                            <td>
+                                <button type="button" class="btn btn-success no_link">{{$relazione->preventivo_id}}</button> 
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Mail\ErrorNotification;
+use Dotenv\Exception\ValidationException;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
@@ -60,13 +61,26 @@ class Handler extends ExceptionHandler
      * @return void
      */
     public function report(Exception $exception)
-    {   
-        //$myLog = $this->_getMyLog($exception);
-        //Log::critical($myLog);
+      {   
+      if (! $exception instanceof ValidationException) 
+        { 
         
-        \Mail::to('lmaroncelli@gmail.com')->send(new ErrorNotification($exception));
+        try 
+          {
+          //$myLog = $this->_getMyLog($exception);
+          //Log::critical($myLog);
+          
+          \Mail::to('lmaroncelli@gmail.com')->send(new ErrorNotification($exception));  
+          } 
+        catch (\Exception $e) 
+          {
+          // errore nell'inviare la mail oppure nello scrivere nel log file
+          }
+        
+        }
+        
         parent::report($exception);
-    }
+      }
 
     /**
      * Render an exception into an HTTP response.

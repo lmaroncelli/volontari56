@@ -30,7 +30,7 @@
         </div>
         <div class="col-sm-3">
           <select class="form-control" name="ricerca_campo" id="ricerca_campo">
-            @foreach (['volontario' => 'elenco volontari', 'note' => 'note', 'rapporto' => 'rapporto', 'auto' => 'auto'] as $key => $nome)
+            @foreach (['volontario' => 'elenco volontari', 'note' => 'note', 'rapporto' => 'rapporto', 'auto' => 'auto', 'preventivo_id' => 'preventivo'] as $key => $nome)
               <option value="{{$key}}" @if ($campo == $key) selected="selected" @endif>{{$nome}}</option>
             @endforeach
           </select>

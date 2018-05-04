@@ -163,6 +163,11 @@ class RelazioniController extends AdminController
               $campo = 'tblRelazioni.auto';
               $query->where($campo, 'LIKE', "%$valore%");
               }
+            elseif ($campo == 'preventivo_id') 
+              {
+              $campo = 'tblRelazioni.preventivo_id';
+              $query->where($campo, $valore);
+              }
             elseif ($campo == 'volontario')
               {
               $relazioni = Relazione::with(['associazione', 'volontari'])->get();
@@ -205,6 +210,11 @@ class RelazioniController extends AdminController
             if($campo == 'tblRelazioni.auto')
               {
               $campo = 'auto';
+              }
+
+           if($campo == 'tblRelazioni.preventivo_id')
+              {
+              $campo = 'preventivo_id';
               }
           
             }
@@ -278,6 +288,7 @@ class RelazioniController extends AdminController
             'note' => 'Note',
             'rapporto' => 'Rapporto',
             'auto' => 'Auto',
+            'preventivo_id' => 'Preventivo'
         ];
 
         if ($order_by == 'tblAssociazioni.nome')
