@@ -15,7 +15,7 @@
 4. verifica file .env PRIMA DI ANDARE IN PRODUZIONE
 
 
-5. nei seeder importare anche il flag per cancellato nelle relazioni e nei servizi
+5. ~~nei seeder importare anche il flag per cancellato nelle relazioni e nei servizi~~
 
 
 5. Mappa per caricamento località 
