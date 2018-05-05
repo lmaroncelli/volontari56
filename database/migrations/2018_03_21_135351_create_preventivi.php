@@ -20,6 +20,7 @@ class CreatePreventivi extends Migration
             $table->dateTime('alle')->nullable()->default(null);
             $table->text('localita')->nullable()->default(null);
             $table->text('motivazioni')->nullable()->default(null);
+            $table->softDeletes();
             $table->timestamps();
         });
 

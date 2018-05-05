@@ -22,6 +22,7 @@ class CreateRelazioni extends Migration
             $table->text('note')->nullable()->default(null);
             $table->text('rapporto')->nullable()->default(null);
             $table->text('auto')->nullable()->default(null);
+            $table->softDeletes();
             $table->timestamps();
         });
 

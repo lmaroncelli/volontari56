@@ -37,6 +37,14 @@ class RelazioniSeeder extends Seeder
        	$p['rapporto'] = $old_r->rapporto_relazioni; 
        	$p['auto'] = $old_r->auto_relazioni; 
 
+        if ($old_r->annullato_relazioni) 
+          {
+          $p['deleted_at'] = Carbon::now()->toDateTimeString();
+          } 
+        else 
+          {
+          $p['deleted_at'] = null;
+          }
 
        	$new_relazioni[] = $p;
        	}

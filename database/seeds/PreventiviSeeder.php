@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class PreventiviSeeder extends Seeder
@@ -34,6 +35,16 @@ class PreventiviSeeder extends Seeder
 	       	$p['localita'] = $old_p->note_servizi; 
 	       	$p['motivazioni'] = $old_p->rapporto_servizi; 
 	       	$p['associazione_id'] = $old_p->id_utenti;
+
+	       	if ($old_p->annullato_servizi) 
+	       		{
+	       		$p['deleted_at'] = Carbon::now()->toDateTimeString();
+	       		} 
+	       	else 
+	       		{
+	       		$p['deleted_at'] = null;
+	       		}
+	       	
 
 	       	$new_preventivi[] = $p;
 	       	}
