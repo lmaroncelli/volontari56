@@ -6,6 +6,9 @@
 2. La stampa elenco volontari (di un'associazione) vuole la data: stampa cmq i volonari associati a quell'associazione ADESSSO, oppure si deve tenere traccia di tutti i volontari passati e prendere quelli risalenti a quel periodo ?
 
 
+3. Nei filtri di ricerca dare la possibilità di escludere quelli cancellati
+
+
 3. Stampa dei pdf deve avere il logo e descrivere il filtro
 
 

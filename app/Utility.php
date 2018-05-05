@@ -150,6 +150,7 @@ class Utility extends Model
 		    'cerca_dal' => $request->get('cerca_dal'),
 		    'cerca_al' => $request->get('cerca_al'),
 		    'associazione_id' => $request->get('associazione_id'),
+		    'no_eliminati' => $request->get('no_eliminati')
 		    ];
 
 		$query_id = DB::table('tblQueryString')->insertGetId(

@@ -9,17 +9,20 @@
     </div>
     @else
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-    @foreach ($preventivi->chunk(5) as $key => $chunk)
+    @foreach ($preventivi->chunk($chunked_element) as $key => $chunk)
+    <div id="pdf_filter">
+       {!! implode('<br />', $filtro_pdf) !!}
+    </div>
     <div class="row">
-        <p>Pagina {{$key+1}} di {{ count($preventivi->chunk(5)) }}</p>
+        <p class="page_number">Pagina {{$key+1}} di {{ count($preventivi->chunk($chunked_element)) }}</p>
         <div class="col-xs-12">
             <div class="box-body">
-                <table class="table table-bordered table-hover" id="tbl_preventivi">
+                <table cellpadding="10" cellspacing="0" id="tbl_preventivi">
                     <thead>
                         <tr>
                             @foreach ($columns as $field => $name)
                                 <th>
-                                  {!!$field!!}
+                                  {!!$name!!}
                                 </th>
                             @endforeach
                         </tr>
@@ -52,7 +55,7 @@
         		</div>
         </div>
     </div>
-    @if ($key+1 < count($preventivi->chunk(5)))
+    @if ($key+1 < count($preventivi->chunk($chunked_element)))
      <div class="row">
           <div class="col-xs-12">
             <div class="page-break"></div>

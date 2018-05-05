@@ -38,6 +38,8 @@ class PreventiviController extends AdminController
     public function index($query_id = 0)
         {
 
+        $filtro_pdf = [];
+        $filtro_pdf[] = "<b>Filtri applicati:</b>";
         $export_pdf = 0;
         /////////////////////////////////////////////////////////////////
         // verifico se l'url ha un paramentro "pdf" nella query string //
@@ -76,6 +78,7 @@ class PreventiviController extends AdminController
         $al = "";
         $associazione_id = 0;
         $assos = Associazione::getForSelect();
+        $no_eliminati = 0;
 
 
         if ($query_id > 0)
@@ -109,7 +112,6 @@ class PreventiviController extends AdminController
                   {
                     $join->on('tblAssociazioni.id', '=', 'tblPreventivi.associazione_id');
                   })
-                  ->withTrashed()
                   ->select('tblPreventivi.*','tblAssociazioni.nome as nome_asso');
 
 
@@ -127,11 +129,15 @@ class PreventiviController extends AdminController
             {
             $campo = 'tblAssociazioni.nome';
             $query->where($campo, 'LIKE', "%$valore%");
+
+            $filtro_pdf[] =  "Associazione contiene " .$valore;
             }
           elseif ($campo == 'localita') 
             {
             $campo = 'tblPreventivi.localita';
             $query->where($campo, 'LIKE', "%$valore%");
+
+            $filtro_pdf[] =  "Località contiene " .$valore;
             }
           elseif ($campo == 'volontario')
             {
@@ -155,6 +161,8 @@ class PreventiviController extends AdminController
                 }
               }
               $query->whereIn('tblPreventivi.id', $preventivo_ids);
+              
+              $filtro_pdf[] =  "Elenco volonari contiene " .$valore;
             }
 
           if ($campo == 'tblAssociazioni.nome')
@@ -169,6 +177,13 @@ class PreventiviController extends AdminController
         
           }
 
+        if( $this->request->has('associazione_id') && $this->request->get('associazione_id') != 0 )
+          {
+          $associazione_id = $this->request->get('associazione_id');
+          $query->where('tblPreventivi.associazione_id', $associazione_id);
+
+          $filtro_pdf[] =  "Associazione " . Associazione::find($associazione_id)->nome;
+          }
 
         if ( $this->request->filled('cerca_dal') && $this->request->filled('cerca_al') )
           {
@@ -178,13 +193,21 @@ class PreventiviController extends AdminController
           $al_c = Carbon::createFromFormat('d/m/Y H i', $this->request->get('cerca_al').' 23 59');
           $query->where('dalle','>=',$dal_c);
           $query->where('alle','<=',$al_c);
+          
+          $filtro_pdf[] =  "Preventivi con data dal $dal al $al";
           }
 
-
-        if( $this->request->has('associazione_id') && $this->request->get('associazione_id') != 0 )
+        if ( !$this->request->has('no_eliminati') || $this->request->get('no_eliminati') != 1 )
           {
-          $associazione_id = $this->request->get('associazione_id');
-          $query->where('tblPreventivi.associazione_id', $associazione_id);
+          $query->withTrashed();
+
+          $filtro_pdf[] =  "<i>Compreso gli eliminati</i>";
+          }
+        else
+          {
+          $no_eliminati = $this->request->get('no_eliminati');
+          
+          $filtro_pdf[] =  "<i>Escluso gli eliminati</i>";
           }
 
 
@@ -212,21 +235,19 @@ class PreventiviController extends AdminController
         if ($order_by == 'tblAssociazioni.nome')
         {
         $order_by = "associazione";
-        }
-
-        
-        //return view('admin.preventivi.index', compact('preventivi','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url'));
+        }        
 
         if($export_pdf)
           {
-          $pdf = PDF::loadView('admin.preventivi.pdf', compact('preventivi','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url'));
+          $filtro_pdf[] =  "<b>N° preventivi " .$preventivi->count()."</b>";
+          $chunked_element = 10;
+          $pdf = PDF::loadView('admin.preventivi.pdf', compact('preventivi','chunked_element','columns','filtro_pdf'));
           return $pdf->stream();
           }
         else
           {
-          return view('admin.preventivi.index', compact('preventivi','assos', 'associazione_id', 'order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url','query_id'));
+          return view('admin.preventivi.index', compact('preventivi','assos', 'associazione_id', 'order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'no_eliminati', 'pdf_export_url','query_id'));
           }
-
 
         }
 
@@ -380,6 +401,7 @@ class PreventiviController extends AdminController
       if ( 
           ($this->request->has('search') && $this->request->filled('q')) ||  
           ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')) ||
+          ($this->request->filled('no_eliminati') && $this->request->get('no_eliminati') == 1)
           ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
          )
         {
