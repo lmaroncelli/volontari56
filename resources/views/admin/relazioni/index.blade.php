@@ -101,7 +101,7 @@
                     </thead>
                     <tbody>
                         @foreach ($relazioni as $relazione)
-                        <tr>
+                        <tr @if ($relazione->trashed()) class="deleted" @endif>
                             <td>
                                 <a class="relazione" href="{{ route('relazioni.edit', $relazione->id) }}" title="Modifica relazione">
                                     {{$relazione->id}}
