@@ -11,7 +11,7 @@
 
 3.1 ~~Stampa dei pdf deve avere il logo e descrivere il filtro~~
 
-3.2 Stampa dei pdf deve avere il logo
+3.2 ~~Stampa dei pdf deve avere il logo~~
 
 
 3.3 ~~Logging error system~~

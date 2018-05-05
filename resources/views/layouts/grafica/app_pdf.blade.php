@@ -10,6 +10,9 @@
         div#pdf_filter {
             border: 1px solid #333;
             padding: 5px;
+            background-image: url("{{ asset('images/provincia-rimini.jpg') }}");
+            background-repeat: no-repeat;
+            background-position: right;
         }
         p.page_number {
             text-align: left;
