@@ -246,7 +246,8 @@ class PreventiviController extends AdminController
           }
         else
           {
-          return view('admin.preventivi.index', compact('preventivi','assos', 'associazione_id', 'order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'no_eliminati', 'pdf_export_url','query_id'));
+          $limit_for_export = 500;
+          return view('admin.preventivi.index', compact('preventivi','assos', 'associazione_id', 'order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'no_eliminati', 'pdf_export_url','query_id', 'limit_for_export'));
           }
 
         }
@@ -401,7 +402,7 @@ class PreventiviController extends AdminController
       if ( 
           ($this->request->has('search') && $this->request->filled('q')) ||  
           ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')) ||
-          ($this->request->filled('no_eliminati') && $this->request->get('no_eliminati') == 1)
+          ($this->request->has('no_eliminati') && $this->request->get('no_eliminati') == 1) ||
           ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
          )
         {

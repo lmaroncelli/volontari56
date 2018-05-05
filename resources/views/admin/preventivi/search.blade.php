@@ -48,7 +48,7 @@
         <a href="{{ url('admin/preventivi') }}" title="annulla filtri" class="btn btn-warning"><i class="fa fa-close"></i></a>
     </div>
     <div class="col-sm-3">
-      @if ($query_id > 0)
+      @if ($query_id > 0 && $preventivi->total() > 0 && $preventivi->total() <= $limit_for_export)
         <a href="{{$pdf_export_url}}" title="Esporta" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
       @endif
     </div>

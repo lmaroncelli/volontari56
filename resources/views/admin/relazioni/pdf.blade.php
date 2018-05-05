@@ -9,12 +9,15 @@
     </div>
     @else
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-    @foreach ($relazioni->chunk(5) as $key => $chunk)
+    @foreach ($relazioni->chunk($chunked_element) as $key => $chunk)
+    <div id="pdf_filter">
+       {!! implode('<br />', $filtro_pdf) !!}
+    </div>
     <div class="row">
-        <p>Pagina {{$key+1}} di {{ count($relazioni->chunk(5)) }}</p>
+        <p class="page_number">Pagina {{$key+1}} di {{ count($relazioni->chunk($chunked_element)) }}</p>
         <div class="col-xs-12">
             <div class="box-body">
-                <table class="table table-bordered table-hover" id="tbl_relazioni">
+                <table cellpadding="10" cellspacing="0" id="tbl_relazioni">
                     <thead>
                         <tr>
                             @foreach ($columns as $field => $name)
@@ -26,7 +29,7 @@
                     </thead>
                     <tbody>
                         @foreach ($chunk as $relazione)
-                        <tr @if ($preventivo->trashed()) class="deleted" @endif>
+                        <tr @if ($relazione->trashed()) class="deleted" @endif>
                             <td>
                                 {{$relazione->id}}
                             </td>
@@ -48,6 +51,7 @@
                             <td>
                                {{$relazione->auto}}
                             </td>
+                            <td><button type="button" class="btn btn-success no_link">{{$relazione->preventivo_id}}</button></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -55,7 +59,7 @@
         		</div>
         </div>
     </div>
-    @if ($key+1 < count($relazioni->chunk(5)))
+    @if ($key+1 < count($relazioni->chunk($chunked_element)))
      <div class="row">
           <div class="col-xs-12">
             <div class="page-break"></div>

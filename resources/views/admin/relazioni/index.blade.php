@@ -11,7 +11,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Elenco Relazioni
+            Elenco Relazioni  <span class="badge bg-blue">{{$relazioni->total()}}</span>
         </h1>
         <ol class="breadcrumb">
             <li>

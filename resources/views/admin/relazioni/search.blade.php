@@ -15,13 +15,21 @@
            @endforeach
          </select>
        </div>
-       <div class="col-sm-3">
+       <div class="col-lg-2 col-sm-3">
           <button type="button" class="btn btn-default" id="daterange-btn">
             <span>
               <i class="fa fa-calendar"></i> Date range picker
             </span>
             <i class="fa fa-caret-down"></i>
           </button>
+       </div>
+       <div class="col-sm-2">
+        <div class="checkbox">
+          <label>
+           <input type="checkbox" name="no_eliminati" value="1" @if ($no_eliminati) checked="checked" @endif>
+            Escludi "Eliminati"
+          </label>
+        </div>
        </div>
     </div> 
     <div class="row" style="padding-bottom: 20px;">
@@ -40,7 +48,7 @@
             <a href="{{ url('admin/relazioni') }}" title="annulla filtri" class="btn btn-warning"><i class="fa fa-close"></i></a>
         </div>
         <div class="col-sm-3">
-          @if ($query_id > 0)
+          @if ($query_id > 0 && $relazioni->total() > 0 && $relazioni->total() <= $limit_for_export)
             <a href="{{$pdf_export_url}}" title="Esporta" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
           @endif
         </div>

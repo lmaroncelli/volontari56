@@ -6,13 +6,15 @@
 2. La stampa elenco volontari (di un'associazione) vuole la data: stampa cmq i volonari associati a quell'associazione ADESSSO, oppure si deve tenere traccia di tutti i volontari passati e prendere quelli risalenti a quel periodo ?
 
 
-3. Nei filtri di ricerca dare la possibilità di escludere quelli cancellati
+3. ~~Nei filtri di ricerca dare la possibilità di escludere quelli cancellati~~
 
 
-3. Stampa dei pdf deve avere il logo e descrivere il filtro
+3.1 ~~Stampa dei pdf deve avere il logo e descrivere il filtro~~
+
+3.2 Stampa dei pdf deve avere il logo
 
 
-3. ~~Logging error system~~
+3.3 ~~Logging error system~~
 
 
 4. verifica file .env PRIMA DI ANDARE IN PRODUZIONE
@@ -21,7 +23,7 @@
 5. ~~nei seeder importare anche il flag per cancellato nelle relazioni e nei servizi~~
 
 
-5. Mappa per caricamento località 
+6. Mappa per caricamento località 
 
 > http://blog.chapagain.com.np/google-maps-get-latitudelongitude-value-on-click-and-on-mouse-move/
 

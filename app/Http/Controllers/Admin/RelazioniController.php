@@ -36,7 +36,8 @@ class RelazioniController extends AdminController
      */
     public function index($query_id = 0)
     {
-
+        $filtro_pdf = [];
+        $filtro_pdf[] = "<b>Filtri applicati:</b>";
         $export_pdf = 0;
         $export_pdf_ore = 0;
         /////////////////////////////////////////////////////////////////
@@ -95,6 +96,7 @@ class RelazioniController extends AdminController
         $al = "";
         $associazione_id = 0;
         $assos = Associazione::getForSelect();
+        $no_eliminati = 0;
         
         if ($query_id > 0)
           {
@@ -128,7 +130,6 @@ class RelazioniController extends AdminController
                   {
                     $join->on('tblAssociazioni.id', '=', 'tblRelazioni.associazione_id');
                   })
-                  ->withTrashed()
                   ->select('tblRelazioni.*','tblAssociazioni.nome as nome_asso');
 
 
@@ -147,26 +148,36 @@ class RelazioniController extends AdminController
               {
               $campo = 'tblAssociazioni.nome';
               $query->where($campo, 'LIKE', "%$valore%");
+
+              $filtro_pdf[] =  "Associazione contiene " .$valore;
               }
             elseif ($campo == 'note') 
               {
               $campo = 'tblRelazioni.note';
               $query->where($campo, 'LIKE', "%$valore%");
+
+              $filtro_pdf[] =  "Note contiene " .$valore;
               }
             elseif ($campo == 'rapporto') 
               {
               $campo = 'tblRelazioni.rapporto';
               $query->where($campo, 'LIKE', "%$valore%");
+
+              $filtro_pdf[] =  "Rapporto contiene " .$valore;
               }
             elseif ($campo == 'auto') 
               {
               $campo = 'tblRelazioni.auto';
               $query->where($campo, 'LIKE', "%$valore%");
+
+              $filtro_pdf[] =  "Auto contiene " .$valore;
               }
             elseif ($campo == 'preventivo_id') 
               {
               $campo = 'tblRelazioni.preventivo_id';
               $query->where($campo, $valore);
+
+              $filtro_pdf[] =  "Preventivo generatore" .$valore;
               }
             elseif ($campo == 'volontario')
               {
@@ -190,6 +201,8 @@ class RelazioniController extends AdminController
                   }
                 }
                 $query->whereIn('tblRelazioni.id', $relazioni_ids);
+
+                $filtro_pdf[] =  "Elenco volonari contiene " .$valore;
               }
 
             if ($campo == 'tblAssociazioni.nome')
@@ -219,6 +232,13 @@ class RelazioniController extends AdminController
           
             }
 
+        if( $this->request->has('associazione_id') && $this->request->get('associazione_id') != 0 )
+          {
+          $associazione_id = $this->request->get('associazione_id');
+          $query->where('tblRelazioni.associazione_id', $associazione_id);
+
+          $filtro_pdf[] =  "Associazione " . Associazione::find($associazione_id)->nome;
+          }
 
         if ( $this->request->filled('cerca_dal') && $this->request->filled('cerca_al') )
           {
@@ -228,14 +248,24 @@ class RelazioniController extends AdminController
           $al_c = Carbon::createFromFormat('d/m/Y H i', $this->request->get('cerca_al').' 23 59');
           $query->where('dalle','>=',$dal_c);
           $query->where('alle','<=',$al_c);
+
+          $filtro_pdf[] =  "Preventivi con data dal $dal al $al";
           }
 
-        if( $this->request->has('associazione_id') && $this->request->get('associazione_id') != 0 )
+
+
+        if ( !$this->request->has('no_eliminati') || $this->request->get('no_eliminati') != 1 )
           {
-          $associazione_id = $this->request->get('associazione_id');
-          $query->where('tblRelazioni.associazione_id', $associazione_id);
-          }
+          $query->withTrashed();
 
+          $filtro_pdf[] =  "<i>Compreso gli eliminati</i>";
+          }
+        else
+          {
+          $no_eliminati = $this->request->get('no_eliminati');
+          
+          $filtro_pdf[] =  "<i>Escluso gli eliminati</i>";
+          }
 
         $query->orderBy($order_by, $order);
 
@@ -297,12 +327,11 @@ class RelazioniController extends AdminController
         }
 
 
-        //return view('admin.relazioni.index', compact('relazioni','assos','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'pdf_export_url', 'query_id'));
-
-
         if($export_pdf)
           {
-          $pdf = PDF::loadView('admin.relazioni.pdf', compact('relazioni','order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'pdf_export_url'));
+          $filtro_pdf[] =  "<b>N° relazioni " .$relazioni->count()."</b>";
+          $chunked_element = 5;
+          $pdf = PDF::loadView('admin.relazioni.pdf', compact('relazioni','chunked_element','columns', 'filtro_pdf'));
           return $pdf->stream();
           }
         elseif ($export_pdf_ore) 
@@ -312,7 +341,8 @@ class RelazioniController extends AdminController
           }
         else
           {
-          return view('admin.relazioni.index', compact('relazioni','assos','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'pdf_export_url','pdf_ore_export_url', 'query_id'));
+          $limit_for_export = 500;
+          return view('admin.relazioni.index', compact('relazioni','assos','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'no_eliminati', 'pdf_export_url','pdf_ore_export_url', 'query_id', 'limit_for_export'));
           }
     
     }
@@ -434,6 +464,7 @@ class RelazioniController extends AdminController
       if ( 
           ($this->request->has('search') && $this->request->filled('q')) ||  
           ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')) ||
+          ($this->request->has('no_eliminati') && $this->request->get('no_eliminati') == 1) ||
           ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
          )
         {
