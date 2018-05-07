@@ -78,11 +78,14 @@ class Associazione extends Model
 		}
 
 
-	public static function getForSelect() 
+	public static function getForSelect($select = 1) 
 		{
 		
 		$assos = self::filtered()->orderBy('nome')->pluck('nome', 'id')->toArray();
-    $assos = ['0' => 'Seleziona...'] + $assos;
+    if($select)
+    	{
+    	$assos = ['0' => 'Seleziona...'] + $assos;
+    	}
 
     return $assos;
 		

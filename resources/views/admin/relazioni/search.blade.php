@@ -2,6 +2,7 @@
   <div class="box-header">
       <h3 class="box-title">Filtri</h3>
     </div>
+
     <form action="{!! route('relazioni.search') !!}" method="post">
       {{ csrf_field() }}
       <input type="hidden" name="cerca_dal" id="cerca_dal" value="{{$dal}}">
@@ -50,9 +51,38 @@
         <div class="col-sm-3">
           @if ($query_id > 0 && $relazioni->total() > 0 && $relazioni->total() <= $limit_for_export)
             <a href="{{$pdf_export_url}}" title="Esporta" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
-            <a href="{{$pdf_export_url}}=l" title="Esporta Landscape" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+            <a href="{{$pdf_export_url}}=l" title="Esporta Landscape" target="_blank" class="btn btn-danger" style="width: 80px"><i class="fa fa-file-pdf-o"></i></a>
           @endif
         </div>
     </div>
     </form>
+
+    <form action="{!! route('relazioni.export_ore') !!}" id="export_ore" method="post" target="_blank">
+      {{ csrf_field() }}
+      @php
+        $anno_corrente = (int)date('Y');
+      @endphp
+      <div class="row">
+         <div class="col-sm-3 col-sm-offset-1">
+           <select class="form-control" style="width: 100%;" name="associazione_id_ore" id="associazione_id_ore">
+             @foreach ($assos_ore as $id => $nome)
+              <option value="{{$id}}">{{$nome}}</option>
+             @endforeach
+           </select>
+         </div>
+         <div class="col-sm-2">
+          <select class="form-control" name="anno_ore" id="anno_ore">
+            @for ($y = -2; $y <2 ; $y++)
+              @php
+                $val = $anno_corrente + $y;
+              @endphp
+              <option value="{{ $val }}" @if ($y==0) selected="selected" @endif>{{$val}}</option>
+            @endfor
+          </select>
+         </div>
+         <div class="col-sm-1">
+          <button type="submit" title="Riepilogo ore di servizio" name="ore-servizio" id="ore-servizio-btn" class="btn btn-primary"><i class="fa fa-safari"></i></button>
+         </div>
+    </form>
+
 </div>

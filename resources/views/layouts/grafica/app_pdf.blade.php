@@ -24,7 +24,6 @@
         div.clear {
             clear: both;
         }
-
         div.border {
             border: 1px solid #333;
         }

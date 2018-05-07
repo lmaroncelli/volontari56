@@ -28,3 +28,8 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 .no_link:hover {
 	cursor: default!important;
 }
+
+
+form#export_ore {
+	padding-bottom: 30px;
+}

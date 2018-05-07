@@ -242,6 +242,12 @@ class PreventiviController extends AdminController
           $filtro_pdf[] =  "<b>N° preventivi " .$preventivi->count()."</b>";
           $chunked_element = 10;
           $pdf = PDF::loadView('admin.preventivi.pdf', compact('preventivi','chunked_element','columns','filtro_pdf'));
+
+          if($this->request->get('pdf') == 'l')
+            {
+            $pdf->setPaper('a4', 'landscape');
+            }
+            
           return $pdf->stream();
           }
         else

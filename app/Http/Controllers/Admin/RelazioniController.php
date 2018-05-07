@@ -29,6 +29,64 @@ class RelazioniController extends AdminController
       return redirect()->route('relazioni.edit', [$relazione->id]);
       }
 
+
+    public function exportOre()
+      {
+      $filtro_pdf_ore[] = "<b>Riepilogo ore servizio:</b>";
+
+      $query = Relazione::with(['associazione','volontari'])->leftjoin('tblAssociazioni', function( $join )
+                {
+                  $join->on('tblAssociazioni.id', '=', 'tblRelazioni.associazione_id');
+                })
+                ->select('tblRelazioni.*','tblAssociazioni.nome as nome_asso');
+
+      if ( $this->request->has('anno_ore') )
+        {
+        $anno_ore = $this->request->get('anno_ore');
+        $dal_c = Carbon::createFromFormat('d/m/Y H i', '01/01/'.$anno_ore.' 0 00');
+        $al_c = Carbon::createFromFormat('d/m/Y H i', '31/12/'.$anno_ore.' 23 59');
+        $query->where('dalle','>=',$dal_c);
+        $query->where('alle','<=',$al_c);
+
+        $filtro_pdf_ore[] =  "Anno $anno_ore";
+        }
+
+      if( $this->request->has('associazione_id_ore') && $this->request->get('associazione_id_ore') != 0 )
+        {
+        $associazione_id_ore = $this->request->get('associazione_id_ore');
+        $query->where('tblRelazioni.associazione_id', $associazione_id_ore);
+
+        $filtro_pdf_ore[] =  "Associazione " . Associazione::find($associazione_id_ore)->nome;
+        }
+
+      $relazioni = $query->get();
+
+      $volontari = [];
+      $columns_pdf = ['Associazione','Volontario','Totale ore'];
+      foreach ($relazioni as $relazione) 
+        {
+        foreach ($relazione->volontari as $v) 
+          {
+          if (array_key_exists($v->id,$volontari)) 
+            {
+            $volontari[$v->id]['Totale ore'] += $relazione->getHours();
+            } 
+          else 
+            {
+            $volontari[$v->id]['Associazione'] = $v->associazione->nome;
+            $volontari[$v->id]['Volontario'] = $v->cognome .' ' .$v->nome;
+            $volontari[$v->id]['Totale ore'] = $relazione->getHours();
+            }
+          } // end volontari
+
+        } // end relazioni
+
+        $pdf = PDF::loadView('admin.relazioni.pdf_ore', compact('volontari','columns_pdf','filtro_pdf_ore'));
+        return $pdf->stream();
+      }
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -96,6 +154,7 @@ class RelazioniController extends AdminController
         $al = "";
         $associazione_id = 0;
         $assos = Associazione::getForSelect();
+        $assos_ore = Associazione::getForSelect($select = 0);
         $no_eliminati = 0;
         
         if ($query_id > 0)
@@ -348,7 +407,7 @@ class RelazioniController extends AdminController
         else
           {
           $limit_for_export = 500;
-          return view('admin.relazioni.index', compact('relazioni','assos','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'no_eliminati', 'pdf_export_url','pdf_ore_export_url', 'query_id', 'limit_for_export'));
+          return view('admin.relazioni.index', compact('relazioni','assos', 'assos_ore','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'no_eliminati', 'pdf_export_url','pdf_ore_export_url', 'query_id', 'limit_for_export'));
           }
     
     }

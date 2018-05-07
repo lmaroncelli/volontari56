@@ -4,12 +4,21 @@
 	@if (!count($volontari))
     <div class="callout callout-info">
         <h4>
-            Nessun volontario presente!
+           Nessun volontario presente!
         </h4>
     </div>
     @else
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
     @foreach (array_chunk($volontari,30) as $key => $chunk)
+    <div id="pdf_filter_container">
+       <div id="pdf_filter">
+       {!! implode('<br />', $filtro_pdf_ore) !!}
+       </div>
+       <div id="pdf_logo">
+          <img src="{{ base_path('public/images/provincia-rimini.jpg') }}" alt="Provincia di Rimini">
+       </div>
+    </div>
+    <div class="clear border"></div>
     <div class="row">
         <p>Pagina {{$key+1}} di {{ count(array_chunk($volontari,30)) }}</p>
         <div class="col-xs-12">
