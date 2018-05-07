@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
       {   
-      if (! $exception instanceof ValidationException) 
+      /*if (! $exception instanceof ValidationException) 
         { 
         
         try 
@@ -77,7 +77,7 @@ class Handler extends ExceptionHandler
           // errore nell'inviare la mail oppure nello scrivere nel log file
           }
         
-        }
+        }*/
         
         parent::report($exception);
       }

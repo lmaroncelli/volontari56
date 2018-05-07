@@ -7,12 +7,26 @@
         .page-break {
             page-break-after: always;
         } 
-        div#pdf_filter {
+        div#pdf_filter_container {
             border: 1px solid #333;
             padding: 5px;
-            background-image: url("{{ asset('images/provincia-rimini.jpg') }}");
-            background-repeat: no-repeat;
-            background-position: right;
+        }
+        div#pdf_filter {
+            margin-top: 0px;
+            padding-top: 0px;
+            float: left;
+        }
+        div#pdf_logo {
+            margin-top: 0px;
+            padding-top: 0px;
+            float: right;
+        }
+        div.clear {
+            clear: both;
+        }
+
+        div.border {
+            border: 1px solid #333;
         }
         p.page_number {
             text-align: left;

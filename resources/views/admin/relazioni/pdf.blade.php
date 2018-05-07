@@ -10,9 +10,15 @@
     @else
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
     @foreach ($relazioni->chunk($chunked_element) as $key => $chunk)
-    <div id="pdf_filter">
+    <div id="pdf_filter_container">
+       <div id="pdf_filter">
        {!! implode('<br />', $filtro_pdf) !!}
+       </div>
+       <div id="pdf_logo">
+          <img src="{{ base_path('public/images/provincia-rimini.jpg') }}" alt="Provincia di Rimini">
+       </div>
     </div>
+    <div class="clear border"></div>
     <div class="row">
         <p class="page_number">Pagina {{$key+1}} di {{ count($relazioni->chunk($chunked_element)) }}</p>
         <div class="col-xs-12">
