@@ -50,6 +50,7 @@
         <div class="col-sm-3">
           @if ($query_id > 0 && $relazioni->total() > 0 && $relazioni->total() <= $limit_for_export)
             <a href="{{$pdf_export_url}}" title="Esporta" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+            <a href="{{$pdf_export_url}}=l" title="Esporta Landscape" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
           @endif
         </div>
     </div>

@@ -332,7 +332,12 @@ class RelazioniController extends AdminController
           $filtro_pdf[] =  "<b>N° relazioni " .$relazioni->count()."</b>";
           $chunked_element = 5;
           $pdf = PDF::loadView('admin.relazioni.pdf', compact('relazioni','chunked_element','columns', 'filtro_pdf'));
-          //$pdf->setPaper('a4', 'landscape');
+          
+          if($this->request->get('pdf') == 'l')
+            {
+            $pdf->setPaper('a4', 'landscape');
+            }
+          
           return $pdf->stream();
           }
         elseif ($export_pdf_ore) 
