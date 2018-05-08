@@ -21,6 +21,11 @@ use Mail;
  */
 class Utility extends Model
 {
+
+	const GOOGLE_API_KEY = 'AIzaSyBrH8m8vUnPJQKt8zDTokE7Fg-kSGuL0mY';
+
+
+
 	/**
 	 * Prende l'id del visitatore
 	 * 
@@ -174,6 +179,13 @@ class Utility extends Model
 			  }
 
 			$request->request->add($qs_arr);
+		}
+
+
+
+	public static function getGoogleApiKey() 
+		{ 
+		return self::GOOGLE_API_KEY; 
 		}
 
 
