@@ -1,8 +1,0 @@
-{
-    "require": {
-        "spatie/geocoder": "^3.3",
-        "components/jquery": "^3.3",
-        "phpunit/php-timer": "^2.0",
-        "symfony/var-dumper": "^4.0"
-    }
-}
