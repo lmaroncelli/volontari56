@@ -49,7 +49,8 @@ Timer::start();
             });
             
             // Update lat/long value of div when anywhere in the map is clicked    
-            google.maps.event.addListener(map,'click',function(event) {                
+            google.maps.event.addListener(map,'click',function(event) {          
+             
                 document.getElementById('latclicked').innerHTML = event.latLng.lat();
                 document.getElementById('longclicked').innerHTML =  event.latLng.lng();
                 data = { lat: event.latLng.lat(), long: event.latLng.lng() }
@@ -66,10 +67,10 @@ Timer::start();
             });
             
             // Update lat/long value of div when you move the mouse over the map
-            google.maps.event.addListener(map,'mousemove',function(event) {
+            /*google.maps.event.addListener(map,'mousemove',function(event) {
                 document.getElementById('latmoved').innerHTML = event.latLng.lat();
                 document.getElementById('longmoved').innerHTML = event.latLng.lng();
-            });
+            });*/
 
 
                     
