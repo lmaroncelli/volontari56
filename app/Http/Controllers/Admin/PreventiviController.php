@@ -7,10 +7,11 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use App\Utility;
 use App\Volontario;
-use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
+use Spatie\Geocoder\Facades\Geocoder;
 
 class PreventiviController extends AdminController
 {
@@ -419,6 +420,16 @@ class PreventiviController extends AdminController
         {
         return redirect("admin/preventivi");
         }
+      }
+
+
+
+
+    public function geocodeAjax()
+      {
+      $geocode = Geocoder::getAddressForCoordinates($this->request->get('lat'), $this->request->get('long'));
+
+      echo $geocode['formatted_address'];
       }
 
 

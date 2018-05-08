@@ -33,3 +33,8 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 form#export_ore {
 	padding-bottom: 30px;
 }
+
+#map { 
+  height: 300px;    
+  width: 100%;            
+}          

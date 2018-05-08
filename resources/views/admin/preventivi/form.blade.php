@@ -114,6 +114,11 @@
 					</div>
 
 					<div class="form-group">
+					  <label for="localita">Seleziona la località dalla mappa (doppio click)</label>
+					  <div id="map"></div>
+					</div>
+
+					<div class="form-group">
 					  <label for="motivazione">Motivazione</label>
 					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione">{{$preventivo->motivazione}}</textarea>
 					</div>
@@ -199,6 +204,60 @@
 	})
 
 </script>
+
+
+
+<script type="text/javascript">
+var map;
+
+function initMap() {                            
+    var latitude = 44.263753; // YOUR LATITUDE VALUE
+    var longitude = 12.357315; // YOUR LONGITUDE VALUE
+    
+    var myLatLng = {lat: latitude, lng: longitude};
+    
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: myLatLng,
+      zoom: 14,
+      scrollwheel: true,
+      disableDoubleClickZoom: false, // disable the default map zoom on double click
+    });
+    
+    // Update lat/long value of div when anywhere in the map is clicked    
+    google.maps.event.addListener(map,'dblclick',function(event) {          
+        data = { 
+        	'lat': event.latLng.lat(), 
+        	'long': event.latLng.lng(),
+        	'_token': jQuery('input[name=_token]').val() 
+        	}
+        jQuery.ajax({
+                type: "POST",
+                url: '<?=url("admin/preventivi/geocode_ajax") ?>',
+                data: data,
+                success: success
+            });
+
+       	function success(result) {
+       	   jQuery("#localita").val(result);
+       	}
+    });
+    
+    
+    // Create new marker on double click event on the map
+    google.maps.event.addListener(map,'dblclick',function(event) {
+        var marker = new google.maps.Marker({
+          position: event.latLng, 
+          map: map, 
+          title: event.latLng.lat()+', '+event.latLng.lng()
+        });
+      
+    });
+    
+
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAyCUJ63a6dtvWfdAaqCmLxrWqOombjM8&language=it&callback=initMap"
+async defer></script>
 
 
 @endsection

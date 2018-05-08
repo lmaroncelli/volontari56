@@ -59,6 +59,7 @@ Route::group(['middleware' => ['admin']], function () {
 
 Route::any('admin/preventivi/carica_volontari_ajax', 'Admin\PreventiviController@caricaVolontariAjax');
 Route::post('admin/preventivi/search', ['uses' => 'Admin\PreventiviController@search', 'as' => 'preventivi.search'])->middleware('log');
+Route::post('admin/preventivi/geocode_ajax', ['uses' => 'Admin\PreventiviController@geocodeAjax', 'as' => 'preventivi.geocode_ajax']);
 Route::get('admin/preventivi/{query_id?}', ['uses' => 'Admin\PreventiviController@index', 'as' => 'preventivi.index'])->middleware('log');
 Route::resource('admin/preventivi', 'Admin\PreventiviController')->except(['index'])->middleware('log');
 
