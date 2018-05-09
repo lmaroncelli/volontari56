@@ -60,7 +60,7 @@
 					  <label for="associazione_id">Associazione</label>
 					  <select class="form-control" style="width: 100%;" name="associazione_id" id="associazione_id">
 					    @foreach ($assos as $id => $nome)
-					    	<option value="{{$id}}" @if ($preventivo->associazione_id == $id) selected="selected" @endif>{{$nome}}</option>
+					    	<option value="{{$id}}" @if ($preventivo->associazione_id == $id || old('associazione_id') == $id) selected="selected" @endif>{{$nome}}</option>
 					    @endforeach
 					  </select>
 					</div>
@@ -80,14 +80,14 @@
 							  <div class="input-group-addon">
 							    <i class="fa fa-calendar"></i>
 							  </div>
-							  <input type="text" name="data" @if ($preventivo->exists) value="{{$preventivo->dalle->format('d/m/Y')}}" @endif class="form-control pull-right" id="datepicker">
+							  <input type="text" name="data" @if ($preventivo->exists) value="{{ old('data') || $preventivo->dalle->format('d/m/Y') }}" @else value="{{ old('data')}}" @endif class="form-control pull-right" id="datepicker">
 							</div>
 						</div>
 						
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Dalle:</label>
 							<div class="input-group">
-							  <input type="text" name="dal" @if ($preventivo->exists) value="{{$preventivo->dalle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="dal" @if ($preventivo->exists) value="{{ old('dal') || $preventivo->dalle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -98,7 +98,7 @@
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Alle:</label>
 							<div class="input-group">
-							  <input type="text" name="al" @if ($preventivo->exists) value="{{$preventivo->alle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="al" @if ($preventivo->exists) value="{{old('al') || $preventivo->alle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -110,17 +110,17 @@
 
 					<div class="form-group">
 					  <label for="localita">Località</label>
-					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita">{{$preventivo->localita}}</textarea>
+					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita">@if (old('localita') != ''){{ old('localita') }} @else {{ $preventivo->localita }} @endif</textarea>
 					</div>
 
 					<div class="form-group">
-					  <label for="localita">Seleziona la località dalla mappa (doppio click)</label>
+					  <label for="mappa_localita">Seleziona la località dalla mappa (doppio click)</label>
 					  <div id="map"></div>
 					</div>
 
 					<div class="form-group">
 					  <label for="motivazione">Motivazione</label>
-					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione">{{$preventivo->motivazione}}</textarea>
+					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione">@if (old('motivazione') != ''){{ old('motivazione') }} @else {{ $preventivo->motivazione }} @endif</textarea>
 					</div>
 
 				</div> <!-- /.box-body -->
@@ -167,27 +167,37 @@
 
 
 <script type="text/javascript">
+
+	function caricaVolontari(val) {
+		var associazione_id = val;
+		var preventivo_id = '{{$preventivo->id}}';
+		jQuery.ajax({
+		        url: '<?=url("admin/preventivi/carica_volontari_ajax") ?>',
+		        type: "post",
+		        async: false,
+		        data : { 
+		               'associazione_id': associazione_id, 
+		               'preventivo_id': preventivo_id,
+		               '_token': jQuery('input[name=_token]').val()
+		               },
+		       	success: function(data) {
+		         jQuery("#volontari_select").html(data);
+		         $('.select2').select2();
+		       }
+		 });
+	}
+
+
 	$(function () {
 	    //Initialize Select2 Elements
 	    $('.select2').select2();
 
+	    var associazione_id = $("#associazione_id").val();
+
+	    caricaVolontari(associazione_id);
+
 	    $('#associazione_id').change(function(){
-	    	var associazione_id = this.value;
-	    	var preventivo_id = '{{$preventivo->id}}';
-	    	jQuery.ajax({
-	    	        url: '<?=url("admin/preventivi/carica_volontari_ajax") ?>',
-	    	        type: "post",
-	    	        async: false,
-	    	        data : { 
-	    	               'associazione_id': associazione_id, 
-	    	               'preventivo_id': preventivo_id,
-	    	               '_token': jQuery('input[name=_token]').val()
-	    	               },
-	    	       	success: function(data) {
-	    	         jQuery("#volontari_select").html(data);
-	    	         $('.select2').select2();
-	    	       }
-	    	 });
+	    	caricaVolontari(this.value);
 	    });
 
 	});
@@ -211,14 +221,14 @@
 var map;
 
 function initMap() {                            
-    var latitude = 44.263753; // YOUR LATITUDE VALUE
-    var longitude = 12.357315; // YOUR LONGITUDE VALUE
+    var latitude = 44.059959;
+    var longitude = 12.573509;
     
     var myLatLng = {lat: latitude, lng: longitude};
     
     map = new google.maps.Map(document.getElementById('map'), {
       center: myLatLng,
-      zoom: 14,
+      zoom: 11,
       scrollwheel: true,
       disableDoubleClickZoom: false, // disable the default map zoom on double click
     });

@@ -115,7 +115,9 @@
                             </td>
                             <td>
                                 <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
-                                    {{$preventivo->associazione->nome}}
+                                    @if (!is_null($preventivo->associazione))
+                                        {{$preventivo->associazione->nome}}
+                                    @endif
                                 </a>
                             </td>
                             <td>

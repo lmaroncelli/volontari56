@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Associazione;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Requests\PreventivoRequest;
 use App\Preventivo;
 use App\Utility;
 use App\Volontario;
@@ -280,7 +281,7 @@ class PreventiviController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PreventivoRequest $request)
     {
         /*
         dd($request->all());
@@ -348,7 +349,7 @@ class PreventiviController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PreventivoRequest $request, $id)
     {
         $preventivo = Preventivo::find($id);
         $this->_savePreventivo($preventivo, $request);
