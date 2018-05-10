@@ -425,12 +425,29 @@ class PreventiviController extends AdminController
 
 
 
-
-    public function geocodeAjax()
+    /**
+     * [reverseGeocodeAjax Reverse geocoding is the process of converting geographic coordinates into a human-readable address.]
+     * @return [type] [description]
+     */
+    public function reverseGeocodeAjax()
       {
-      $geocode = Geocoder::getAddressForCoordinates($this->request->get('lat'), $this->request->get('long'));
+      $rev_geocode = Geocoder::getAddressForCoordinates($this->request->get('lat'), $this->request->get('long'));
 
-      echo $geocode['formatted_address'];
+      echo $rev_geocode['formatted_address'];
+      }
+
+
+      /**
+       * [geocodeAjax Geocoding is the process of converting addresses (like a street address) into geographic coordinates (like latitude and longitude), which you can use to place markers on a map, or position the map.]
+       * @return [type] [description]
+       */
+     public function geocodeAjax()
+      {
+      $geocode = Geocoder::getCoordinatesForAddress($this->request->get('indirizzo'));
+      $res = [];
+      $res['lat'] = $geocode['lat'];
+      $res['long'] = $geocode['lng'];
+      echo json_encode($res);
       }
 
 

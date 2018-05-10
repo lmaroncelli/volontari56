@@ -1,5 +1,8 @@
 @extends('layouts.grafica.app')
 
+@section('titolo')
+    Preventivi
+@endsection
 
 @section('header_css')
 <!-- DataTables -->

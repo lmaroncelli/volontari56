@@ -1,5 +1,8 @@
 @extends('layouts.grafica.app')
 
+@section('titolo')
+    Preventivo
+@endsection
 
 
 @section('header_css')
@@ -80,14 +83,14 @@
 							  <div class="input-group-addon">
 							    <i class="fa fa-calendar"></i>
 							  </div>
-							  <input type="text" name="data" @if ($preventivo->exists) value="{{ old('data') || $preventivo->dalle->format('d/m/Y') }}" @else value="{{ old('data')}}" @endif class="form-control pull-right" id="datepicker">
+							  <input type="text" name="data" @if ($preventivo->exists) value="{{ old('data') != '' ? old('data') : $preventivo->dalle->format('d/m/Y') }}" @else value="{{ old('data')}}" @endif class="form-control pull-right" id="datepicker">
 							</div>
 						</div>
 						
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Dalle:</label>
 							<div class="input-group">
-							  <input type="text" name="dal" @if ($preventivo->exists) value="{{ old('dal') || $preventivo->dalle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="dal" @if ($preventivo->exists) value="{{ old('dal') != '' ? old('dal') : $preventivo->dalle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -98,7 +101,7 @@
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Alle:</label>
 							<div class="input-group">
-							  <input type="text" name="al" @if ($preventivo->exists) value="{{old('al') || $preventivo->alle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="al" @if ($preventivo->exists) value="{{old('al') != ''  ? old('al') : $preventivo->alle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -110,7 +113,7 @@
 
 					<div class="form-group">
 					  <label for="localita">Località</label>
-					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita">@if (old('localita') != ''){{ old('localita') }} @else {{ $preventivo->localita }} @endif</textarea>
+					  <textarea class="form-control" rows="3" placeholder="Località ..." name="localita" id="localita">@if(old('localita') != ''){{ old('localita') }}@else{{ $preventivo->localita }}@endif</textarea>
 					</div>
 
 					<div class="form-group">
@@ -120,7 +123,7 @@
 
 					<div class="form-group">
 					  <label for="motivazione">Motivazione</label>
-					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione">@if (old('motivazione') != ''){{ old('motivazione') }} @else {{ $preventivo->motivazione }} @endif</textarea>
+					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione">@if(old('motivazione') != ''){{ old('motivazione') }}@else{{ $preventivo->motivazione }}@endif</textarea>
 					</div>
 
 				</div> <!-- /.box-body -->
@@ -219,19 +222,67 @@
 
 <script type="text/javascript">
 var map;
+var marker;
+
+var markersArray = [];
+
+function clearOverlays() {
+  for (var i = 0; i < markersArray.length; i++ ) {
+    markersArray[i].setMap(null);
+  }
+  markersArray.length = 0;
+}
 
 function initMap() {                            
     var latitude = 44.059959;
     var longitude = 12.573509;
-    
-    var myLatLng = {lat: latitude, lng: longitude};
-    
+
+	var myLatLng = {lat: latitude, lng: longitude};
+	
+	@if ($preventivo->exists)
+		
+		var indirizzo = '{{$preventivo->localita}}';
+
+		data = { 
+		       'indirizzo': indirizzo, 
+		       '_token': jQuery('input[name=_token]').val()
+		       },
+		jQuery.ajax({
+		        type: "POST",
+		        url: '<?=url("admin/preventivi/geocode_ajax") ?>',
+		        data: data,
+		        dataType: "json",
+		        async: false,
+		        success: success_geocode
+		    });
+
+		function success_geocode(result) {
+		  	myLatLng = {lat: result.lat, lng: result.long};
+
+		}
+		
+	@else
+
+		myLatLng = {lat: latitude, lng: longitude};
+	
+	@endif
+
+
+
+
     map = new google.maps.Map(document.getElementById('map'), {
       center: myLatLng,
       zoom: 11,
       scrollwheel: true,
       disableDoubleClickZoom: false, // disable the default map zoom on double click
     });
+	
+
+    marker = new google.maps.Marker({
+		map: map,
+		position: myLatLng,
+    });
+    markersArray.push(marker);
     
     // Update lat/long value of div when anywhere in the map is clicked    
     google.maps.event.addListener(map,'dblclick',function(event) {          
@@ -242,12 +293,12 @@ function initMap() {
         	}
         jQuery.ajax({
                 type: "POST",
-                url: '<?=url("admin/preventivi/geocode_ajax") ?>',
+                url: '<?=url("admin/preventivi/reverse_geocode_ajax") ?>',
                 data: data,
-                success: success
+                success: success_reverse_geocode
             });
 
-       	function success(result) {
+       	function success_reverse_geocode(result) {
        	   jQuery("#localita").val(result);
        	}
     });
@@ -255,11 +306,13 @@ function initMap() {
     
     // Create new marker on double click event on the map
     google.maps.event.addListener(map,'dblclick',function(event) {
-        var marker = new google.maps.Marker({
+    	clearOverlays();
+        marker = new google.maps.Marker({
           position: event.latLng, 
           map: map, 
           title: event.latLng.lat()+', '+event.latLng.lng()
         });
+        markersArray.push(marker);
       
     });
     
@@ -268,6 +321,12 @@ function initMap() {
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAyCUJ63a6dtvWfdAaqCmLxrWqOombjM8&language=it&callback=initMap"
 async defer></script>
+
+
+
+
+
+
 
 
 @endsection
