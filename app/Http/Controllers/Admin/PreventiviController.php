@@ -329,16 +329,10 @@ class PreventiviController extends AdminController
         $preventivo = Preventivo::find($id);
         $volontari = $preventivo->associazione()->first()->getVolontariFullName();
         
-        if (Auth::user()->hasRole('admin')) 
-            {
-            $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
-            $assos = Associazione::getForSelect();
-            return view('admin.preventivi.form', compact('preventivo', 'assos', 'volontari','volontari_associati'));
-            } 
-        else 
-            {
-            return view('admin.preventivi.form_asso', compact('preventivo', 'volontari'));
-            }
+        $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
+        $assos = Associazione::getForSelect();
+        return view('admin.preventivi.form', compact('preventivo', 'assos', 'volontari','volontari_associati'));
+        
         
     }
 

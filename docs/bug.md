@@ -23,7 +23,15 @@
 5. ~~nei seeder importare anche il flag per cancellato nelle relazioni e nei servizi~~
 
 
-6. Mappa per caricamento località 
+6. ~Mappa per caricamento località~ 
 
-> http://blog.chapagain.com.np/google-maps-get-latitudelongitude-value-on-click-and-on-mouse-move/
+~> http://blog.chapagain.com.np/google-maps-get-latitudelongitude-value-on-click-and-on-mouse-move/~
+
+
+
+7. I preventivi in modifica NON SONO EDITABILI DA NESSUNO (neanche PRVINCIA): si può solo ELIMINARE oppure CREARE NUOVO SERVIZIO
+
+8. I servizi in modifica NON SONO EDITABILI DA NESSUNO (neanche PRVINCIA): si può solo elimnare oppure stampare (vedi screen con firme GGV)
+
+
 

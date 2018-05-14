@@ -51,8 +51,10 @@
         <!-- general form elements -->
         <div class="box box-primary">
 	  		@if ($preventivo->exists)
-	        	<form role="form" action="{{ route('preventivi.update', $preventivo->id) }}" method="POST">
-	        	{{ method_field('PUT') }}
+	        	{{-- <form role="form" action="{{ route('preventivi.update', $preventivo->id) }}" method="POST">
+	        	{{ method_field('PUT') }} --}}
+	        	<form role="form" action="{{ route('preventivi.index') }}" method="GET">
+	        	<fieldset disabled="disabled">
 			@else
 	        	<form role="form" action="{{ route('preventivi.store') }}" method="POST">
 	        @endif
@@ -136,22 +138,29 @@
 						Crea
 					@endif
 				</button>
-				
-				@if ($preventivo->exists)
-					<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" title="Crea una relazione di servizio" class="btn btn-default">
-						Crea una relazione di servizio
-					</a>
-				@endif
-
-				@if ($preventivo->exists)
-					@include('admin.admin_inc_delete_button')
-				@endif
-	
+			
 				</div>
+			@if ($preventivo->exists)
+				</fieldset>
+        	@endif
         	</form>
       	</div> <!-- /.box -->
       </div><!-- /.col -->
-     </div> <!-- /.row -->
+    </div> <!-- /.row -->
+	@if ($preventivo->exists)
+	   <div class="row">
+	     	<!-- left column -->
+	     <div class="col-md-6">
+	     	 <!-- general form elements -->
+	     	 <div class="box-operations">
+	     		@include('admin.admin_inc_delete_button')
+	     		<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" title="Crea una relazione di servizio" class="btn btn-success pull-right">
+	     			Crea una relazione di servizio
+	     		</a>
+		     </div> <!-- /.box -->
+		 </div><!-- /.col -->
+		</div> <!-- /.row -->
+	@endif
      
 @endsection
 
@@ -190,20 +199,24 @@
 		 });
 	}
 
+	
+	@if (!$preventivo->exists)
+	
+		$(function () {
+		    //Initialize Select2 Elements
+		    $('.select2').select2();
 
-	$(function () {
-	    //Initialize Select2 Elements
-	    $('.select2').select2();
+		    var associazione_id = $("#associazione_id").val();
 
-	    var associazione_id = $("#associazione_id").val();
+		    caricaVolontari(associazione_id);
 
-	    caricaVolontari(associazione_id);
+		    $('#associazione_id').change(function(){
+		    	caricaVolontari(this.value);
+		    });
 
-	    $('#associazione_id').change(function(){
-	    	caricaVolontari(this.value);
-	    });
+		});
 
-	});
+	@endif
 
 	$("#datepicker").datepicker({
 		format: 'dd/mm/yyyy',
@@ -246,15 +259,18 @@ function initMap() {
 		data = { 
 		       'indirizzo': indirizzo, 
 		       '_token': jQuery('input[name=_token]').val()
-		       },
-		jQuery.ajax({
-		        type: "POST",
-		        url: '<?=url("admin/preventivi/geocode_ajax") ?>',
-		        data: data,
-		        dataType: "json",
-		        async: false,
-		        success: success_geocode
-		    });
+		       };
+
+		if (indirizzo != "") {
+			jQuery.ajax({
+			        type: "POST",
+			        url: '<?=url("admin/preventivi/geocode_ajax") ?>',
+			        data: data,
+			        dataType: "json",
+			        async: false,
+			        success: success_geocode
+			    });
+			}
 
 		function success_geocode(result) {
 		  	myLatLng = {lat: result.lat, lng: result.long};
@@ -285,6 +301,7 @@ function initMap() {
     markersArray.push(marker);
     
     // Update lat/long value of div when anywhere in the map is clicked    
+    @if (!$preventivo->exists)
     google.maps.event.addListener(map,'dblclick',function(event) {          
         data = { 
         	'lat': event.latLng.lat(), 
@@ -302,7 +319,7 @@ function initMap() {
        	   jQuery("#localita").val(result);
        	}
     });
-    
+    @endif
     
     // Create new marker on double click event on the map
     google.maps.event.addListener(map,'dblclick',function(event) {
@@ -321,12 +338,6 @@ function initMap() {
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAyCUJ63a6dtvWfdAaqCmLxrWqOombjM8&language=it&callback=initMap"
 async defer></script>
-
-
-
-
-
-
 
 
 @endsection

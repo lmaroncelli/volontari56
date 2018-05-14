@@ -47,8 +47,10 @@
         <!-- general form elements -->
         <div class="box box-primary">
 	  		@if ($relazione->exists)
-	        	<form role="form" action="{{ route('relazioni.update', $relazione->id) }}" method="POST">
-	        	{{ method_field('PUT') }}
+	        	{{-- <form role="form" action="{{ route('relazioni.update', $relazione->id) }}" method="POST">
+	        	{{ method_field('PUT') }} --}}
+	        	<form role="form" action="{{ route('relazioni.index') }}" method="GET">
+				<fieldset disabled="disabled">
 			@else
 	        	<form role="form" action="{{ route('relazioni.store') }}" method="POST">
 	        @endif
@@ -126,19 +128,34 @@
 				<div class="box-footer">
 				<button type="submit" class="btn btn-primary">
 					@if ($relazione->exists)
-						Crea
+						Modifica
 					@else
 						Crea
 					@endif
 				</button>
-				@if ($relazione->exists)
-					@include('admin.admin_inc_delete_button')
-				@endif
 				</div>
+			@if ($relazione->exists)
+				</fieldset>
+        	@endif
         	</form>
       	</div> <!-- /.box -->
       </div><!-- /.col -->
      </div> <!-- /.row -->
+
+ 	 @if ($relazione->exists)
+     <div class="row">
+      	<!-- left column -->
+      	<div class="col-md-6">
+      	  <!-- general form elements -->
+      	  <div class="box-operations">
+				@include('admin.admin_inc_delete_button')
+ 	     		<a href="{{ route('relazioni.stampa', $relazione->id) }}" title="Stampa la relazione di servizio" class="btn btn-success pull-right">
+ 	     			Stampa la relazione di servizio
+ 	     		</a>
+ 	     	</div> <!-- /.box -->
+ 	 	</div><!-- /.col -->
+ 	</div> <!-- /.row -->
+ 	@endif
 @endsection
 
 
@@ -156,6 +173,7 @@
 
 
 <script type="text/javascript">
+	@if (!$relazione->exists)
 	$(function () {
 	    //Initialize Select2 Elements
 	    $('.select2').select2();
@@ -180,6 +198,7 @@
 	    });
 
 	});
+	@endif
 
 	$("#datepicker").datepicker({
 		format: 'dd/mm/yyyy',

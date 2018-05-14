@@ -38,3 +38,14 @@ form#export_ore {
   height: 300px;    
   width: 100%;            
 }          
+
+
+/*
+box per i pulsanti "crea relazione di servizio" e "elimina"
+modifica di un preventivo 
+ */
+div.box-operations {
+	padding: 10px;
+	background-color: #fff;
+	overflow: hidden;
+}

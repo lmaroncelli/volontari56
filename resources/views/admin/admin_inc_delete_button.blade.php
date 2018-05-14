@@ -1,4 +1,4 @@
-<button type="button" onclick="jQuery('#modal-confirm-delete').modal('show');" class="btn btn-danger pull-right"><i class="glyphicon glyphicon-remove"></i> Elimina</button>
+<button type="button" onclick="jQuery('#modal-confirm-delete').modal('show');" class="btn btn-danger pull-left"><i class="glyphicon glyphicon-remove"></i> Elimina</button>
 
 <div class="modal fade" id="modal-confirm-delete" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">

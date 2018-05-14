@@ -13,7 +13,7 @@
 
 
 $router->pattern('query_id', '[0-9]+');
-
+$router->pattern('relazione_id', '[0-9]+');
 
 Auth::routes();
 
@@ -64,13 +64,16 @@ Route::post('admin/preventivi/geocode_ajax', ['uses' => 'Admin\PreventiviControl
 Route::post('admin/preventivi/reverse_geocode_ajax', ['uses' => 'Admin\PreventiviController@reverseGeocodeAjax', 'as' => 'preventivi.reverse_geocode_ajax']);
 
 Route::get('admin/preventivi/{query_id?}', ['uses' => 'Admin\PreventiviController@index', 'as' => 'preventivi.index'])->middleware('log');
-Route::resource('admin/preventivi', 'Admin\PreventiviController')->except(['index'])->middleware('log');
+Route::resource('admin/preventivi', 'Admin\PreventiviController')->except(['index','update'])->middleware('log');
 
 Route::get('admin/relazioni/crea-da-preventivo/{preventivo_id}', ['uses' => 'Admin\RelazioniController@creaDaPreventivo', 'as' => 'relazioni.crea-da-preventivo']);
 Route::post('admin/relazioni/search', ['uses' => 'Admin\RelazioniController@search', 'as' => 'relazioni.search'])->middleware('log');
 Route::post('admin/relazioni/export_ore', ['uses' => 'Admin\RelazioniController@exportOre', 'as' => 'relazioni.export_ore'])->middleware('log');
+Route::get('admin/relazioni/stampa/{relazione_id?}', ['uses' => 'Admin\RelazioniController@stampa', 'as' => 'relazioni.stampa'])->middleware('log');
+
 Route::get('admin/relazioni/{query_id?}', ['uses' => 'Admin\RelazioniController@index', 'as' => 'relazioni.index'])->middleware('log');
-Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create']);
+
+Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create', 'update']);
 
 
 Route::get('admin/pdf', function(){
