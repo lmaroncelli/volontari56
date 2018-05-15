@@ -94,3 +94,7 @@ Dopo 30 gg il bottone verde è disabilitato
 
 
 A quel punto l'admin avrà nelle'elenco dei preventivi quelli andate oltre e potrà abilitarle ondemand. A questo punto la relazione creata dal quel preventivo dovrà essere marcata come creata DOPO TEMPO MASSIMO
+
+
+Elenco dei preventivi ha un campo che ti dice quanti gg mancano ai 30gg dopo l'inizio (questo campo è ordinabile e c'è anche un colore differente per ogni scaglione di avvicinamento)
+Anche per gli admin quando filtrano per associazione i preventivi
