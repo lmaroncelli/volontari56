@@ -1,5 +1,12 @@
 
 
+
+**NEI FILTRI IMPOSTARE DI DEFAULT ANNO CORRENTE (SIA PER LA VISTA CHE PER EXPORT PDF)**
+
+con una select come quella dell'export delle ore di default anno corrente
+
+
+
 1. ~~Nell'elenco delle relazioni di servizio, per ogni relazione, ci deve essere l'ID del preventivo che l'ha generata (ordinabile e ricercabile)~~ 
 
 
@@ -35,3 +42,55 @@
 
 
 
+
+8.2 Nei volontari fare il filtro per associazione con la select box come nei preventivi
+
+
+
+
+
+
+
+
+
+9. Nella home link a 2 repo in cui si caricano file (uploadano solo admin e vedono tutti)
+
+Documenti/ Circolari
+
+titolo, argomento, note , Documenti / Circolari (data_upload) [pdf, doc, docx]
+
+
+10. News/Blog Post (creazione e visualizzazione in home per tutti (solo quelle attive)) 
+
+
+11. Ripristinare il modifica SOLO per admin 
+
+
+12. Possibilità di cancellare "Volontario" (cancellazione logica) [ci deve essere un check "escluso o revocato" sopra le note e nelle note specifico il perché (0 ore, o altro)]; però questo diventa sempre una cancellazione logica (devo memorizzare la data in cui viene escluso per fare il filtro per l'export dei volontari delle associazioni)
+
+e poi filtrare con "escludi cancellati" come per i preventivi e nell'elenco dei volonari avere un riconoscimento per quelli "esclusi o revocati"
+
+
+
+13. Nell'elenco dei volonari quanto filtro per associazione ci deve essere una colonna che mi dice le ore fatte da quel volontario nell'anno corrente 
+
+
+
+
+
+
+
+SOLO ASSOCIAZIONI
+=============================
+
+
+DATA PREVENTIVO
+1) Inserimento/Modifica: non posso mettere date MINORI DI OGGI
+
+
+DATA SERVIZIO (solo ASSOCIAZIONI)
+2) Creazione: ENTRO 30 gg dalla data del preventivo POSSO CREARE IL SERVIZIO (bottone verde)
+Dopo 30 gg il bottone verde è disabilitato
+
+
+A quel punto l'admin avrà nelle'elenco dei preventivi quelli andate oltre e potrà abilitarle ondemand. A questo punto la relazione creata dal quel preventivo dovrà essere marcata come creata DOPO TEMPO MASSIMO
