@@ -6,6 +6,14 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddIndexUsersPassword extends Migration
 {
+
+
+    /**
+     * 
+     * https://laravel-news.com/laravel-5-4-key-too-long-error
+     * 
+     */
+
     /**
      * Run the migrations.
      *
