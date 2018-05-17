@@ -45,6 +45,13 @@
 	  </form>
 	@endif
 
+	@if ($preventivo->trashed())
+		<div class="callout callout-danger text-center">
+			<h4><i class="icon fa fa-ban"></i> Attenzione</h4>
+			<p>Elemento ANNULLATO - nessuna operazione possibile</p>
+		</div>
+	@endif
+
     <div class="row">
       <!-- left column -->
       <div class="col-md-6">
@@ -129,17 +136,19 @@
 					</div>
 
 				</div> <!-- /.box-body -->
+				
+				@if (!$preventivo->trashed())
 				<div class="box-footer">
-	
-				<button type="submit" class="btn btn-primary">
-					@if ($preventivo->exists)
-						Modifica
-					@else
-						Crea
-					@endif
-				</button>
-			
+					<button type="submit" class="btn btn-primary">
+						@if ($preventivo->exists)
+							Modifica
+						@else
+							Crea
+						@endif
+					</button>
 				</div>
+				@endif
+				
 			@if ($preventivo->exists)
 				</fieldset>
         	@endif
@@ -147,7 +156,7 @@
       	</div> <!-- /.box -->
       </div><!-- /.col -->
     </div> <!-- /.row -->
-	@if ($preventivo->exists)
+	@if ($preventivo->exists && !$preventivo->trashed())
 	   <div class="row">
 	     	<!-- left column -->
 	     <div class="col-md-6">

@@ -156,6 +156,8 @@ class RelazioniController extends AdminController
         $assos = Associazione::getForSelect();
         $assos_ore = Associazione::getForSelect($select = 0);
         $no_eliminati = 0;
+
+        $anno_filtro = date("Y");
         
         if ($query_id > 0)
           {
@@ -310,6 +312,26 @@ class RelazioniController extends AdminController
 
           $filtro_pdf[] =  "Preventivi con data dal $dal al $al";
           }
+         elseif($this->request->filled('anno_filtro'))
+          {
+          $dal_c = Carbon::createFromFormat('d/m/Y H i', '01/01/'. $this->request->get('anno_filtro') .' 0 00');
+          $al_c = Carbon::createFromFormat('d/m/Y H i', '31/12/'. $this->request->get('anno_filtro') .' 23 59');
+          $query->where('dalle','>=',$dal_c);
+          $query->where('alle','<=',$al_c);
+          
+          $filtro_pdf[] =  "Preventivi anno ".$this->request->get('anno_filtro');  
+
+          $anno_filtro = $this->request->get('anno_filtro');
+          }
+        else
+          {
+          $dal_c = Carbon::createFromFormat('d/m/Y H i', '01/01/'. $anno_filtro.' 0 00');
+          $al_c = Carbon::createFromFormat('d/m/Y H i', '31/12/'. $anno_filtro.' 23 59');
+          $query->where('dalle','>=',$dal_c);
+          $query->where('alle','<=',$al_c);
+          
+          $filtro_pdf[] =  "Preventivi anno corrente";
+          }
 
 
 
@@ -325,6 +347,11 @@ class RelazioniController extends AdminController
           
           $filtro_pdf[] =  "<i>Escluso gli eliminati</i>";
           }
+
+
+        //////////////////////////////////////////////////////////////////////
+        // ORDINAMENTO PER ORE ??? (array con key=n_ore e value=$relazione) //
+        //////////////////////////////////////////////////////////////////////
 
         $query->orderBy($order_by, $order);
 
@@ -370,14 +397,15 @@ class RelazioniController extends AdminController
 
 
         $columns = [
-            'id' => 'ID',
-            'associazione' => 'Associazione',
-            '' => 'Volontari',
-            'dalle' => 'Data',
-            'note' => 'Note',
-            'rapporto' => 'Rapporto',
-            'auto' => 'Auto',
-            'preventivo_id' => 'Preventivo'
+            'id' => 'ID|Order',
+            'associazione' => 'Associazione|Order',
+            '' => 'Volontari|Order',
+            'dalle' => 'Data|Order',
+            'note' => 'Note|Order',
+            'rapporto' => 'Rapporto|Order',
+            'auto' => 'Auto|Order',
+            'ore' => 'Ore|No_Order',
+            'preventivo_id' => 'Preventivo|Order'
         ];
 
         if ($order_by == 'tblAssociazioni.nome')
@@ -407,7 +435,7 @@ class RelazioniController extends AdminController
         else
           {
           $limit_for_export = 500;
-          return view('admin.relazioni.index', compact('relazioni','assos', 'assos_ore','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'no_eliminati', 'pdf_export_url','pdf_ore_export_url', 'query_id', 'limit_for_export'));
+          return view('admin.relazioni.index', compact('relazioni','assos', 'assos_ore','associazione_id','order_by','order','ordering','columns', 'campo', 'valore', 'dal', 'al', 'anno_filtro', 'no_eliminati', 'pdf_export_url','pdf_ore_export_url', 'query_id', 'limit_for_export'));
           }
     
     }
@@ -457,7 +485,7 @@ class RelazioniController extends AdminController
      */
     public function edit($id)
     {
-      $relazione = Relazione::find($id);
+      $relazione = Relazione::withTrashed()->find($id);
       $volontari = $relazione->associazione()->first()->getVolontariFullName();
 
       $volontari_associati = $relazione->volontari->pluck('id')->toArray();
@@ -530,7 +558,8 @@ class RelazioniController extends AdminController
           ($this->request->has('search') && $this->request->filled('q')) ||  
           ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')) ||
           ($this->request->has('no_eliminati') && $this->request->get('no_eliminati') == 1) ||
-          ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
+          ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0) ||
+          $this->request->has('anno_filtro')
          )
         {
         $query_id = Utility::createQueryStringSearch($this->request);

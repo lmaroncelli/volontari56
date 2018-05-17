@@ -48,7 +48,10 @@
                 <table class="table table-bordered table-hover" id="tbl_relazioni">
                     <thead>
                         <tr>
-                            @foreach ($columns as $field => $name)
+                            @foreach ($columns as $field => $elem)
+                              @php
+                              list($name,$ordinamento) = explode('|', $elem);
+                              @endphp
 
                               @if (empty($field))
 
@@ -56,8 +59,14 @@
                                   {!!$field!!}
                                 </th>
 
-                              @else
+                              @elseif($ordinamento != 'Order')
+                                  
+                                <th class="{{$ordinamento}}">
+                                  {!!$name!!}
+                                </th>
 
+                              @else
+                                
                                 {{-- se sono il campo per cui è ordinato il listing --}}
                                 @if (app('request')->has('order_by') && app('request')->get('order_by') == $field)
                                     @php
@@ -126,6 +135,9 @@
                             </td>
                             <td>
                                 {{$relazione->auto}}
+                            </td>
+                            <td>
+                                {{$relazione->getHours()}}
                             </td>
                             <td>
                                 <button type="button" class="btn btn-success no_link">{{$relazione->preventivo_id}}</button> 

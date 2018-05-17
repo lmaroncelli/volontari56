@@ -81,6 +81,7 @@ class PreventiviController extends AdminController
         $associazione_id = 0;
         $assos = Associazione::getForSelect();
         $no_eliminati = 0;
+        $anno_filtro = date("Y");
 
 
         if ($query_id > 0)
@@ -198,6 +199,26 @@ class PreventiviController extends AdminController
           
           $filtro_pdf[] =  "Preventivi con data dal $dal al $al";
           }
+        elseif($this->request->filled('anno_filtro'))
+          {
+          $dal_c = Carbon::createFromFormat('d/m/Y H i', '01/01/'. $this->request->get('anno_filtro') .' 0 00');
+          $al_c = Carbon::createFromFormat('d/m/Y H i', '31/12/'. $this->request->get('anno_filtro') .' 23 59');
+          $query->where('dalle','>=',$dal_c);
+          $query->where('alle','<=',$al_c);
+          
+          $filtro_pdf[] =  "Preventivi anno ".$this->request->get('anno_filtro');  
+
+          $anno_filtro = $this->request->get('anno_filtro');
+          }
+        else
+          {
+          $dal_c = Carbon::createFromFormat('d/m/Y H i', '01/01/'. $anno_filtro.' 0 00');
+          $al_c = Carbon::createFromFormat('d/m/Y H i', '31/12/'. $anno_filtro.' 23 59');
+          $query->where('dalle','>=',$dal_c);
+          $query->where('alle','<=',$al_c);
+          
+          $filtro_pdf[] =  "Preventivi anno corrente";
+          }
 
         if ( !$this->request->has('no_eliminati') || $this->request->get('no_eliminati') != 1 )
           {
@@ -255,7 +276,7 @@ class PreventiviController extends AdminController
         else
           {
           $limit_for_export = 500;
-          return view('admin.preventivi.index', compact('preventivi','assos', 'associazione_id', 'order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'no_eliminati', 'pdf_export_url','query_id', 'limit_for_export'));
+          return view('admin.preventivi.index', compact('preventivi','assos', 'associazione_id', 'order_by','order','ordering','columns','campo', 'valore', 'dal', 'al', 'anno_filtro', 'no_eliminati', 'pdf_export_url','query_id', 'limit_for_export'));
           }
 
         }
@@ -326,7 +347,7 @@ class PreventiviController extends AdminController
     public function edit($id)
     {
 
-        $preventivo = Preventivo::find($id);
+        $preventivo = Preventivo::withTrashed()->find($id);
         $volontari = $preventivo->associazione()->first()->getVolontariFullName();
         
         $volontari_associati = $preventivo->volontari->pluck('id')->toArray();
@@ -405,7 +426,8 @@ class PreventiviController extends AdminController
           ($this->request->has('search') && $this->request->filled('q')) ||  
           ($this->request->has('cerca_dal') && $this->request->filled('cerca_al')) ||
           ($this->request->has('no_eliminati') && $this->request->get('no_eliminati') == 1) ||
-          ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
+          ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0) ||
+          $this->request->has('anno_filtro')
          )
         {
         $query_id = Utility::createQueryStringSearch($this->request);

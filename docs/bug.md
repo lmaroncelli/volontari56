@@ -1,9 +1,8 @@
 
 
 
-**NEI FILTRI IMPOSTARE DI DEFAULT ANNO CORRENTE (SIA PER LA VISTA CHE PER EXPORT PDF)**
-
-con una select come quella dell'export delle ore di default anno corrente
+**~NEI FILTRI IMPOSTARE DI DEFAULT ANNO CORRENTE (SIA PER LA VISTA CHE PER EXPORT PDF)~**
+~con una select come quella dell'export delle ore di default anno corrente~
 
 
 
@@ -36,9 +35,9 @@ con una select come quella dell'export delle ore di default anno corrente
 
 
 
-7. I preventivi in modifica NON SONO EDITABILI DA NESSUNO (neanche PRVINCIA): si può solo ELIMINARE oppure CREARE NUOVO SERVIZIO
+7. ~I preventivi in modifica NON SONO EDITABILI DA NESSUNO (neanche PRVINCIA): si può solo ELIMINARE oppure CREARE NUOVO SERVIZIO~
 
-8. I servizi in modifica NON SONO EDITABILI DA NESSUNO (neanche PRVINCIA): si può solo elimnare oppure stampare (vedi screen con firme GGV)
+8. ~I servizi in modifica NON SONO EDITABILI DA NESSUNO (neanche PRVINCIA): si può solo elimnare oppure stampare (vedi screen con firme GGV)~
 
 
 
@@ -72,7 +71,7 @@ e poi filtrare con "escludi cancellati" come per i preventivi e nell'elenco dei 
 
 
 
-13. Nell'elenco dei volonari quanto filtro per associazione ci deve essere una colonna che mi dice le ore fatte da quel volontario nell'anno corrente 
+13. ~Nell'elenco delle Relazioni ci deve essere una colonna che mi dice le ore fatte~
 
 
 

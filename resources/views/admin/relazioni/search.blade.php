@@ -24,6 +24,19 @@
             <i class="fa fa-caret-down"></i>
           </button>
        </div>
+       <div class="col-lg-2 col-sm-3">
+         <select class="form-control" name="anno_filtro" id="anno_filtro">
+          @php
+            $anno_corrente = (int)date('Y');
+          @endphp
+           @for ($y = -2; $y <2 ; $y++)
+             @php
+               $val = $anno_corrente + $y;
+             @endphp
+             <option value="{{ $val }}" @if ($anno_filtro == $val) selected="selected" @endif>{{$val}}</option>
+           @endfor
+         </select>
+       </div>
        <div class="col-sm-2">
         <div class="checkbox">
           <label>
@@ -49,7 +62,7 @@
             <a href="{{ url('admin/relazioni') }}" title="annulla filtri" class="btn btn-warning"><i class="fa fa-close"></i></a>
         </div>
         <div class="col-sm-3">
-          @if ($query_id > 0 && $relazioni->total() > 0 && $relazioni->total() <= $limit_for_export)
+          @if ($relazioni->total() > 0 && $relazioni->total() <= $limit_for_export)
             <a href="{{$pdf_export_url}}" title="Esporta" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
             <a href="{{$pdf_export_url}}=l" title="Esporta Landscape" target="_blank" class="btn btn-danger" style="width: 80px"><i class="fa fa-file-pdf-o"></i></a>
           @endif

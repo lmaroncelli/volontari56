@@ -25,6 +25,12 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 	cursor: auto!important;
 }
 
+
+th.No_Order {
+    color: #72afd2;
+    font-weight: bold!important;
+}
+
 .no_link:hover {
 	cursor: default!important;
 }

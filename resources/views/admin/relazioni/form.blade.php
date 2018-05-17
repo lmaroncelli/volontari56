@@ -41,6 +41,13 @@
 	  </form>
 	@endif
 
+	@if ($relazione->trashed())
+		<div class="callout callout-danger text-center">
+			<h4><i class="icon fa fa-ban"></i> Attenzione</h4>
+			<p>Elemento ANNULLATO - nessuna operazione possibile</p>
+		</div>
+	@endif
+
     <div class="row">
       <!-- left column -->
       <div class="col-md-6">
@@ -125,15 +132,19 @@
 					</div>
 
 				</div> <!-- /.box-body -->
+				
+				@if (!$relazione->trashed())
 				<div class="box-footer">
-				<button type="submit" class="btn btn-primary">
-					@if ($relazione->exists)
-						Modifica
-					@else
-						Crea
-					@endif
-				</button>
+					<button type="submit" class="btn btn-primary">
+						@if ($relazione->exists)
+							Modifica
+						@else
+							Crea
+						@endif
+					</button>
 				</div>
+				@endif
+
 			@if ($relazione->exists)
 				</fieldset>
         	@endif
@@ -142,7 +153,7 @@
       </div><!-- /.col -->
      </div> <!-- /.row -->
 
- 	 @if ($relazione->exists)
+ 	 @if ($relazione->exists && !$relazione->trashed())
      <div class="row">
       	<!-- left column -->
       	<div class="col-md-6">
