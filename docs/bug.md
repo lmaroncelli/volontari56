@@ -9,7 +9,7 @@
 1. ~~Nell'elenco delle relazioni di servizio, per ogni relazione, ci deve essere l'ID del preventivo che l'ha generata (ordinabile e ricercabile)~~ 
 
 
-2. La stampa elenco volontari (di un'associazione) vuole la data: stampa cmq i volonari associati a quell'associazione ADESSSO, oppure si deve tenere traccia di tutti i volontari passati e prendere quelli risalenti a quel periodo ?
+2(T). La stampa elenco volontari (di un'associazione) vuole la data: stampa cmq i volonari associati a quell'associazione ADESSSO, oppure si deve tenere traccia di tutti i volontari passati e prendere quelli risalenti a quel periodo ?
 
 
 3. ~~Nei filtri di ricerca dare la possibilità di escludere quelli cancellati~~
@@ -23,7 +23,7 @@
 3.3 ~~Logging error system~~
 
 
-4. verifica file .env PRIMA DI ANDARE IN PRODUZIONE
+4(T). verifica file .env PRIMA DI ANDARE IN PRODUZIONE
 
 
 5. ~~nei seeder importare anche il flag per cancellato nelle relazioni e nei servizi~~
@@ -42,7 +42,7 @@
 
 
 
-8.2 Nei volontari fare il filtro per associazione con la select box come nei preventivi
+8.2(T) Nei volontari fare il filtro per associazione con la select box come nei preventivi
 
 
 
@@ -52,20 +52,20 @@
 
 
 
-9. Nella home link a 2 repo in cui si caricano file (uploadano solo admin e vedono tutti)
+9(T). Nella home link a 2 repo in cui si caricano file (uploadano solo admin e vedono tutti)
 
 Documenti/ Circolari
 
 titolo, argomento, note , Documenti / Circolari (data_upload) [pdf, doc, docx]
 
 
-10. News/Blog Post (creazione e visualizzazione in home per tutti (solo quelle attive)) 
+10(T). News/Blog Post (creazione e visualizzazione in home per tutti (solo quelle attive)) 
 
 
-11. Ripristinare il modifica SOLO per admin 
+11(T). Ripristinare il modifica SOLO per admin 
 
 
-12. Possibilità di cancellare "Volontario" (cancellazione logica) [ci deve essere un check "escluso o revocato" sopra le note e nelle note specifico il perché (0 ore, o altro)]; però questo diventa sempre una cancellazione logica (devo memorizzare la data in cui viene escluso per fare il filtro per l'export dei volontari delle associazioni)
+12(T). Possibilità di cancellare "Volontario" (cancellazione logica) [ci deve essere un check "escluso o revocato" sopra le note e nelle note specifico il perché (0 ore, o altro)]; però questo diventa sempre una cancellazione logica (devo memorizzare la data in cui viene escluso per fare il filtro per l'export dei volontari delle associazioni)
 
 e poi filtrare con "escludi cancellati" come per i preventivi e nell'elenco dei volonari avere un riconoscimento per quelli "esclusi o revocati"
 
@@ -79,7 +79,7 @@ e poi filtrare con "escludi cancellati" come per i preventivi e nell'elenco dei 
 
 
 
-SOLO ASSOCIAZIONI
+SOLO ASSOCIAZIONI(T)
 =============================
 
 

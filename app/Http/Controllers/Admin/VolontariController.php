@@ -6,6 +6,7 @@ use App\Associazione;
 use App\Http\Controllers\Admin\AdminController;
 use App\Utility;
 use App\Volontario;
+use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,11 +27,42 @@ class VolontariController extends AdminController
     public function index($query_id = 0)
     {
 
+    $filtro_pdf = [];
+    $filtro_pdf[] = "<b>Filtri applicati:</b>";
+    $export_pdf = 0;
+    /////////////////////////////////////////////////////////////////
+    // verifico se l'url ha un paramentro "pdf" nella query string //
+    /////////////////////////////////////////////////////////////////
+    if($this->request->has('pdf'))
+      {
+      $export_pdf = 1;
+      }
+     
+
+    if(!$export_pdf)
+      {
+      // SE NON HO QUERY STRING 
+      if ($this->request->fullUrl() == $this->request->url()) 
+        {
+        $pdf_export_url = $this->request->url() .'?pdf'; 
+        } 
+      else 
+        {
+        $pdf_export_url = $this->request->fullUrl() .'&pdf'; 
+        }    
+      }
+    else
+      {
+      $pdf_export_url = $this->request->fullUrl();
+      }
+
 
     //  ricerca
     //
     $campo = "";
     $valore = "";
+    $assos = Associazione::getForSelect();
+    $no_eliminati = 0;
 
     if ($query_id > 0)
       {
@@ -39,13 +71,12 @@ class VolontariController extends AdminController
 
       }
 
-
-
     /////////////////
     // ordinamento //
     /////////////////
     $order_by='cognome';
     $order = 'asc';
+    $associazione_id = 0;
     $ordering = 0;
 
     if ($this->request->filled('order_by'))
@@ -100,11 +131,25 @@ class VolontariController extends AdminController
 
       }
 
+    if( $this->request->has('associazione_id') && $this->request->get('associazione_id') != 0 )
+      {
+      $associazione_id = $this->request->get('associazione_id');
+      $query->where('tblVolontari.associazione_id', $associazione_id);
 
-    $volontari = $query
-                  ->orderBy($order_by, $order)
-                  ->paginate(15);
+      $filtro_pdf[] =  "Associazione " . Associazione::find($associazione_id)->nome;
+      }
 
+
+    $query->orderBy($order_by, $order);
+    
+    if($export_pdf)
+      {
+      $volontari = $query->get();
+      }
+    else
+      {
+      $volontari = $query->paginate(15);
+      }
 
 
     $columns = [
@@ -120,7 +165,25 @@ class VolontariController extends AdminController
       $order_by = "associazione";
       }
 
-    return view('admin.volontari.index', compact('volontari','order_by','order','ordering', 'columns','campo', 'valore'));
+
+    if($export_pdf)
+      {
+      $filtro_pdf[] =  "<b>N° volontari " .$volontari->count()."</b>";
+      $chunked_element = 10;
+      $pdf = PDF::loadView('admin.volontari.pdf', compact('volontari','chunked_element','columns','filtro_pdf'));
+
+      if($this->request->get('pdf') == 'l')
+        {
+        $pdf->setPaper('a4', 'landscape');
+        }
+        
+      return $pdf->stream();
+      }
+    else
+      {
+      $limit_for_export = 500;
+      return view('admin.volontari.index', compact('volontari', 'assos', 'associazione_id', 'order_by','order','ordering', 'columns','campo', 'valore', 'no_eliminati', 'pdf_export_url','query_id', 'limit_for_export'));
+      }
     }
 
     /**
@@ -219,7 +282,10 @@ class VolontariController extends AdminController
 
     public function search()
       {
-      if ($this->request->has('search') && $this->request->filled('q'))
+      if (
+        $this->request->has('search') && $this->request->filled('q') ||
+        ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
+        )
         {
         $query_id = Utility::createQueryStringSearch($this->request);
         return redirect("admin/volontari/$query_id");
