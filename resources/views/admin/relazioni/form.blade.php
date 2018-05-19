@@ -54,10 +54,13 @@
         <!-- general form elements -->
         <div class="box box-primary">
 	  		@if ($relazione->exists)
-	        	{{-- <form role="form" action="{{ route('relazioni.update', $relazione->id) }}" method="POST">
-	        	{{ method_field('PUT') }} --}}
-	        	<form role="form" action="{{ route('relazioni.index') }}" method="GET">
-				<fieldset disabled="disabled">
+	        	@isAdmin
+		        	<form role="form" action="{{ route('relazioni.update', $relazione->id) }}" method="POST">
+		        	{{ method_field('PUT') }}
+				@else
+		        	<form role="form" action="{{ route('relazioni.index') }}" method="GET">
+					<fieldset disabled="disabled">
+				@endisAdmin
 			@else
 	        	<form role="form" action="{{ route('relazioni.store') }}" method="POST">
 	        @endif
@@ -142,11 +145,14 @@
 							Crea
 						@endif
 					</button>
+					<a href="{{ url('admin/relazioni') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
 				</div>
 				@endif
 
 			@if ($relazione->exists)
+				@isAssoc
 				</fieldset>
+				@endisAssoc
         	@endif
         	</form>
       	</div> <!-- /.box -->
@@ -184,31 +190,31 @@
 
 
 <script type="text/javascript">
-	@if (!$relazione->exists)
-	$(function () {
-	    //Initialize Select2 Elements
-	    $('.select2').select2();
+	@if (!$relazione->exists || ($relazione->exists && Auth::user()->hasRole('admin')))
+		$(function () {
+		    //Initialize Select2 Elements
+		    $('.select2').select2();
 
-	    $('#associazione_id').change(function(){
-	    	var associazione_id = this.value;
-	    	var relazione_id = '{{$relazione->id}}';
-	    	jQuery.ajax({
-	    	        url: '<?=url("admin/preventivi/carica_volontari_ajax") ?>',
-	    	        type: "post",
-	    	        async: false,
-	    	        data : { 
-	    	               'associazione_id': associazione_id, 
-	    	               'relazione_id': relazione_id,
-	    	               '_token': jQuery('input[name=_token]').val()
-	    	               },
-	    	       	success: function(data) {
-	    	         jQuery("#volontari_select").html(data);
-	    	         $('.select2').select2();
-	    	       }
-	    	 });
-	    });
+		    $('#associazione_id').change(function(){
+		    	var associazione_id = this.value;
+		    	var relazione_id = '{{$relazione->id}}';
+		    	jQuery.ajax({
+		    	        url: '<?=url("admin/preventivi/carica_volontari_ajax") ?>',
+		    	        type: "post",
+		    	        async: false,
+		    	        data : { 
+		    	               'associazione_id': associazione_id, 
+		    	               'relazione_id': relazione_id,
+		    	               '_token': jQuery('input[name=_token]').val()
+		    	               },
+		    	       	success: function(data) {
+		    	         jQuery("#volontari_select").html(data);
+		    	         $('.select2').select2();
+		    	       }
+		    	 });
+		    });
 
-	});
+		});
 	@endif
 
 	$("#datepicker").datepicker({

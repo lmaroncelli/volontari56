@@ -58,10 +58,13 @@
         <!-- general form elements -->
         <div class="box box-primary">
 	  		@if ($preventivo->exists)
-	        	{{-- <form role="form" action="{{ route('preventivi.update', $preventivo->id) }}" method="POST">
-	        	{{ method_field('PUT') }} --}}
-	        	<form role="form" action="{{ route('preventivi.index') }}" method="GET">
-	        	<fieldset disabled="disabled">
+	  			@isAdmin
+		        	<form role="form" action="{{ route('preventivi.update', $preventivo->id) }}" method="POST">
+		        	{{ method_field('PUT') }}
+	        	@else
+		        	<form role="form" action="{{ route('preventivi.index') }}" method="GET">
+		        	<fieldset disabled="disabled">
+	        	@endisAdmin
 			@else
 	        	<form role="form" action="{{ route('preventivi.store') }}" method="POST">
 	        @endif
@@ -146,11 +149,14 @@
 							Crea
 						@endif
 					</button>
+					<a href="{{ url('admin/preventivi') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
 				</div>
 				@endif
 				
 			@if ($preventivo->exists)
+				@isAssoc
 				</fieldset>
+				@endisAssoc
         	@endif
         	</form>
       	</div> <!-- /.box -->
@@ -209,8 +215,8 @@
 	}
 
 	
-	@if (!$preventivo->exists)
-	
+	@if (!$preventivo->exists || ($preventivo->exists && Auth::user()->hasRole('admin')) )
+		
 		$(function () {
 		    //Initialize Select2 Elements
 		    $('.select2').select2();

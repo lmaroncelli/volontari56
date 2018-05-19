@@ -463,7 +463,7 @@ class RelazioniController extends AdminController
      */
     public function store(Request $request)
     {
-        //
+    
     }
 
     /**
@@ -503,7 +503,35 @@ class RelazioniController extends AdminController
      */
     public function update(Request $request, $id)
     {
-        //
+      /**
+        dd($request->all());
+       * array:10 [▼
+      "_method" => "PUT"
+      "_token" => "AtmFe2Xaai2OX0jy4katiWadltQFr6e9rhQFk2Qn"
+      "associazione_id" => "5"
+      "volontari" => array:3 [▶]
+      "data" => "06/03/2018"
+      "dal" => "06:30"
+      "al" => "12:00"
+      "note" => "-- NEW NOTE -- vigilanza venatoria in convenzione"
+      "rapporto" => "-- NEW RAPPORTO --vigilanza venatoria comuni di Gemmano , Mondaino , Montefiore  - non riscontrate anomalie-"
+      "auto" => "EL -- NEW AUTO --panda gev EH 272FL km. percorsi 95"
+    ]
+       */
+
+      $relazione = Relazione::find($id);
+      $dalle = $request->get('data'). ' ' . $request->get('dal');
+      $alle = $request->get('data'). ' ' . $request->get('al');
+      $relazione->associazione_id = $request->get('associazione_id');
+      $relazione->dalle = Utility::getCarbonDateTime($dalle);
+      $relazione->alle = Utility::getCarbonDateTime($alle);
+      $relazione->note = $request->get('note');
+      $relazione->rapporto = $request->get('rapporto');
+      $relazione->auto = $request->get('auto');
+      $relazione->save();
+      $relazione->volontari()->sync($request->get('volontari'));
+
+      return redirect("admin/relazioni");
     }
 
     /**
