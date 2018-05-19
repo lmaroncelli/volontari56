@@ -21,6 +21,7 @@ class CreateVolontari extends Migration
             $table->text('nota')->nullable()->default(null);
             $table->string('registro')->default('');
             $table->date('data_nascita')->nullable()->default(null);
+            $table->softDeletes();
             $table->timestamps();
         });
 

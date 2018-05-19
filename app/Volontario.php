@@ -4,15 +4,18 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Volontario extends Model
 	{
+
+  use SoftDeletes;
   
   protected $table = 'tblVolontari';
 
   protected $guarded = ['id'];
 
-  protected $dates = ['data_nascita'];
+  protected $dates = ['data_nascita','deleted_at'];
 
 
 

@@ -1,5 +1,8 @@
 @extends('layouts.grafica.app')
 
+@section('titolo')
+    Volontari
+@endsection
 
 @section('header_css')
 <!-- DataTables -->
@@ -11,7 +14,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Elenco Volontari
+            Elenco Volontari <span class="badge bg-blue">{{$volontari->total()}}</span>
         </h1>
         <ol class="breadcrumb">
             <li>
@@ -54,6 +57,7 @@
                 <table class="table table-bordered table-hover" id="tbl_volontari">
                     <thead>
                         <tr>
+                            <th></th>
                             @foreach ($columns as $field => $name)
                               
                                 @if (empty($field))
@@ -107,7 +111,14 @@
                     </thead>
                     <tbody>
                         @foreach ($volontari as $volontario)
-                        <tr>
+                        <tr @if ($volontario->trashed()) class="deleted" @endif>
+                            <td>
+                              @if ($volontario->trashed())
+                                <a href="#" class="question" data-toggle="tooltip" title="{{$volontario->nota}}">Eliminato</a>
+                              @else
+                                &nbsp;
+                              @endif
+                            </td>
                             @foreach ($columns as $field => $name)
                                 <td>
                                     @if ($field == 'cognome' || $field == 'nome')

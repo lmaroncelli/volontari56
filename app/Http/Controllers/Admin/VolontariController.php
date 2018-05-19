@@ -140,6 +140,21 @@ class VolontariController extends AdminController
       }
 
 
+
+    if ( !$this->request->has('no_eliminati') || $this->request->get('no_eliminati') != 1 )
+      {
+      $query->withTrashed();
+
+      $filtro_pdf[] =  "<i>Compreso gli eliminati</i>";
+      }
+    else
+      {
+      $no_eliminati = $this->request->get('no_eliminati');
+      
+      $filtro_pdf[] =  "<i>Escluso gli eliminati</i>";
+      }
+
+
     $query->orderBy($order_by, $order);
     
     if($export_pdf)
@@ -240,7 +255,7 @@ class VolontariController extends AdminController
      */
     public function edit($id)
     {
-        $volontario = Volontario::find($id);
+        $volontario = Volontario::withTrashed()->find($id);
         $assos = Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
 
         $assos = ['0' => 'Seleziona...'] + $assos;
@@ -257,14 +272,24 @@ class VolontariController extends AdminController
      */
     public function update(Request $request, $id)
     {
-        $volontario = Volontario::find($id);
-        /////////////////////////////////////////////////////////////////////
-        // ho inserito il salvataggio della data come Carbon in un mutator //
-        /////////////////////////////////////////////////////////////////////
-        $volontario->fill($request->all());
-        $volontario->save();
+    $volontario = Volontario::find($id);
+    /////////////////////////////////////////////////////////////////////
+    // ho inserito il salvataggio della data come Carbon in un mutator //
+    /////////////////////////////////////////////////////////////////////
+    $volontario->fill($request->except('elimina'));
+    $volontario->save();
 
-        return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
+    if ($request->filled('elimina') && $request->get('elimina') == 1) 
+      {
+      $volontario->delete();
+      return redirect('admin/volontari')->with('status', 'Volontario eliminato!');
+      } 
+    else 
+      {
+
+      return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
+      }
+        
     }
 
     /**
@@ -275,7 +300,11 @@ class VolontariController extends AdminController
      */
     public function destroy($id)
     {
-
+    $volontario = Volontario::find($id);
+    // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
+    // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
+    $volontario->delete();
+    return redirect('admin/preventivi')->with('status', 'Preventivo eliminato!');
     }
 
 

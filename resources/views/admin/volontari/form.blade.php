@@ -28,17 +28,26 @@
 
 
 @section('content')
+	
+
+	@if ($volontario->trashed())
+		<div class="callout callout-danger text-center">
+			<h4><i class="icon fa fa-ban"></i> Attenzione</h4>
+			<p>Elemento ANNULLATO - nessuna operazione possibile</p>
+		</div>
+	@endif
+
     <div class="row">
       <!-- left column -->
       <div class="col-md-6">
         <!-- general form elements -->
         <div class="box box-primary">
-	  		@if ($volontario->exists)
+	  			@if ($volontario->exists)
 	        	<form role="form" action="{{ route('volontari.update', $volontario->id) }}" method="POST">
 	        	{{ method_field('PUT') }}
-			@else
+					@else
 	        	<form role="form" action="{{ route('volontari.store') }}" method="POST">
-	        @endif
+	        	@endif
 	        	{!! csrf_field() !!}
 				<div class="box-body">
 					
@@ -66,10 +75,19 @@
 					  </div>
 					  <!-- /.input group -->
 					</div>
-					
+					@if ($volontario->exists && !$volontario->trashed())
+					<div class="form-group">
+		            <div class="checkbox">
+		              <label>
+		                <input type="checkbox" id="elimina" name="elimina" value="1" > Elimina
+		              </label>
+		            </div>
+					</div>
+					@endif
+
 					<div class="form-group">
 					  <label for="nota">Nota</label>
-					  <textarea class="form-control" rows="3" placeholder="Nota ..." name="nota" id="nota"></textarea>
+					  <textarea class="form-control" rows="3" placeholder="Nota ..." name="nota" id="nota">@if(old('nota') != ''){{ old('nota') }}@else{{ $volontario->nota }}@endif</textarea>
 					</div>
 
 					<div class="form-group">
@@ -81,6 +99,8 @@
 					  </select>
 					</div>
 				</div> <!-- /.box-body -->
+
+				@if (!$volontario->trashed())
 				<div class="box-footer">
 				<button type="submit" class="btn btn-primary">
 					@if ($volontario->exists)
@@ -90,6 +110,7 @@
 					@endif
 				</button>
 				</div>
+				@endif
         	</form>
       	</div> <!-- /.box -->
       </div><!-- /.col -->
@@ -109,8 +130,12 @@
 
 <script type="text/javascript">
 	$(function () {
-	    //Initialize Select2 Elements
-	    //$('.select2').select2();
+	    $("#elimina").change(function(){
+	    	if($(this).is(":checked")) {
+	    		alert("ATTENZIONE: specifica nelle note se il volontario è escluso o revocato e poi clicca il pulsante 'Modifica' per Eliminare questo elemento !");
+	    		$("#nota").focus();
+	    	};
+	    });
 	});
 
 	//Date picker

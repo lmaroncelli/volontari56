@@ -36,6 +36,11 @@ th.No_Order {
 }
 
 
+a.question:hover {
+	cursor: help!important;
+}
+
+
 form#export_ore {
 	padding-bottom: 30px;
 }
