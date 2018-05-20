@@ -126,6 +126,8 @@
 
 <!-- bootstrap datepicker -->
 <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
+
 
 
 <script type="text/javascript">

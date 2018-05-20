@@ -313,7 +313,8 @@ class VolontariController extends AdminController
       {
       if (
         $this->request->has('search') && $this->request->filled('q') ||
-        ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)
+        ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)||
+        ($this->request->has('no_eliminati') && $this->request->get('no_eliminati') == 1) 
         )
         {
         $query_id = Utility::createQueryStringSearch($this->request);

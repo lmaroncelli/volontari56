@@ -110,6 +110,8 @@
 
 <!-- bootstrap datepicker -->
 <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
+
 
 <!-- bootstrap time picker -->
 <script src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
