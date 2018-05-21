@@ -236,6 +236,7 @@
 
 	$("#datepicker").datepicker({
 		language: "it",
+		startDate: '0d', // non posso mettere date MINORI DI OGGI
 		format: 'dd/mm/yyyy',
 	  	autoclose: true,
 	});

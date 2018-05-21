@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PreventivoRequest extends FormRequest
@@ -27,6 +28,12 @@ class PreventivoRequest extends FormRequest
                "associazione_id" => ["integer", "min:1"],
                "volontari" => ["required"],
                "data" => ["required", "date_format:d/m/Y"],
+               "dal" => function($attribute, $value, $fail) {
+                        if ( Carbon::createFromFormat('d/m/Y H:i', $this->get('data'). ' ' .$value)->lt(Carbon::now()) ) 
+                          {
+                          return $fail('Il preventivo NON PUÒ avere un inizio PRECEDENTE ad ORA');
+                          }
+                      },
                ];  
 
         return $rules;
