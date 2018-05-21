@@ -4,8 +4,10 @@ namespace App;
 
 use App\Scopes\PreventiviOwnedByScope;
 use App\Scopes\SoftDeletedScope;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Preventivo extends Model
 {
@@ -20,6 +22,8 @@ class Preventivo extends Model
     protected $dates = ['dalle','alle','deleted_at'];
 
 
+
+    const GG_VALIDO = 30;
 
     /**
      * The "booting" method of the model.
@@ -74,6 +78,61 @@ class Preventivo extends Model
         
         }
       
+      }
+
+
+    /**
+     * [isInTime ENTRO 30 gg dalla data del preventivo POSSO CREARE IL SERVIZIO (bottone verde)
+     * Dopo 30 gg il bottone verde è disabilitato]
+     * @return boolean [description]
+     */
+    public function isInTime()
+      {
+
+      // oggi-creazione <= 30 
+      // oggi <= 30+creazione
+      $creazione_plus_delay = $this->dalle->addDays(self::GG_VALIDO);
+      return Carbon::today()->lte($creazione_plus_delay);
+    
+      }
+
+
+    public function displayInTime()
+      {
+
+      // oggi-creazione <= 30 
+      // oggi <= 30+creazione
+      
+      // dalla data di creazione tolgo ore/minuti e secondi
+      $data_dalle = Carbon::createFromFormat('Y-m-d',$this->dalle->toDateString());
+      
+      $creazione_plus_delay = $data_dalle->addDays(self::GG_VALIDO);
+      
+
+      $gg_mancanti = Carbon::today()->diffInDays($creazione_plus_delay, false);
+
+
+      if($gg_mancanti > 1)
+        {
+        return $gg_mancanti . " giorni"; 
+        }
+      if($gg_mancanti == 1)
+        {
+        return "domani";
+        }
+      elseif ($gg_mancanti == 0) 
+        {
+        return "oggi";
+        }
+      elseif($gg_mancanti == -1)
+        {
+        return abs($gg_mancanti)." giorno fa";
+        }
+      else
+        {
+        return abs($gg_mancanti)." giorni fa";
+        }
+
       }
 			
 }

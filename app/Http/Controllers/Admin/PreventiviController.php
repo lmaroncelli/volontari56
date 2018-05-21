@@ -97,6 +97,7 @@ class PreventiviController extends AdminController
         $order_by='id';
         $order = 'desc';
         $ordering = 0;
+        $restore_scaduto = 0;
 
         if ($this->request->filled('order_by'))
           {
@@ -108,6 +109,11 @@ class PreventiviController extends AdminController
         if ($order_by == 'associazione')
           {
           $order_by = "tblAssociazioni.nome";
+          }
+        elseif ($order_by == 'scaduto') 
+          {
+          $order_by = "dalle";
+          $restore_scaduto = 1;
           }
 
 
@@ -247,6 +253,7 @@ class PreventiviController extends AdminController
 
 
         $columns = [
+            'scaduto' => 'Chiudere entro',
             'id' => 'ID',
             'associazione' => 'Associazione',
             '' => 'Volontari',
@@ -255,10 +262,16 @@ class PreventiviController extends AdminController
             'motivazioni' => 'Motivazione',
         ];
 
+
         if ($order_by == 'tblAssociazioni.nome')
-        {
-        $order_by = "associazione";
-        }        
+          {
+          $order_by = "associazione";
+          }
+        elseif ($order_by == 'dalle' && $restore_scaduto) 
+          {
+          $order_by = "scaduto";
+          }
+
 
         if($export_pdf)
           {
