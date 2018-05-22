@@ -169,9 +169,18 @@
 	     	 <!-- general form elements -->
 	     	 <div class="box-operations">
 	     		@include('admin.admin_inc_delete_button')
-	     		<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" title="Crea una relazione di servizio" class="btn btn-success pull-right">
-	     			Crea una relazione di servizio
-	     		</a>
+	     		
+	     		@if (Auth::user()->hasRole('admin') && !$preventivo->isInTime())
+	     			<a href="" class="btn btn-app">Il preventivo è chiuso ! Vuoi aprirlo ? <i class="fa fa-unlock"></i></a>
+	     		@endif
+
+	     		@if (Auth::user()->hasRole('associazione') && !$preventivo->isInTime())
+	     			<button type="button" class="btn btn-success pull-right disabled">Crea una relazione di servizio</button>
+	     		@else
+		     		<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" title="Crea una relazione di servizio" class="btn btn-success pull-right">
+		     			Crea una relazione di servizio
+		     		</a>
+	     		@endif
 		     </div> <!-- /.box -->
 		 </div><!-- /.col -->
 		</div> <!-- /.row -->
