@@ -133,8 +133,13 @@ class PreventiviController extends AdminController
           $campo = $this->request->get('ricerca_campo');
           $valore = $this->request->get('q');
 
+          if ($campo == 'id') 
+            {
+            $query->where('tblPreventivi.id','=', $valore);
 
-          if ($campo == 'nome_asso')
+            $filtro_pdf[] =  "Preventivo ID " .$valore;
+            }
+          elseif ($campo == 'nome_asso')
             {
             $campo = 'tblAssociazioni.nome';
             $query->where($campo, 'LIKE', "%$valore%");
@@ -173,7 +178,7 @@ class PreventiviController extends AdminController
               
               $filtro_pdf[] =  "Elenco volonari contiene " .$valore;
             }
-
+          
           if ($campo == 'tblAssociazioni.nome')
             {
             $campo = 'nome_asso';
@@ -186,6 +191,11 @@ class PreventiviController extends AdminController
         
           }
 
+        /////////////////////////////////////////////////
+        // SE CERCO PER ID NON METTO GLI ALTRI VINCOLI //
+        /////////////////////////////////////////////////
+        if ($campo != 'id')
+        { 
         if( $this->request->has('associazione_id') && $this->request->get('associazione_id') != 0 )
           {
           $associazione_id = $this->request->get('associazione_id');
@@ -238,6 +248,7 @@ class PreventiviController extends AdminController
           
           $filtro_pdf[] =  "<i>Escluso gli eliminati</i>";
           }
+        }
 
 
         $query->orderBy($order_by, $order);
@@ -341,14 +352,19 @@ class PreventiviController extends AdminController
     }
 
     /**
-     * Display the specified resource.
+     * Apre il preventivo
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function apri($id)
     {
-        //
+    $preventivo = Preventivo::withTrashed()->find($id);
+    $preventivo->aperto = Carbon::today();
+    $preventivo->save();
+
+    return redirect('admin/preventivi')->with('status', 'Preventivo ID '. $id .' riaperto correttamente!');
+
     }
 
     /**

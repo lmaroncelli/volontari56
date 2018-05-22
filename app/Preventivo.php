@@ -89,6 +89,11 @@ class Preventivo extends Model
     public function isInTime()
       {
 
+      if (self::isAperto()) 
+        {
+        return true;
+        }
+
       // oggi-creazione <= 30 
       // oggi <= 30+creazione
       $creazione_plus_delay = $this->dalle->addDays(self::GG_VALIDO);
@@ -109,6 +114,11 @@ class Preventivo extends Model
 
     public function displayInTime()
       {
+
+      if (self::isAperto()) 
+        {
+        return '<button type="button" class="btn bg-navy btn-flat">Riaperto</button>';
+        }
 
       // oggi-creazione <= 30 
       // oggi <= 30+creazione

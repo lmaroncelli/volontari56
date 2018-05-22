@@ -171,7 +171,9 @@
 	     		@include('admin.admin_inc_delete_button')
 	     		
 	     		@if (Auth::user()->hasRole('admin') && !$preventivo->isInTime())
-	     			<button type="button" class="btn bg-navy btn-flat">Il preventivo è chiuso ! Vuoi aprirlo ?  	<i class="fa fa-unlock"></i></button>
+	     			<a href="{{ route('preventivi.apri', $preventivo->id) }}" class="btn bg-navy btn-flat" id="apri_preventivo">Il preventivo è chiuso ! Vuoi aprirlo ?  	<i class="fa fa-unlock"></i></a>
+	     		@elseif($preventivo->isAperto()) 
+        			<button type="button" class="btn bg-navy btn-flat">Riaperto</button>
 	     		@endif
 
 	     		@if (Auth::user()->hasRole('associazione') && !$preventivo->isInTime())
@@ -237,6 +239,11 @@
 
 		    $('#associazione_id').change(function(){
 		    	caricaVolontari(this.value);
+		    });
+
+
+		    $("#apri_preventivo").click(function(e){
+				return window.confirm("Il preventivo verrà riaperto e sarà possibile creare la relazione. Sei sicuro ?")
 		    });
 
 		});
