@@ -104,7 +104,9 @@ class Preventivo extends Model
       // oggi <= 30+creazione
       
       // dalla data di creazione tolgo ore/minuti e secondi
-      $data_dalle = Carbon::createFromFormat('Y-m-d',$this->dalle->toDateString());
+      list($day, $month, $year) = explode('/', $this->dalle->format('d/m/Y'));
+
+      $data_dalle = Carbon::create($year, $month, $day, 0, 0, 0);
       
       $creazione_plus_delay = $data_dalle->addDays(self::GG_VALIDO);
       
@@ -118,19 +120,19 @@ class Preventivo extends Model
         }
       if($gg_mancanti == 1)
         {
-        return "domani";
+        return "<span class='domani'>domani</span>";
         }
       elseif ($gg_mancanti == 0) 
         {
-        return "oggi";
+        return "<span class='oggi'>oggi</span>";
         }
       elseif($gg_mancanti == -1)
         {
-        return abs($gg_mancanti)." giorno fa";
+        return '<span class="red1">'. abs($gg_mancanti)." giorno fa </span>";
         }
       else
         {
-        return abs($gg_mancanti)." giorni fa";
+        return '<span class="red2">'. abs($gg_mancanti)." giorni fa </span>";
         }
 
       }

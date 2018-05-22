@@ -112,7 +112,7 @@
                         @foreach ($preventivi as $preventivo)
                         <tr @if ($preventivo->trashed()) class="deleted" @endif>
                             <td>
-                                {{$preventivo->displayInTime()}}
+                                {!!$preventivo->displayInTime()!!}
                             </td>
                             <td>
                                 <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
