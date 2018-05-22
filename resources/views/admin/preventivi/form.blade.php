@@ -171,7 +171,7 @@
 	     		@include('admin.admin_inc_delete_button')
 	     		
 	     		@if (Auth::user()->hasRole('admin') && !$preventivo->isInTime())
-	     			<a href="" class="btn btn-app">Il preventivo è chiuso ! Vuoi aprirlo ? <i class="fa fa-unlock"></i></a>
+	     			<button type="button" class="btn bg-navy btn-flat">Il preventivo è chiuso ! Vuoi aprirlo ?  	<i class="fa fa-unlock"></i></button>
 	     		@endif
 
 	     		@if (Auth::user()->hasRole('associazione') && !$preventivo->isInTime())

@@ -87,4 +87,7 @@ div.box-operations {
 	padding: 10px;
 	background-color: #fff;
 	overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
 }

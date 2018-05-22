@@ -19,7 +19,7 @@ class Preventivo extends Model
 
     protected $guarded = ['id'];
 
-    protected $dates = ['dalle','alle','deleted_at'];
+    protected $dates = ['dalle','alle','aperto','deleted_at'];
 
 
 
@@ -94,6 +94,16 @@ class Preventivo extends Model
       $creazione_plus_delay = $this->dalle->addDays(self::GG_VALIDO);
       return Carbon::today()->lte($creazione_plus_delay);
     
+      }
+
+
+    /**
+     * [isAperto è aperto se c'è una data nella colonna "aperto" e QUINDI NON E' NULLA (default)]
+     * @return boolean [description]
+     */
+    public function isAperto()
+      {
+      return !is_null($this->aperto); 
       }
 
 
