@@ -1,6 +1,11 @@
 @extends('layouts.grafica.app')
 
 
+@section('titolo')
+    Relazione
+@endsection
+
+
 
 @section('header_css')
 	<!-- bootstrap datepicker -->

@@ -37,6 +37,19 @@
           </ul>
         </li>
 
+
+        {{-- POSTS --}}
+        <li class="treeview @if (in_array('posts',Request::segments())) active @endif">
+          <a href="#"><i class="fa fa-link"></i> <span>Posts</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ route('posts.index') }}">Elenco</a></li>
+            <li><a href="{{ route('posts.create') }}">Nuovo</a></li>
+          </ul>
+        </li>
       @endif
       
       {{-- PREVENTIVI --}}

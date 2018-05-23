@@ -55,6 +55,9 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('admin/volontari/{query_id?}', ['uses' => 'Admin\VolontariController@index', 'as' => 'volontari.index']);
     Route::resource('admin/volontari', 'Admin\VolontariController', ['except' => ['index']]);
 
+    Route::post('admin/posts/slug_ajax', ['uses' => 'Admin\PostsController@slugAjax']);
+    Route::resource('admin/posts', 'Admin\PostsController');
+
 
 });
 

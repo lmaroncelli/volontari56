@@ -50,4 +50,10 @@ class User extends Authenticatable
           return $this->hasOne('App\Associazione','user_id','id');
       }
 
+
+    public function posts()
+      { 
+          return $this->hasOne('App\Post','user_id','id');
+      }
+
 }
