@@ -11,7 +11,6 @@
 @endsection
 
 
-
 @section('briciole')
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
@@ -79,7 +78,7 @@
 					</div>
 
 				</div> <!-- /.box-body -->
-
+				
 				@if (!$post->trashed())
 				<div class="box-footer">
 				<button type="submit" class="btn btn-primary">
@@ -104,6 +103,65 @@
 
 <!-- Select2 -->
 <script src="{{ asset('js/select2.full.min.js') }}"></script>
+
+
+<script src='{{ asset('tinymce/tinymce.min.js') }}'></script>
+
+<script>
+tinymce.init({
+selector: '#testo',
+theme: 'modern',
+convert_urls: false,
+   width: 600,
+   height: 300,
+   plugins: [
+     'advlist autolink link image lists preview hr anchor pagebreak spellchecker',
+     'searchreplace wordcount code insertdatetime media nonbreaking',
+     'save table contextmenu paste'
+   ],
+   toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons',
+
+
+    // without images_upload_url set, Upload tab won't show up
+    images_upload_url: '{{ route('posts.upload') }}',
+
+    // override default upload handler to simulate successful upload
+        images_upload_handler: function (blobInfo, success, failure) {
+            var xhr, formData;
+          
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', '{{ route('posts.upload') }}');
+
+            var token = '{{ csrf_token() }}';
+            xhr.setRequestHeader("X-CSRF-Token", token);
+          
+            xhr.onload = function() {
+                var json;
+            
+                if (xhr.status != 200) {
+                    failure('HTTP Error: ' + xhr.status);
+                    return;
+                }
+            
+                json = JSON.parse(xhr.responseText);
+            
+                if (!json || typeof json.location != 'string') {
+                    failure('Invalid JSON: ' + xhr.responseText);
+                    return;
+                }
+            
+                success(json.location);
+            };
+          
+            formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+          
+            xhr.send(formData);
+        },
+
+});
+</script>
 
 
 <script type="text/javascript">

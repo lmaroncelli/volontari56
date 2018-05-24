@@ -56,6 +56,7 @@ Route::group(['middleware' => ['admin']], function () {
     Route::resource('admin/volontari', 'Admin\VolontariController', ['except' => ['index']]);
 
     Route::post('admin/posts/slug_ajax', ['uses' => 'Admin\PostsController@slugAjax']);
+    Route::any('admin/posts/upload', ['uses' => 'Admin\PostsController@upload', 'as' => 'posts.upload']);
     Route::resource('admin/posts', 'Admin\PostsController');
 
 

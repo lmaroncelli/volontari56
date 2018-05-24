@@ -135,3 +135,17 @@ To make the above process possible, an image upload plugin (such as EasyImage) m
 e ancora per il build 
 
 > npm run build
+
+
+
+
+
+*TinyMCE*
+https://www.tinymce.com/download/custom-builds/
+
+
+Ho costruito un build con i plugin che servono
+
+https://www.codexworld.com/tinymce-upload-image-to-server-using-php/
+
+https://www.youtube.com/watch?v=vBzg0Us5MDk

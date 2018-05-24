@@ -188,4 +188,24 @@ class PostsController extends Controller
       }
 
 
+    public function upload()
+      {
+      
+      if($this->request->hasfile('file')) 
+        { 
+          $file = $this->request->file('file');
+          $extension = $file->getClientOriginalExtension(); // getting image extension
+          $filename = $file->hashName();
+          $file->move('images/posts/', $filename);
+          echo json_encode( array('location' => url('images/posts/'.$filename)) );
+        }
+      else
+        {
+        // Notify editor that the upload failed
+        header("HTTP/1.1 500 Server Error");
+        }
+    
+      }
+
+
 }

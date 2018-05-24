@@ -27,6 +27,7 @@
 
     <link href="{{ asset('css/AdminLTE.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
