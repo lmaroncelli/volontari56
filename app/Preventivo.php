@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Preventivo extends Model
 {
@@ -154,6 +155,29 @@ class Preventivo extends Model
         {
         return '<span class="red2">'. abs($gg_mancanti)." giorni fa </span>";
         }
+
+      }
+
+
+    public function scopeScadutoDaGiorni($query, $gg)
+      {
+      /*
+      SQL: CHE SCADONO IERI
+      SELECT p.* FROM `tblPreventivi` p
+      WHERE DATE_ADD(date_format(p.dalle,'%Y-%m-%d'),INTERVAL 30 DAY) = DATE_SUB(DATE(NOW()), INTERVAL 1 DAY )
+
+      SQL: CHE SCADONO OGGI
+      SELECT p.* FROM `tblPreventivi` p
+      WHERE DATE_ADD(date_format(p.dalle,'%Y-%m-%d'),INTERVAL 30 DAY) = DATE_SUB(DATE(NOW()), INTERVAL 0 DAY ) 
+       
+      SQL: CHE SCADONO DOMANI
+      SELECT p.* FROM `tblPreventivi` p
+      WHERE DATE_ADD(date_format(p.dalle,'%Y-%m-%d'),INTERVAL 30 DAY) = DATE_SUB(DATE(NOW()), INTERVAL -1 DAY )
+       */
+      
+      DB::table('tblPreventivi')               
+      ->whereRaw("DATE_ADD(date_format(p.dalle,'%Y-%m-%d'),INTERVAL ? DAY) = DATE_SUB(DATE(NOW()), INTERVAL ? DAY )", [self::GG_VALIDO, $gg]);
+     
 
       }
 			

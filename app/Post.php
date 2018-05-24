@@ -24,4 +24,10 @@ class Post extends Model
 		}
 
 
+	public function scopeFeatured($query)
+	  {
+	  return $query->where('featured',1);
+	  }
+
+
 }
