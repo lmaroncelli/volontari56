@@ -67,7 +67,7 @@
 					<div class="form-group">
 		            <div class="checkbox">
 		              <label>
-		                <input type="checkbox" id="featured" name="featured" value="1" > Featured
+		                <input type="checkbox" id="featured" name="featured" value="1" @if(old('featured') != '' || $post->featured) checked="checked" @endif> Featured
 		              </label>
 		            </div>
 					</div>
@@ -89,6 +89,7 @@
 						Crea
 					@endif
 				</button>
+				<a href="{{ url('admin/posts') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
 				</div>
 				@endif
         	</form>

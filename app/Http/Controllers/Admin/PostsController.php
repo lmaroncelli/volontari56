@@ -83,6 +83,7 @@ class PostsController extends Controller
                 'autore' => 'Autore',
                 'created_at' => 'Data di creazione',
                 'updated_at' => 'Data di modifica',
+                'featured' => 'Featured'
         ];
 
         if ($order_by == 'users.name')
@@ -140,7 +141,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+      $post = Post::withTrashed()->find($id);
+
+      return view('admin.posts.form', compact('post'));
     }
 
     /**
@@ -152,7 +155,10 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $post = Post::find($id);
+      $post->update($request->all());
+
+      return redirect('admin/posts')->with('status', 'Post aggiornato correttamente!');
     }
 
     /**

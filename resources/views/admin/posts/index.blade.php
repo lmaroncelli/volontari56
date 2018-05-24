@@ -133,14 +133,22 @@
                                           {{$post->$field->name}}
                                         @endif
                                     @elseif($field == 'created_at' || $field == 'updated_at')
-                                        {{$post->$field->format('d/m/Y H:i')}}
+                                        {{$post->$field->timezone('Europe/Rome')->format('d/m/Y H:i')}}
+                                    @elseif($field == 'featured')
+
+                                      @if ($post->$field)
+                                        <button type="button" class="btn btn-warning btn-flat" data-toggle="tooltip" title="Visible nella Dashboard"><i class="fa fa-star"></i></button>
+                                      @else
+                                        &nbsp;
+                                      @endif
+                                      
                                     @else
                                         {{$post->$field}}
                                     @endif
                                 </td>
                             @endforeach
                             <td>
-                              <button type="button" class="btn btn-danger btn-flat delete_post" data-post-id="{{$post->id}}"><i class="fa fa-trash-o"></i></button>
+                              <button type="button" class="btn btn-danger btn-flat delete_post pull-right" data-post-id="{{$post->id}}"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
                         @endforeach

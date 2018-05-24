@@ -91,3 +91,47 @@ The defaults configuration settings are set in config/dompdf.php. Copy this file
 
 You can still alter the dompdf options in your code before generating the pdf using this command:
 > PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+
+
+
+
+
+*CKEditor5*
+
+Bisogna installare il plugin per upload delle immagini ed i plugin sono distribuiti come pacchetti npm:
+
+Therefore, assuming that you want to customize the classic editor build you need to:
+
+Clone the build repository.
+Install the plugin package.
+Add it to the build configuration.
+Bundle the build.
+
+
+>git clone -b stable https://github.com/ckeditor/ckeditor5-build-classic.git
+
+>cd ckeditor5-build-classic
+
+>npm install
+
+Now, install the plugin package:
+
+>npm install --save @ckeditor/ckeditor5-image
+
+
+Edit the build-config.js file to add your plugin to the list of plugins which will be included in the build and to add your feature’s button to the toolbar:
+
+Finally, bundle the build:
+
+> npm run build
+
+
+Poi devo installare il plugin EasyImage
+
+To make the above process possible, an image upload plugin (such as EasyImage) must be available. Such plugin will handle both the upload and URL returning steps in the above workflow.
+
+> npm install --save @ckeditor/ckeditor5-easy-image
+
+e ancora per il build 
+
+> npm run build
