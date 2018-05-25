@@ -159,7 +159,7 @@ class Preventivo extends Model
       }
 
 
-    public function scopeScadutoDaGiorni($query, $gg)
+    public function scopeScadutoDaGiorni($query, $gg = 0)
       {
       /*
       SQL: CHE SCADONO IERI
@@ -175,9 +175,18 @@ class Preventivo extends Model
       WHERE DATE_ADD(date_format(p.dalle,'%Y-%m-%d'),INTERVAL 30 DAY) = DATE_SUB(DATE(NOW()), INTERVAL -1 DAY )
        */
       
-      DB::table('tblPreventivi')               
-      ->whereRaw("DATE_ADD(date_format(p.dalle,'%Y-%m-%d'),INTERVAL ? DAY) = DATE_SUB(DATE(NOW()), INTERVAL ? DAY )", [self::GG_VALIDO, $gg]);
+      /**
+       *
+       * dalle + 30gg = oggi -1
+       * dalle = oggi -1 -30
+       * 
+       */
+      
      
+      $gg_total = $gg - self::GG_VALIDO; 
+
+     return $query->whereNotNull('dalle')->where(DB::raw("date_format(dalle,'%Y-%m-%d')"), '=', Carbon::today()->addDays($gg_total)->toDateString() );
+
 
       }
 			

@@ -33,7 +33,7 @@ Route::match(['get', 'post'], 'register', function(){
 
 
 
-Route::get('admin/home', 'Admin\HomeController@index')->name('home');
+Route::get('admin/home', 'Admin\HomeController@index')->name('home')->middleware('log');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ROUTE ACCESSIBILI SOLO AL PROFILO ADMIN: oltre a dover essere loggato perché estende AdminController, è in un  //

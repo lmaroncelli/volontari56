@@ -36,11 +36,22 @@ class HomeController extends AdminController
         /////////////////////////////////////////////////////////////////////////
         // se sono ASSOCIAZIONE: elenco Preventivi che scadono oggi e/o domani //
         /////////////////////////////////////////////////////////////////////////
+        
+        $preventivi_arr['oggi'] = Preventivo::scadutoDaGiorni(0)->get();
+        $preventivi_arr['domani'] = Preventivo::scadutoDaGiorni(1)->get();
+        $preventivi_arr['dopodomani'] = Preventivo::scadutoDaGiorni(2)->get();
 
-        $preventivi = Preventivo::first();
 
+        $columns = [
+            'scaduto' => 'Chiudere entro',
+            'id' => 'ID',
+            'associazione' => 'Associazione',
+            '' => 'Volontari',
+            'dalle' => 'Data',
+            'localita' => 'Località',
+            'motivazioni' => 'Motivazione',
+        ];
 
-
-        return view('admin/dashboard');
+        return view('admin.dashboard.dashboard', compact('columns','preventivi_arr', 'posts'));
     }
 }
