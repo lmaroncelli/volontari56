@@ -130,7 +130,9 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+    $post = Post::withTrashed()->find($id);
+
+    return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -156,7 +158,11 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
       $post = Post::find($id);
-      $post->update($request->all());
+      $post->fill($request->all());
+
+      $post->featured = $request->filled('featured');
+      
+      $post->save();
 
       return redirect('admin/posts')->with('status', 'Post aggiornato correttamente!');
     }

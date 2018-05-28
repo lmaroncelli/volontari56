@@ -30,7 +30,7 @@ class HomeController extends AdminController
         // elenco dei POST featured //
         //////////////////////////////
 
-        $posts = Post::featured()->get();
+        $posts = Post::featured()->orderBy('created_at', 'desc')->get();
 
 
         /////////////////////////////////////////////////////////////////////////

@@ -66,7 +66,7 @@
 					<div class="form-group">
 		            <div class="checkbox">
 		              <label>
-		                <input type="checkbox" id="featured" name="featured" value="1" @if(old('featured') != '' || $post->featured) checked="checked" @endif> Featured
+		                <input type="checkbox" id="featured" name="featured" value="1" @if(old('featured') != '' || $post->featured) checked="checked" @endif> In primo piano
 		              </label>
 		            </div>
 					</div>

@@ -7,10 +7,12 @@
 
 @section('content')
 <div class="container">
+
+
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header"><h3 class="box-title">Preventivi in scadenza</h3></div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -46,8 +48,46 @@
                     </div>
                     </div>
                 </div>
-            </div>
-        </div>
+        </div> {{-- \.box --}}
+        </div> {{-- \ col-xs-12 --}}
     </div>
+
+    
+    @if ($posts->count())
+
+    <div class="row justify-content-center">
+    <div class="col-xs-12">
+      <div class="box box-primary">
+        <div class="box-header"><h3 class="box-title">Post in primo piano &nbsp; <button type="button" class="btn btn-warning btn-flat" data-toggle="tooltip" title="Visible nella Dashboard"><i class="fa fa-star"></i></button></h3></div>
+      </div>
+    </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xs-12">
+          @foreach ($posts as $post)
+          <div class="box box-widget">
+              <div class="box-header">
+                <div class="user-block">
+                  <span class="username"><a href="#">{{$post->autore->name}}</a></span>
+                  @php
+                    Carbon\Carbon::setLocale('it'); /* in un middleware every request!!*/
+                  @endphp
+                  <span class="description">Pubblicato - {{$post->created_at->diffForHumans()}}</span>
+                </div>
+              </div>{{-- box-header --}}
+              <div class="attachment-block clearfix" style="padding-left: 20px;">
+                  <h4 class="attachment-heading"><a href="{{ route('posts.show', $post->id) }}">{{$post->titolo}}</a></h4>
+                  <div class="attachment-text">
+                    {{ $post->getExcerpt() }} ... <a href="{{ route('posts.show', $post->id) }}">more</a>
+                  </div>
+                  <!-- /.attachment-text -->
+              </div>
+          </div> {{-- box-widget --}}
+          @endforeach
+        </div> {{--  \ col --}}
+    </div> {{--  \.row --}}
+
+    @endif
 </div>
 @endsection

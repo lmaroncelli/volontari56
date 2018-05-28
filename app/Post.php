@@ -24,6 +24,22 @@ class Post extends Model
 		}
 
 
+
+
+
+	public function getExcerpt($len = 20)
+		{
+		$testo_txt = strip_tags($this->testo);
+
+		if (strlen($testo_txt) > $len) {
+			return str_limit(strip_tags($this->testo), 20, ' (...)');
+		} else {
+			return $testo_txt;
+		}
+		
+		}
+
+
 	public function scopeFeatured($query)
 	  {
 	  return $query->where('featured',1);
