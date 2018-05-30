@@ -73,7 +73,7 @@
 					@endif
 
 					<div class="form-group">
-					  <label for="nota">Testo</label>
+					  <label for="testo">Testo</label>
 					  <textarea class="form-control" rows="3" placeholder="Testo ..." name="testo" id="testo">@if(old('testo') != ''){{ old('testo') }}@else{{ $post->testo }}@endif</textarea>
 					</div>
 

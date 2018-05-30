@@ -13,7 +13,7 @@
       @if(Auth::user()->hasRole('admin'))
 
         <li class="treeview @if (in_array('associazioni',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-link"></i> <span>Associazioni</span>
+          <a href="#"><i class="fa fa-users"></i> <span>Associazioni</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -26,7 +26,7 @@
 
       {{-- VOLONTARI --}}
         <li class="treeview @if (in_array('volontari',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-link"></i> <span>Volontari</span>
+          <a href="#"><i class="fa fa-user"></i> <span>Volontari</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -40,7 +40,7 @@
 
         {{-- POSTS --}}
         <li class="treeview @if (in_array('posts',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-link"></i> <span>Posts</span>
+          <a href="#"><i class="fa fa-bullhorn"></i> <span>Posts</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -50,11 +50,26 @@
             <li><a href="{{ route('posts.create') }}">Nuovo</a></li>
           </ul>
         </li>
+
+        {{-- FILE UPLOAD --}}
+        <li class="treeview @if (in_array('documenti',Request::segments())) active @endif">
+          <a href="#"><i class="fa fa-folder-open-o"></i> <span>Documenti</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ route('documenti.index') }}">Elenco</a></li>
+            <li><a href="{{ route('documenti.form-upload') }}">Nuovo</a></li>
+          </ul>
+        </li>
+
+
       @endif
       
       {{-- PREVENTIVI --}}
       <li class="treeview @if (in_array('preventivi',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-link"></i> <span>Preventivi</span>
+        <a href="#"><i class="fa fa-send-o"></i> <span>Preventivi</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -67,7 +82,7 @@
 
       {{-- RELAZIONI --}}
       <li class="treeview @if (in_array('relazioni',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-link"></i> <span>Relazioni</span>
+        <a href="#"><i class="fa fa-envelope-o"></i> <span>Relazioni</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -76,6 +91,9 @@
           <li><a href="{{ route('relazioni.index') }}">Elenco</a></li>
         </ul>
       </li>
+      
+      
+
     </ul>
     <!-- /.sidebar-menu -->
 
