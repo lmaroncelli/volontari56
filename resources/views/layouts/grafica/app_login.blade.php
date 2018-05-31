@@ -30,7 +30,7 @@
     
     <div class="login-box">
       <div class="login-logo">
-        <a href="#"><b>Admin</b>LTE</a>
+        <a href="#"><b>Admin</b>GGVV</a>
       </div>
     
         @yield('content')
