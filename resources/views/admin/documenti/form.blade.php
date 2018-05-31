@@ -35,7 +35,7 @@
     <!-- general form elements -->
     <div class="box box-primary">
 		@if ($doc->exists)
-    		<form role="form" action="{{ route('documenti.modifica', $doc->id) }}" method="POST">
+    		<form role="form" action="{{ route('documenti.aggiorna', $doc->id) }}" method="POST">
 		@else
 			<form action="{{ route('documenti.upload') }}" method="POST" enctype="multipart/form-data">
     	@endif
@@ -45,18 +45,19 @@
 			@if (!$doc->exists)
 				<div class="form-group">
 				  <label for="titolo">File</label>
-				  <input type="file" class="form-control" name="file" id="file" placeholder="file" required="required">
+				  <input type="file" class="form-control" name="fileToUpload" id="fileToUpload" required="required" aria-describedby="fileHelp">
+                  <small id="fileHelp" class="form-text text-muted">Please upload a valid image file. Size of image should not be more than 2MB.</small>
 				</div>
 			@endif
 
 			<div class="form-group">
 			  <label for="titolo">Titolo</label>
-			  <input type="titolo" class="form-control" name="titolo" id="titolo" placeholder="titolo" value="{{$doc->titolo}}" required="required">
+			  <input type="titolo" class="form-control" name="titolo" id="titolo" placeholder="titolo" value="{{ old('titolo') != '' ?  old('titolo') : $doc->titolo}}" required="required">
 			</div>
 
 			<div class="form-group">
 			  <label for="argomento">Argomento</label>
-			  <input type="argomento" class="form-control" name="argomento" id="argomento" placeholder="argomento" value="{{$doc->argomento}}" required="required">
+			  <input type="argomento" class="form-control" name="argomento" id="argomento" placeholder="argomento" value="{{ old('argomento') != '' ?  old('argomento') : $doc->argomento}}" required="required">
 			</div>
 			
 			<div class="form-group">

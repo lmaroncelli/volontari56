@@ -96,14 +96,14 @@
 							  <div class="input-group-addon">
 							    <i class="fa fa-calendar"></i>
 							  </div>
-							  <input type="text" name="data" @if ($relazione->exists) value="{{$relazione->dalle->format('d/m/Y')}}" @endif class="form-control pull-right" id="datepicker">
+							  <input type="text" name="data" @if ($relazione->exists) value="{{ old('data') != '' ? old('data') : $relazione->dalle->format('d/m/Y')}}"  @else value="{{ old('data')}}" @endif class="form-control pull-right" id="datepicker">
 							</div>
 						</div>
 						
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Dalle:</label>
 							<div class="input-group">
-							  <input type="text" name="dal" @if ($relazione->exists) value="{{$relazione->dalle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="dal" @if ($relazione->exists) value="{{ old('dal') != '' ? old('dal') : $relazione->dalle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -114,7 +114,7 @@
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Alle:</label>
 							<div class="input-group">
-							  <input type="text" name="al" @if ($relazione->exists) value="{{$relazione->alle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="al" @if ($relazione->exists) value="{{old('al') != ''  ? old('al') : $relazione->alle->format('H:i')}}" @endif class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -126,17 +126,17 @@
 
 					<div class="form-group">
 					  <label for="note">Note</label>
-					  <textarea class="form-control" rows="3" placeholder="Note ..." name="note" id="note">{{$relazione->note}}</textarea>
+					  <textarea class="form-control" rows="3" placeholder="Note ..." name="note" id="note">@if(old('note') != ''){{ old('note') }}@else{{ $relazione->note }}@endif</textarea>
 					</div>
 
 					<div class="form-group">
 					  <label for="rapporto">Rapporto</label>
-					  <textarea class="form-control" rows="3" placeholder="Rapporto ..." name="rapporto" id="rapporto">{{$relazione->rapporto}}</textarea>
+					  <textarea class="form-control" rows="3" placeholder="Rapporto ..." name="rapporto" id="rapporto">@if(old('rapporto') != ''){{ old('rapporto') }}@else{{ $relazione->rapporto }}@endif</textarea>
 					</div>
 
 					<div class="form-group">
 					  <label for="auto">Auto</label>
-					  <textarea class="form-control" rows="3" placeholder="Auto ..." name="auto" id="auto">{{$relazione->auto}}</textarea>
+					  <textarea class="form-control" rows="3" placeholder="Auto ..." name="auto" id="auto">@if(old('auto') != ''){{ old('auto') }}@else{{ $relazione->auto }}@endif</textarea>
 					</div>
 
 				</div> <!-- /.box-body -->

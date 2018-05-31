@@ -20,6 +20,8 @@ class CreateTableDocumenti extends Migration
             $table->string('argomento')->default('');
             $table->text('note')->nullable()->default(null);
             $table->enum('tipo',['documenti','circolari'])->default('documenti');
+            $table->string('file')->default('');
+            $table->string('ext')->default('');
             $table->timestamps();
         });
     }

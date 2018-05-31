@@ -53,12 +53,12 @@
 					
 					<div class="form-group">
 					  <label for="titolo">Titolo</label>
-					  <input type="titolo" class="form-control" name="titolo" id="titolo" placeholder="titolo" value="{{$post->titolo}}" required="required">
+					  <input type="titolo" class="form-control" name="titolo" id="titolo" placeholder="titolo" value="{{ old('titolo') != '' ?  old('titolo') : $post->titolo}}" required="required">
 					</div>
 					
 					<div class="form-group">
 					  <label for="slug">Slug</label>
-					  <input type="slug" class="form-control" name="slug" id="slug" placeholder="slug" value="{{$post->slug}}" required="required">
+					  <input type="slug" class="form-control" name="slug" id="slug" placeholder="slug" value="{{ old('slug') != '' ?  old('slug') : $post->slug}}" required="required">
 					</div>
 
 				

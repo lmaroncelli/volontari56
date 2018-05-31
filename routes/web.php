@@ -15,7 +15,7 @@
 $router->pattern('query_id', '[0-9]+');
 $router->pattern('relazione_id', '[0-9]+');
 $router->pattern('preventivo_id', '[0-9]+');
-$router->pattern('file_id', '[0-9]+');
+$router->pattern('documento_id', '[0-9]+');
 
 Auth::routes();
 
@@ -62,8 +62,11 @@ Route::group(['middleware' => ['admin']], function () {
 
     Route::get('admin/documenti/upload', ['uses' => 'Admin\DocumentiController@formUpload', 'as' => 'documenti.form-upload']);
     Route::post('admin/documenti/upload', ['uses' => 'Admin\DocumentiController@upload', 'as' => 'documenti.upload']);
-    Route::post('admin/documenti/modifica/{file_id}', ['uses' => 'Admin\DocumentiController@modifica', 'as' => 'documenti.modifica']);
-    Route::get('admin/documenti/index', ['uses' => 'Admin\DocumentiController@index', 'as' => 'documenti.index']);
+    Route::get('admin/documenti/modifica/{documento_id}', ['uses' => 'Admin\DocumentiController@modifica', 'as' => 'documenti.modifica']);
+    Route::post('admin/documenti/aggiorna/{documento_id}', ['uses' => 'Admin\DocumentiController@aggiorna', 'as' => 'documenti.aggiorna']);
+    Route::post('admin/documenti/elimina/{documento_id}', ['uses' => 'Admin\DocumentiController@elimina', 'as' => 'documenti.elimina']);
+
+    Route::get('admin/documenti', ['uses' => 'Admin\DocumentiController@index', 'as' => 'documenti.index']);
 
 
 });

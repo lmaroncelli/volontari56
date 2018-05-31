@@ -199,7 +199,6 @@
         $(".delete_post").click(function(){
 
             var postId = $(this).data("post-id");
-            console.log('postId = '+postId);
             if (window.confirm('Sei sicuro di voler cancellare il post?')) {
                 $("#form_"+postId).submit();
             }
