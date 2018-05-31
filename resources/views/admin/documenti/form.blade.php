@@ -49,6 +49,15 @@
                   <small id="fileHelp" class="form-text text-muted">Please upload a valid image file. Size of image should not be more than 2MB.</small>
 				</div>
 			@endif
+	
+			<div class="form-group" id="associazioni_select">
+				<label for="associazioni">Associazioni:</label>
+				<select multiple="multiple" name="associazioni[]" id="associazioni" class="form-control select2" data-placeholder="Seleziona le associazioni" style="width: 100%;">
+				@foreach($assos as $id => $nome)
+					<option value="{{$id}}" @if ( in_array($id, $associazioni_associate) || collect(old('associazioni'))->contains($id) ) selected="selected" @endif>{{$nome}}</option>
+				@endforeach
+				</select>
+			</div>
 
 			<div class="form-group">
 			  <label for="titolo">Titolo</label>
@@ -89,4 +98,22 @@
 	</div> <!-- /.box -->
 </div><!-- /.col -->
 </div> <!-- /.row -->
+@endsection
+
+
+
+@section('script_footer')
+
+<!-- Select2 -->
+<script src="{{ asset('js/select2.full.min.js') }}"></script>
+
+
+<script type="text/javascript">
+		$(function () {
+		    //Initialize Select2 Elements
+		    $('.select2').select2();
+		});
+</script>
+
+
 @endsection

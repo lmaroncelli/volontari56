@@ -66,10 +66,10 @@ Route::group(['middleware' => ['admin']], function () {
     Route::post('admin/documenti/aggiorna/{documento_id}', ['uses' => 'Admin\DocumentiController@aggiorna', 'as' => 'documenti.aggiorna']);
     Route::post('admin/documenti/elimina/{documento_id}', ['uses' => 'Admin\DocumentiController@elimina', 'as' => 'documenti.elimina']);
 
-    Route::get('admin/documenti', ['uses' => 'Admin\DocumentiController@index', 'as' => 'documenti.index']);
-
 
 });
+
+Route::get('admin/documenti', ['uses' => 'Admin\DocumentiController@index', 'as' => 'documenti.index']);
 
 Route::any('admin/preventivi/carica_volontari_ajax', 'Admin\PreventiviController@caricaVolontariAjax');
 Route::post('admin/preventivi/search', ['uses' => 'Admin\PreventiviController@search', 'as' => 'preventivi.search'])->middleware('log');

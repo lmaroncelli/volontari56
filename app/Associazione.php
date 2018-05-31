@@ -66,6 +66,13 @@ class Associazione extends Model
 		}
 
 
+	public function documenti()
+	  {
+	  return $this->belongsToMany('App\Documento', 'tblAssociazioniDocumenti', 'associazione_id', 'documento_id');
+	  }
+
+
+
 
 	public function getVolontariFullName()
 		{
