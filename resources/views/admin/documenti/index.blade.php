@@ -41,12 +41,14 @@
         <h4>
             Nessuna documento presente!
         </h4>
+        @isAdmin
         <p>
             Creane un
             <a href="{{ route('documenti.form-upload') }}" title="Crea docuemto">
                 adesso
             </a>
         </p>
+        @endisAdmin
     </div>
     @else
     
@@ -113,14 +115,17 @@
                               @endif
 
                             @endforeach
+                            @isAdmin
                             <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            @endisAdmin
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($documenti as $documento)
                         <tr>
                             <td>
-                                <a class="documento" href="{{ route('documenti.modifica', $documento->id) }}" title="Modifica documento">
+                                <a class="documento" href="{{asset('storage').'/'.$documento->file}}" title="Scarica documento" target="_blank">
                                 {!!$documento->titolo!!}
                                 </a>
                             </td>
@@ -136,9 +141,16 @@
                             <td>
                                 {{ $documento->created_at->diffForHumans() }} 
                             </td>
+                            @isAdmin
+                            <td>
+                                <a class="documento" href="{{ route('documenti.modifica', $documento->id) }}" title="Modifica documento">
+                                 <button type="button" class="btn btn-primary btn-flat pull-right"><i class="fa fa-edit"></i></button>
+                                </a>
+                            </td>
                             <td>
                               <button type="button" class="btn btn-danger btn-flat delete_doc pull-right" data-doc-id="{{$documento->id}}"><i class="fa fa-trash"></i></button>
                             </td>
+                            @endisAdmin
                         </tr>
                         @endforeach
                     </tbody>

@@ -56,14 +56,17 @@ class DocumentiController extends AdminController
     {
 
       $doc_array = $request->except(['fileToUpload','associazioni']);
-      $ext = request()->fileToUpload->clientExtension();
+      $ext = $request->fileToUpload->getClientOriginalExtension();
       $doc_array['ext'] = $ext;
-      $fileName = "file_".time().'.'.$ext; 
-      $request->fileToUpload->storeAs('documenti',$fileName);
+      $fileName = time()."_".$request->fileToUpload->getClientOriginalName(); 
+      $request->fileToUpload->storeAs('public',$fileName);
 
       $doc_array['file'] = $fileName;
+
       $doc = Documento::create($doc_array);
-      $doc->associazioni()->sync($request->get('associazioni'));
+
+      $associazioni = is_null($request->get('associazioni')) ? 0 : $request->get('associazioni');
+      $doc->associazioni()->sync($associazioni);
 
 
       return redirect('admin/documenti')->with('status', 'Documento creato correttamente!');
@@ -74,7 +77,10 @@ class DocumentiController extends AdminController
     {
     $doc = Documento::find($documento_id);
     $doc->update($request->except('associazioni'));
-    $doc->associazioni()->sync($request->get('associazioni'));
+    
+    $associazioni = is_null($request->get('associazioni')) ? 0 : $request->get('associazioni');
+
+    $doc->associazioni()->sync($associazioni);
 
     return redirect('admin/documenti')->with('status', 'Documento modificato correttamente!');
     }
@@ -104,30 +110,32 @@ class DocumentiController extends AdminController
           'created_at' => 'Caricato il'
       ];
     
-    $available_ids = [];
 
     if(Auth::user()->hasRole('associazione'))
       {
+      $available_ids = [];
 
       foreach (Documento::all() as $doc) 
         {
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // anche se nella tabella di associazione c'è il record con associazione_id = 0, la relazione mi da [] perché NON ESISTE un'associazione con id = 0 //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         $associazioni_ids = $doc->associazioni->pluck('id')->toArray();
-        if (in_array(0,$associazioni_ids) || in_array(Auth::user()->associazione()->id,$associazioni_ids)) 
+        if (empty($associazioni_ids) || in_array(Auth::user()->associazione->id,$associazioni_ids)) 
           {
           $available_ids[] = $doc->id;
           }
-        }    
+        }
 
+
+      $documenti = Documento::whereIn('id',$available_ids)->orderBy($order_by, $order)->paginate(15);
+      
+      }
+    else
+      {
+      $documenti = Documento::orderBy($order_by, $order)->paginate(15);
       }
       
-      if (count($available_ids)) 
-        {
-        $documenti = Documento::whereIn('id',$available_ids)->orderBy($order_by, $order)->paginate(15);
-        } 
-      else 
-        {
-        $documenti = Documento::orderBy($order_by, $order)->paginate(15);
-        }
       
     
 
@@ -142,7 +150,7 @@ class DocumentiController extends AdminController
       $file = $documento->file;
       $documento->delete();
 
-      Storage::delete('documenti/'.$file);
+      Storage::delete('public/'.$file);
 
       return redirect('admin/documenti')->with('status', 'Documento eliminato!');
   }

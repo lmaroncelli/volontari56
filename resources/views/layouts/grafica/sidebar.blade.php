@@ -67,21 +67,6 @@
 
       @endif
 
-
-      {{-- DOCUMENTI --}}
-      {{-- FILE UPLOAD --}}
-      <li class="treeview @if (in_array('documenti',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-folder-open-o"></i> <span>Documenti</span>
-          <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="{{ route('documenti.index') }}">Elenco</a></li>
-        </ul>
-      </li>
-
-
       {{-- PREVENTIVI --}}
       <li class="treeview @if (in_array('preventivi',Request::segments())) active @endif">
         <a href="#"><i class="fa fa-send-o"></i> <span>Preventivi</span>
@@ -106,6 +91,20 @@
           <li><a href="{{ route('relazioni.index') }}">Elenco</a></li>
         </ul>
       </li>
+
+      {{-- DOCUMENTI ELENCO --}}
+      @if(Auth::user()->hasRole('associazione'))
+      <li class="treeview @if (in_array('documenti',Request::segments())) active @endif">
+        <a href="#"><i class="fa fa-folder-open-o"></i> <span>Documenti</span>
+          <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ route('documenti.index') }}">Elenco</a></li>
+        </ul>
+      </li>
+      @endif
       
       
 
