@@ -29,7 +29,7 @@
                                 <table class="table table-bordered table-hover" id="tbl_preventivi">
                                     <thead>
                                         <tr>
-                                            @foreach ($columns as $field => $name)
+                                            @foreach ($columns_posts as $field => $name)
                                                 <th>
                                                   {!!$name!!}
                                                 </th>
@@ -82,6 +82,72 @@
         </div>{{-- box box-primary --}}
         </div> {{--  \ col --}}
     </div> {{--  \.row --}}
+
+
+    @if ($documenti->count())
+      <div class="row justify-content-center">
+          <div class="col-xs-12">
+              <div class="box box-primary">
+                  <div class="box-header"><h3 class="box-title">Ultimi {{$limit}} documenti caricati</h3></div>
+                      <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                      <div class="row">
+                          <div class="col-xs-12">
+                              <!-- /.box-header -->
+                              <div class="box-body">
+                                  <table class="table table-bordered table-hover" id="tbl_preventivi">
+                                      <thead>
+                                          <tr>
+                                              @foreach ($columns_docs as $field => $name)
+                                                  <th>
+                                                    {!!$name!!}
+                                                  </th>
+                                              @endforeach
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                            @foreach ($documenti as $documento)
+                                            <tr>
+                                                <td>
+                                                    <a class="documento" href="{{asset('storage').'/'.$documento->file}}" title="Scarica documento" target="_blank">
+                                                    {!!$documento->titolo!!}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {{$documento->argomento}}
+                                                </td>
+                                                <td>
+                                                    {{$documento->tipo}}
+                                                </td>
+                                                @php
+                                                  Carbon\Carbon::setLocale('it'); /* in un middleware every request!!*/
+                                                @endphp
+                                                <td>
+                                                    {{ $documento->created_at->diffForHumans() }} 
+                                                </td>
+                                                @isAdmin
+                                                <td>
+                                                    <a class="documento" href="{{ route('documenti.modifica', $documento->id) }}" title="Modifica documento">
+                                                     <button type="button" class="btn btn-primary btn-flat pull-right"><i class="fa fa-edit"></i></button>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                  <button type="button" class="btn btn-danger btn-flat delete_doc pull-right" data-doc-id="{{$documento->id}}"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                                @endisAdmin
+                                            </tr>
+                                            @endforeach
+                                      </tbody>
+                                  </table>
+                                  </div>
+                              </div>
+                              <!-- /.box-body -->
+                      </div>
+                      </div>
+                  </div>
+          </div> {{-- \.box --}}
+          </div> {{-- \ col-xs-12 --}}
+      </div>
+    @endif
 
     @endif
 </div>

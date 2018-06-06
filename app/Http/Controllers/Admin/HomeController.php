@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Documento;
 use App\Http\Controllers\Admin\AdminController;
 use App\Post;
 use App\Preventivo;
@@ -45,10 +46,10 @@ class HomeController extends AdminController
         ///////////////////////////////
         // ultimi documenti caricati //
         ///////////////////////////////
-        
-        
+        $documenti = Documento::listaDocumenti($order_by = 'created_at', $order = 'desc', $paginate = 0, $limit = 2);
 
-        $columns = [
+
+        $columns_posts = [
             'scaduto' => 'Chiudere entro',
             'id' => 'ID',
             'associazione' => 'Associazione',
@@ -58,6 +59,13 @@ class HomeController extends AdminController
             'motivazioni' => 'Motivazione',
         ];
 
-        return view('admin.dashboard.dashboard', compact('columns','preventivi_arr', 'posts'));
+        $columns_docs = [
+          'titolo' => 'Titolo',
+          'argomento' => 'Argomento',
+          'tipo' => 'Tipo',
+          'created_at' => 'Caricato il'
+      ];
+
+        return view('admin.dashboard.dashboard', compact('columns_posts','preventivi_arr', 'posts','documenti','columns_docs','limit'));
     }
 }

@@ -111,36 +111,7 @@ class DocumentiController extends AdminController
       ];
   
 
-    $documenti = Documento::listaDocumenti($order_by, $order, $paginate = 1, $limit = 0);    
-
-    /*if(Auth::user()->hasRole('associazione'))
-      {
-      $available_ids = [];
-
-      foreach (Documento::all() as $doc) 
-        {
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // anche se nella tabella di associazione c'è il record con associazione_id = 0, la relazione mi da [] perché NON ESISTE un'associazione con id = 0 //
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        $associazioni_ids = $doc->associazioni->pluck('id')->toArray();
-        if (empty($associazioni_ids) || in_array(Auth::user()->associazione->id,$associazioni_ids)) 
-          {
-          $available_ids[] = $doc->id;
-          }
-        }
-
-
-      $documenti = Documento::whereIn('id',$available_ids)->orderBy($order_by, $order)->paginate(15);
-      
-      }
-    else
-      {
-      $documenti = Documento::orderBy($order_by, $order)->paginate(15);
-      }*/
-      
-      
-    
-
+    $documenti = Documento::listaDocumenti($order_by, $order, $paginate = 15, $limit = 0);
 
     return view('admin.documenti.index', compact('documenti', 'order_by','order','ordering','columns') );
     }
