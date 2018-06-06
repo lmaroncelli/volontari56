@@ -7,10 +7,10 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use App\Relazione;
 use App\Utility;
-use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class RelazioniController extends AdminController
 {
@@ -599,4 +599,27 @@ class RelazioniController extends AdminController
         }
 
       }
+
+
+  public function stampa($id)
+    {
+    
+    $relazione = Relazione::find($id);
+
+    Carbon::setLocale('it_IT.utf8');
+    setlocale(LC_TIME, 'Italy');
+
+    $filtro_pdf_relazione[] =  "PROVINCIA DI RIMINI<br>
+                      COORDINAMENTO PROVINCIALE<br> 
+                      VIGILANZA ITTICO VENATORIA VOLONTARIA<br>
+                      RELAZIONE DI SERVIZIO<br>
+                      PER IL GIORNO ".$relazione->dalle->format('l jS F Y '). "<br>
+                      ASSOCIAZIONE : ". $relazione->associazione->nome;
+
+
+    $pdf = PDF::loadView('admin.relazioni.pdf_relazione', compact('relazione','filtro_pdf_relazione'));
+
+    return $pdf->stream();
+
+    }
 }
