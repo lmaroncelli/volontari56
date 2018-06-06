@@ -59,12 +59,6 @@
     <div class="col-xs-12">
       <div class="box box-primary">
         <div class="box-header"><h3 class="box-title">Post in primo piano &nbsp; <button type="button" class="btn btn-warning btn-flat" data-toggle="tooltip" title="Visible nella Dashboard"><i class="fa fa-star"></i></button></h3></div>
-      </div>
-    </div>
-    </div>
-
-    <div class="row justify-content-center">
-        <div class="col-xs-12">
           @foreach ($posts as $post)
           <div class="box box-widget">
               <div class="box-header">
@@ -85,6 +79,7 @@
               </div>
           </div> {{-- box-widget --}}
           @endforeach
+        </div>{{-- box box-primary --}}
         </div> {{--  \ col --}}
     </div> {{--  \.row --}}
 

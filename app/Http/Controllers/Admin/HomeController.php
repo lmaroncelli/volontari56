@@ -42,6 +42,12 @@ class HomeController extends AdminController
         $preventivi_arr['dopodomani'] = Preventivo::scadutoDaGiorni(2)->get();
 
 
+        ///////////////////////////////
+        // ultimi documenti caricati //
+        ///////////////////////////////
+        
+        
+
         $columns = [
             'scaduto' => 'Chiudere entro',
             'id' => 'ID',

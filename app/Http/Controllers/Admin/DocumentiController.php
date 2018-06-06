@@ -109,9 +109,11 @@ class DocumentiController extends AdminController
           'tipo' => 'Tipo',
           'created_at' => 'Caricato il'
       ];
-    
+  
 
-    if(Auth::user()->hasRole('associazione'))
+    $documenti = Documento::listaDocumenti($order_by, $order, $paginate = 1, $limit = 0);    
+
+    /*if(Auth::user()->hasRole('associazione'))
       {
       $available_ids = [];
 
@@ -134,7 +136,7 @@ class DocumentiController extends AdminController
     else
       {
       $documenti = Documento::orderBy($order_by, $order)->paginate(15);
-      }
+      }*/
       
       
     
