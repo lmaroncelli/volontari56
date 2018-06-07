@@ -33,6 +33,11 @@ class AppServiceProvider extends ServiceProvider
           {
           return Auth::user()->hasRole('associazione');
           });
+
+        setlocale(LC_TIME, "it_IT.utf8");
+        
+        // Localization Carbon
+        \Carbon\Carbon::setLocale(config('app.locale'));
     }
 
     /**

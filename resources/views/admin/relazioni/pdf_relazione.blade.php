@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box-body">
-                <table class="table table-bordered table-hover" id="tbl_relazione">
+                <table class="table table-bordered table-hover" id="tbl_relazione_pdf" cellpadding="10" cellspacing="10">
                     <tbody>
                         <tr><td>ID: {{$relazione->id}}</td></tr>
                         <tr><td>Associazione: {{$relazione->associazione->nome}}</td></tr>
@@ -27,7 +27,7 @@
                         <tr><td>Auto: {{$relazione->auto}}</td></tr>
                         <tr><td>Note: {{$relazione->note}}</td></tr>
                         <tr><td>Rapporto: {{$relazione->rapporto}}</td></tr>
-                        <tr><td>Firme GGV: __________________________________________________________________________</td></tr> 
+                        <tr><td style="height: 150px;">Firme GGV: __________________________________________________________________________</td></tr> 
                     </tbody>
                 </table>
         		</div>

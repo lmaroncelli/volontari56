@@ -171,7 +171,7 @@
       	  <!-- general form elements -->
       	  <div class="box-operations">
 				@include('admin.admin_inc_delete_button')
- 	     		<a href="{{ route('relazioni.stampa', $relazione->id) }}" title="Stampa la relazione di servizio" class="btn btn-success pull-right">
+ 	     		<a href="{{ route('relazioni.stampa', $relazione->id) }}" target="_blank" title="Stampa la relazione di servizio" class="btn btn-success pull-right">
  	     			Stampa la relazione di servizio
  	     		</a>
  	     	</div> <!-- /.box -->

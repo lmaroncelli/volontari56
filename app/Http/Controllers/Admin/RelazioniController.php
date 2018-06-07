@@ -606,14 +606,11 @@ class RelazioniController extends AdminController
     
     $relazione = Relazione::find($id);
 
-    Carbon::setLocale('it_IT.utf8');
-    setlocale(LC_TIME, 'Italy');
-
     $filtro_pdf_relazione[] =  "PROVINCIA DI RIMINI<br>
                       COORDINAMENTO PROVINCIALE<br> 
                       VIGILANZA ITTICO VENATORIA VOLONTARIA<br>
                       RELAZIONE DI SERVIZIO<br>
-                      PER IL GIORNO ".$relazione->dalle->format('l jS F Y '). "<br>
+                      PER IL GIORNO ".$relazione->dalle->formatLocalized('%A %e %B %Y '). "<br>
                       ASSOCIAZIONE : ". $relazione->associazione->nome;
 
 
