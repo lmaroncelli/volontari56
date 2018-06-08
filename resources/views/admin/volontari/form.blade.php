@@ -19,10 +19,11 @@
 	  @else
 	  	<h1>Crea Nuova Volontario</h1>
 	  @endif
-	  <ol class="breadcrumb">
-	    <li><a href="#"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Volontari</li>
-	  </ol>
+	  @component('admin.breadcrumb')
+          @slot('title')
+              Volontari
+          @endslot
+      @endcomponent
 	</section>
 @endsection
 

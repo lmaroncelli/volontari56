@@ -5,6 +5,7 @@ use Auth;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -24,6 +25,9 @@ class Utility extends Model
 
 	const GOOGLE_API_KEY = 'AIzaSyBrH8m8vUnPJQKt8zDTokE7Fg-kSGuL0mY';
 
+
+  #IP a cui sono visibili i dettagli di debug (query ed altre info)
+	private static $ip_debug = ['127.0.0.1', '2.224.168.43'];
 
 
 	/**
@@ -187,6 +191,19 @@ class Utility extends Model
 	public static function getGoogleApiKey() 
 		{ 
 		return self::GOOGLE_API_KEY; 
+		}
+
+
+
+	public static function iPDebug()
+	{
+		return self::$ip_debug;
+	}
+
+	public static function isIpDebug(Request $request)
+		{
+	    $ip = $request->ip();
+	    return in_array($ip, self::$ip_debug);
 		}
 
 

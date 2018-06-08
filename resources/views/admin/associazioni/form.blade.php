@@ -15,10 +15,11 @@
 	  @else
 	  	<h1>Crea Nuova Associazione</h1>
 	  @endif
-	  <ol class="breadcrumb">
-	    <li><a href="#"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Associazioni</li>
-	  </ol>
+	  @component('admin.breadcrumb')
+	    @slot('title')
+	        Associazioni
+	    @endslot
+	@endcomponent
 	</section>
 @endsection
 

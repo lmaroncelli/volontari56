@@ -5,10 +5,11 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 	  <h1>Elenco Associazioni</h1>
-	  <ol class="breadcrumb">
-	    <li><a href="#"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Associazioni</li>
-	  </ol>
+	  @component('admin.breadcrumb')
+          @slot('title')
+              Associazioni
+          @endslot
+      @endcomponent
 	</section>
 @endsection
 

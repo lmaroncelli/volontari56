@@ -19,10 +19,11 @@
 	  @else
 	  	<h1>Crea Nuovo documento</h1>
 	  @endif
-	  <ol class="breadcrumb">
-	    <li><a href="{{ url('admin/home') }}"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Documenti</li>
-	  </ol>
+	 @component('admin.breadcrumb')
+         @slot('title')
+             Documenti
+         @endslot
+     @endcomponent
 	</section>
 @endsection
 

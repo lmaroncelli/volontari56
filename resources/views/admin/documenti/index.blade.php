@@ -16,21 +16,12 @@
         <h1>
             Elenco Documenti <span class="badge bg-blue">{{$documenti->total()}}</span>
         </h1>
-        <ol class="breadcrumb">
-            <li>
-                <a href="{{ url('admin/home') }}">
-                    <i class="fa fa-dashboard">
-                    </i>
-                    Top
-                </a>
-            </li>
-            <li class="active">
+        @component('admin.breadcrumb')
+            @slot('title')
                 Documenti
-            </li>
-        </ol>
-
+            @endslot
+        @endcomponent
        {{--  @include('admin.documenti.search') --}}
-    
     </section>
     @endsection
 

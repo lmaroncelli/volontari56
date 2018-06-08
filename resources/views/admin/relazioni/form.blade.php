@@ -28,10 +28,11 @@
 	  @else
 	  	<h1>Crea Nuova Relazione</h1>
 	  @endif
-	  <ol class="breadcrumb">
-	    <li><a href="#"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Relazioni</li>
-	  </ol>
+	  @component('admin.breadcrumb')
+        @slot('title')
+            Relazioni
+        @endslot
+    @endcomponent
 	</section>
 @endsection
 

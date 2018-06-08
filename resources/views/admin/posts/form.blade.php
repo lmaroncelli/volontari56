@@ -19,10 +19,11 @@
 	  @else
 	  	<h1>Crea Nuovo Post</h1>
 	  @endif
-	  <ol class="breadcrumb">
-	    <li><a href="#"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Post</li>
-	  </ol>
+	  @component('admin.breadcrumb')
+          @slot('title')
+              Posts
+          @endslot
+      @endcomponent
 	</section>
 @endsection
 

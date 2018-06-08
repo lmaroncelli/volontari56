@@ -16,18 +16,11 @@
         <h1>
             Elenco Posts <span class="badge bg-blue">{{$posts->total()}}</span>
         </h1>
-        <ol class="breadcrumb">
-            <li>
-                <a href="#">
-                    <i class="fa fa-dashboard">
-                    </i>
-                    Top
-                </a>
-            </li>
-            <li class="active">
+        @component('admin.breadcrumb')
+            @slot('title')
                 Posts
-            </li>
-        </ol>
+            @endslot
+        @endcomponent
 
          @include('admin.posts.search')
 

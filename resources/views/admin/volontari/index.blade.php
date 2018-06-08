@@ -16,18 +16,11 @@
         <h1>
             Elenco Volontari <span class="badge bg-blue">{{$volontari->total()}}</span>
         </h1>
-        <ol class="breadcrumb">
-            <li>
-                <a href="#">
-                    <i class="fa fa-dashboard">
-                    </i>
-                    Top
-                </a>
-            </li>
-            <li class="active">
+        @component('admin.breadcrumb')
+            @slot('title')
                 Volontari
-            </li>
-        </ol>
+            @endslot
+        @endcomponent
 
          @include('admin.volontari.search')
 

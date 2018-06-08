@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Utility;
 use Closure;
 use Illuminate\Support\Facades\DB;
 
@@ -76,13 +77,20 @@ class GetQueryLog
      */
     public function handle($request, Closure $next)
       {   
-          DB::enableQueryLog();
+          if (Utility::isIpDebug($request)) 
+            {
+            DB::enableQueryLog();
+            }
+          
           return $next($request);
       }
 
 
     public function terminate($request, $response)
       {
+
+      if (Utility::isIpDebug($request)) 
+        {
          $queries = DB::getQueryLog();
 
          $queries_cont  = '<a href="#" onclick="changeTab(\'query_log\')" style="color:#1fb0e1"><strong>' . count($queries)  . '</strong> query eseguite</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -96,5 +104,6 @@ class GetQueryLog
                $queries_html .
              '</span>' .
            '</div>';
+         }
       }
 }

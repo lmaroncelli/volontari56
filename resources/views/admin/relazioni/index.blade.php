@@ -16,18 +16,11 @@
         <h1>
             Elenco Relazioni  <span class="badge bg-blue">{{$relazioni->total()}}</span>
         </h1>
-        <ol class="breadcrumb">
-            <li>
-                <a href="#">
-                    <i class="fa fa-dashboard">
-                    </i>
-                    Top
-                </a>
-            </li>
-            <li class="active">
+        @component('admin.breadcrumb')
+            @slot('title')
                 Relazioni
-            </li>
-        </ol>
+            @endslot
+        @endcomponent 
 
         @include('admin.relazioni.search')
 

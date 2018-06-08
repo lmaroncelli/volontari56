@@ -346,7 +346,6 @@ class PreventiviController extends AdminController
          */
       $preventivo = new Preventivo;
       $this->_savePreventivo($preventivo, $request);
-
       return redirect('admin/preventivi')->with('status', 'Preventivo creato correttamente!');
 
     }
@@ -375,7 +374,6 @@ class PreventiviController extends AdminController
      */
     public function edit($id)
     {
-
         $preventivo = Preventivo::withTrashed()->find($id);
         $volontari = $preventivo->associazione()->first()->getVolontariFullName();
         

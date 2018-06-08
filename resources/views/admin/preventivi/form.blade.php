@@ -26,10 +26,11 @@
 	  @else
 	  	<h1>Crea Nuova Preventivo</h1>
 	  @endif
-	  <ol class="breadcrumb">
-	    <li><a href="#"><i class="fa fa-dashboard"></i> Top</a></li>
-	    <li class="active">Preventivi</li>
-	  </ol>
+	  @component('admin.breadcrumb')
+	        @slot('title')
+	            Preventivi
+	        @endslot
+	    @endcomponent
 	</section>
 
 @endsection

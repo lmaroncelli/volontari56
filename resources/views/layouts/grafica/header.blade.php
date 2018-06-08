@@ -2,9 +2,9 @@
 <header class="main-header">
 
   <!-- Logo -->
-  <a href="{{ url('admin/home') }}" class="logo">
+  <a href="{{ url('admin/home') }}" class="logo" data-toggle="tooltip" title="Gestione Servizi Guardie Volontarie">
     <!-- mini logo for sidebar mini 50x50 pixels -->
-    <span class="logo-mini"><b>A</b>LT</span>
+    <span class="logo-mini"><b>A</b>GV</span>
     <!-- logo for regular state and mobile devices -->
     <span class="logo-lg"><b>Admin</b>GGVV</span>
   </a>
