@@ -23,9 +23,6 @@ use Mail;
 class Utility extends Model
 {
 
-	const GOOGLE_API_KEY = 'AIzaSyBrH8m8vUnPJQKt8zDTokE7Fg-kSGuL0mY';
-
-
   #IP a cui sono visibili i dettagli di debug (query ed altre info)
 	private static $ip_debug = ['127.0.0.1', '2.224.168.43'];
 
@@ -190,7 +187,7 @@ class Utility extends Model
 
 	public static function getGoogleApiKey() 
 		{ 
-		return self::GOOGLE_API_KEY; 
+		return env('GOOGLE_MAPS_GEOCODING_API_KEY'); 
 		}
 
 
