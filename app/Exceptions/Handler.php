@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
       {   
-
+      dd($exception);
       if (! $exception instanceof ValidationException) 
         { 
         
