@@ -302,7 +302,7 @@ class PreventiviController extends AdminController
         if($export_pdf)
           {
           $filtro_pdf[] =  "<b>N° preventivi " .$preventivi->count()."</b>";
-          $chunked_element = 10;
+          $chunked_element = 5;
           $pdf = PDF::loadView('admin.preventivi.pdf', compact('preventivi','chunked_element','columns','filtro_pdf'));
 
           if($this->request->get('pdf') == 'l')

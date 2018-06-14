@@ -37,6 +37,9 @@
                         @foreach ($chunk as $preventivo)
                         <tr @if ($preventivo->trashed()) class="deleted" @endif>
                             <td>
+                                {!!$preventivo->displayInTime()!!}
+                            </td>
+                            <td>
                                 {{$preventivo->id}}
                             </td>
                             <td>
@@ -53,6 +56,11 @@
                             </td>
                             <td>
                                 {{$preventivo->motivazioni}}
+                            </td>
+                            <td>
+                                @if (!is_null($preventivo->relazione))
+                                    <button type="button" class="btn btn-success no_link">{{$preventivo->relazione->id}}</button>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
