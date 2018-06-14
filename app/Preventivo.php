@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Relazione;
 use App\Scopes\PreventiviOwnedByScope;
 use App\Scopes\SoftDeletedScope;
 use Carbon\Carbon;
@@ -37,6 +38,12 @@ class Preventivo extends Model
 
         //static::addGlobalScope(new SoftDeletedScope);
         static::addGlobalScope(new PreventiviOwnedByScope);
+    }
+
+
+    public function relazione()
+    {
+        return $this->hasOne('App\Relazione','preventivo_id','id');
     }
 
 

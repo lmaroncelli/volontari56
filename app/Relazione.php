@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Preventivo;
 use App\Scopes\RelazioniOwnedByScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -31,6 +32,14 @@ class Relazione extends Model
 
         static::addGlobalScope(new RelazioniOwnedByScope);
     }
+
+
+
+    public function preventivo()
+     {
+         return $this->belongsTo('App\Preventivo','preventivo_id','id');
+     }
+
 
 
     public function volontari()

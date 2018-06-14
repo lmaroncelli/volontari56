@@ -115,13 +115,23 @@ class PreventiviController extends AdminController
           $order_by = "dalle";
           $restore_scaduto = 1;
           }
+        elseif ($order_by == 'rel') 
+          {
+          $order_by = 'tblRelazioni.id';
+          }
 
 
-        $query = Preventivo::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
+        $query = Preventivo::with(['associazione','relazione'])
+                  ->leftjoin('tblAssociazioni', function( $join )
                   {
                     $join->on('tblAssociazioni.id', '=', 'tblPreventivi.associazione_id');
                   })
-                  ->select('tblPreventivi.*','tblAssociazioni.nome as nome_asso');
+                  ->leftjoin('tblRelazioni', function( $join )
+                  {
+                    $join->on('tblRelazioni.preventivo_id', '=', 'tblPreventivi.id')
+                    ->whereNull('tblRelazioni.deleted_at');
+                  })
+                  ->select('tblPreventivi.*','tblAssociazioni.nome as nome_asso', 'tblRelazioni.id as relazione_id');
 
 
         /////////////
@@ -210,8 +220,8 @@ class PreventiviController extends AdminController
           $al = $this->request->get('cerca_al');
           $dal_c = Carbon::createFromFormat('d/m/Y H i', $this->request->get('cerca_dal').' 0 00');
           $al_c = Carbon::createFromFormat('d/m/Y H i', $this->request->get('cerca_al').' 23 59');
-          $query->where('dalle','>=',$dal_c);
-          $query->where('alle','<=',$al_c);
+          $query->where('tblPreventivi.dalle','>=',$dal_c);
+          $query->where('tblPreventivi.alle','<=',$al_c);
           
           $filtro_pdf[] =  "Preventivi con data dal $dal al $al";
           }
@@ -219,8 +229,8 @@ class PreventiviController extends AdminController
           {
           $dal_c = Carbon::createFromFormat('d/m/Y H i', '01/01/'. $this->request->get('anno_filtro') .' 0 00');
           $al_c = Carbon::createFromFormat('d/m/Y H i', '31/12/'. $this->request->get('anno_filtro') .' 23 59');
-          $query->where('dalle','>=',$dal_c);
-          $query->where('alle','<=',$al_c);
+          $query->where('tblPreventivi.dalle','>=',$dal_c);
+          $query->where('tblPreventivi.alle','<=',$al_c);
           
           $filtro_pdf[] =  "Preventivi anno ".$this->request->get('anno_filtro');  
 
@@ -230,8 +240,8 @@ class PreventiviController extends AdminController
           {
           $dal_c = Carbon::createFromFormat('d/m/Y H i', '01/01/'. $anno_filtro.' 0 00');
           $al_c = Carbon::createFromFormat('d/m/Y H i', '31/12/'. $anno_filtro.' 23 59');
-          $query->where('dalle','>=',$dal_c);
-          $query->where('alle','<=',$al_c);
+          $query->where('tblPreventivi.dalle','>=',$dal_c);
+          $query->where('tblPreventivi.alle','<=',$al_c);
           
           $filtro_pdf[] =  "Preventivi anno corrente";
           }
@@ -271,6 +281,7 @@ class PreventiviController extends AdminController
             'dalle' => 'Data',
             'localita' => 'Località',
             'motivazioni' => 'Motivazione',
+            'rel' => 'Rel.'
         ];
 
 
@@ -281,6 +292,10 @@ class PreventiviController extends AdminController
         elseif ($order_by == 'dalle' && $restore_scaduto) 
           {
           $order_by = "scaduto";
+          }
+        elseif ($order_by == 'tblRelazioni.id') 
+          {
+          $order_by = "rel";
           }
 
 

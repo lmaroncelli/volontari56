@@ -1,7 +1,7 @@
 @extends('layouts.grafica.app')
 
 @section('titolo')
-    Preventivi
+    Relazioni
 @endsection
 
 @section('header_css')

@@ -131,6 +131,11 @@
                             <td>
                                 {{$preventivo->motivazioni}}
                             </td>
+                            <td>
+                                @if (!is_null($preventivo->relazione))
+                                    <button type="button" class="btn btn-success no_link">{{$preventivo->relazione->id}}</button>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
