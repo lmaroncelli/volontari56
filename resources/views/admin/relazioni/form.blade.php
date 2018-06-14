@@ -126,14 +126,15 @@
 					</div>
 
 					<div class="form-group">
+					  <label for="rapporto">Rapporto</label>
+					  <textarea class="form-control" rows="3" placeholder="Rapporto ..." name="rapporto" id="rapporto">@if(old('rapporto') != ''){{ old('rapporto') }}@else{{ $relazione->rapporto }}@endif</textarea>
+					</div>
+
+					<div class="form-group">
 					  <label for="note">Note</label>
 					  <textarea class="form-control" rows="3" placeholder="Note ..." name="note" id="note">@if(old('note') != ''){{ old('note') }}@else{{ $relazione->note }}@endif</textarea>
 					</div>
 
-					<div class="form-group">
-					  <label for="rapporto">Rapporto</label>
-					  <textarea class="form-control" rows="3" placeholder="Rapporto ..." name="rapporto" id="rapporto">@if(old('rapporto') != ''){{ old('rapporto') }}@else{{ $relazione->rapporto }}@endif</textarea>
-					</div>
 
 					<div class="form-group">
 					  <label for="auto">Auto</label>
@@ -146,7 +147,7 @@
 				<div class="box-footer">
 					<button type="submit" class="btn btn-primary">
 						@if ($relazione->exists)
-							Modifica
+							Salva
 						@else
 							Crea
 						@endif

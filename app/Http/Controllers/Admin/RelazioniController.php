@@ -417,7 +417,7 @@ class RelazioniController extends AdminController
         if($export_pdf)
           {
           $filtro_pdf[] =  "<b>N° relazioni " .$relazioni->count()."</b>";
-          $chunked_element = 5;
+          $chunked_element = 3;
           $pdf = PDF::loadView('admin.relazioni.pdf', compact('relazioni','chunked_element','columns', 'filtro_pdf'));
           
           if($this->request->get('pdf') == 'l')
