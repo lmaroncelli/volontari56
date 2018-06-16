@@ -40,7 +40,7 @@
 @section('content')
 	
 	@if ($relazione->exists)
-	  <form action="{{ route('preventivi.destroy', $relazione->id) }}" method="POST" id="record_delete">
+	  <form action="{{ route('relazioni.destroy', $relazione->id) }}" method="POST" id="record_delete">
 	  	{{ method_field('DELETE') }}
 	    {!! csrf_field() !!}
 	    <input type="hidden" name="id" value="{{$relazione->id}}">

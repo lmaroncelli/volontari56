@@ -133,7 +133,10 @@
                             </td>
                             <td>
                                 @if (!is_null($preventivo->relazione))
-                                    <button type="button" class="btn btn-success no_link">{{$preventivo->relazione->id}}</button>
+                                    <a class="btn btn-success" href="{{ route('relazioni.edit', $preventivo->relazione->id) }}" title="Modifica relazione">
+                                        {{$preventivo->relazione->id}}
+                                    </a>
+                                    {{-- <button type="button" class="btn btn-success no_link">{{$preventivo->relazione->id}}</button> --}}
                                 @endif
                             </td>
                         </tr>

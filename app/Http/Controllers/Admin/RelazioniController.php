@@ -18,6 +18,14 @@ class RelazioniController extends AdminController
     public function creaDaPreventivo(Request $request, $preventivo_id)
       {
       $preventivo = Preventivo::find($preventivo_id);
+
+      // se il preventivo ha già una relazione
+      if (!is_null($preventivo->relazione)) 
+        {
+        return redirect('admin/preventivi')->with('error', "Preventivo ID=$preventivo->id ha già la RELAZIONE DI SERVIZIO");
+        }
+      
+
       $relazione = new Relazione;
 
       $relazione->preventivo_id = $preventivo_id;
@@ -27,6 +35,7 @@ class RelazioniController extends AdminController
       $relazione->save();
       $relazione->volontari()->sync($preventivo->volontari->pluck('id')->toArray());
       return redirect()->route('relazioni.edit', [$relazione->id]);
+      
       }
 
 
@@ -240,6 +249,11 @@ class RelazioniController extends AdminController
 
               $filtro_pdf[] =  "Preventivo generatore" .$valore;
               }
+            elseif ($campo == 'id') 
+            {
+            $query->where('tblRelazioni.id','=', $valore);
+
+            }
             elseif ($campo == 'volontario')
               {
               $relazioni = Relazione::with(['associazione', 'volontari'])->get();

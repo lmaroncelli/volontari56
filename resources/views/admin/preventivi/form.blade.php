@@ -177,7 +177,7 @@
         			<button type="button" class="btn bg-navy btn-flat">Riaperto</button>
 	     		@endif
 
-	     		@if (Auth::user()->hasRole('associazione') && !$preventivo->isInTime())
+	     		@if ( (Auth::user()->hasRole('associazione') && !$preventivo->isInTime()) || !is_null($preventivo->relazione) )
 	     			<button type="button" class="btn btn-success pull-right disabled">Crea una relazione di servizio</button>
 	     		@else
 		     		<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" title="Crea una relazione di servizio" class="btn btn-success pull-right">
