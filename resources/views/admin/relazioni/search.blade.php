@@ -93,6 +93,27 @@
             @endfor
           </select>
          </div>
+          
+        <div class="col-sm-2">
+          <div class="form-group">
+      
+            <div class="radio inline">
+              <label>
+               <input type="radio" name="tipo_export" value="pdf" checked>
+                PDF
+              </label>
+            </div>
+            <div class="radio inline">
+              <label>
+                <input type="radio" name="tipo_export" value="csv">
+                 CSV
+              </label>
+            </div>
+      
+          </div>
+        </div>
+
+         
          <div class="col-sm-1">
           <button type="submit" title="Riepilogo ore di servizio" name="ore-servizio" id="ore-servizio-btn" class="btn btn-primary"><i class="fa fa-safari"></i></button>
          </div>

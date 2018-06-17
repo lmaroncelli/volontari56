@@ -149,3 +149,11 @@ Ho costruito un build con i plugin che servono
 https://www.codexworld.com/tinymce-upload-image-to-server-using-php/
 
 https://www.youtube.com/watch?v=vBzg0Us5MDk
+
+
+
+*excel*
+
+1. https://laravel-excel.maatwebsite.nl/docs/3.0/export/basics
+2. https://investmentnovel.com/laravel-5-6-data-export-to-csv-and-excel/
+3. http://laraveldaily.com/laravel-excel-3-0-export-custom-array-excel/

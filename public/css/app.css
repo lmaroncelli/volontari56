@@ -91,3 +91,19 @@ div.box-operations {
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
+
+
+
+
+/*
+forza un elemento ad essere display:inline;
+ */
+
+.inline {
+	display: inline!important;
+}
+
+
+.radio.inline {
+	margin-right: 25px;
+}

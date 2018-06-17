@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Associazione;
+use App\Exports\exportOreServizio;
 use App\Http\Controllers\Admin\AdminController;
 use App\Preventivo;
 use App\Relazione;
 use App\Utility;
 use Carbon\Carbon;
+use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
@@ -69,9 +71,23 @@ class RelazioniController extends AdminController
         }
 
       $relazioni = $query->get();
+      
+      $columns_pdf = ['Associazione','Volontario','Totale ore'];
 
       $volontari = [];
-      $columns_pdf = ['Associazione','Volontario','Totale ore'];
+
+      foreach ($relazioni as $relazione) 
+        {
+        //inizializzo tutti i volontari dell'associazione a 0
+        $all_volontari_associazione = $relazione->associazione->volontari;
+        foreach ($all_volontari_associazione as $volontario) 
+          {
+          $volontari[$volontario->id]['Associazione'] = $relazione->associazione->nome;
+          $volontari[$volontario->id]['Volontario'] = $volontario->cognome .' ' .$volontario->nome;
+          $volontari[$volontario->id]['Totale ore'] = 0;
+          }
+        }
+
       foreach ($relazioni as $relazione) 
         {
         foreach ($relazione->volontari as $v) 
@@ -80,18 +96,49 @@ class RelazioniController extends AdminController
             {
             $volontari[$v->id]['Totale ore'] += $relazione->getHours();
             } 
-          else 
-            {
-            $volontari[$v->id]['Associazione'] = $v->associazione->nome;
-            $volontari[$v->id]['Volontario'] = $v->cognome .' ' .$v->nome;
-            $volontari[$v->id]['Totale ore'] = $relazione->getHours();
-            }
           } // end volontari
-
         } // end relazioni
 
-        $pdf = PDF::loadView('admin.relazioni.pdf_ore', compact('volontari','columns_pdf','filtro_pdf_ore'));
-        return $pdf->stream();
+
+
+        /**
+         *
+         * dd($volontari);
+         * 
+         * array:17 [▼
+            1274 => array:3 [▼
+              "Associazione" => "A.N.P.A.N.A."
+              "Volontario" => "Barbino Massimo"
+              "Totale ore" => 7
+            ]
+            1275 => array:3 [▼
+              "Associazione" => "A.N.P.A.N.A."
+              "Volontario" => "Bedetti Letizia"
+              "Totale ore" => 0
+            ]
+            1276 => array:3 [▼
+              "Associazione" => "A.N.P.A.N.A."
+              "Volontario" => "Bedetti Romina"
+              "Totale ore" => 0
+            ]
+         * 
+         */
+
+
+        if ($this->request->get('tipo_export') == 'csv') 
+          {
+          return Excel::download(new exportOreServizio($volontari), 'data.xlsx');
+          } 
+        else 
+          {
+          $pdf = PDF::loadView('admin.relazioni.pdf_ore', compact('volontari','columns_pdf','filtro_pdf_ore'));
+          return $pdf->stream();
+          }
+        
+
+
+
+
       }
 
 

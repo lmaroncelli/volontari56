@@ -11,7 +11,9 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 	  @if ($asso->exists)
-	  	<h1>Modifica Associazione</h1>
+	  	<h1>
+	  		Modifica Associazione <span class="badge bg-blue">{{$asso->volontari->count()}} Associati</span>
+	  	</h1>
 	  @else
 	  	<h1>Crea Nuova Associazione</h1>
 	  @endif
