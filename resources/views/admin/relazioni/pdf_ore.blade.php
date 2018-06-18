@@ -12,7 +12,7 @@
     @foreach (array_chunk($volontari,30) as $key => $chunk)
     <div id="pdf_filter_container">
        <div id="pdf_filter">
-       {!! implode('<br />', $filtro_pdf_ore) !!}
+       {!! implode('<br />', $filtro_ore) !!}
        </div>
        <div id="pdf_logo">
           <img src="{{ base_path('public/images/provincia-rimini.jpg') }}" alt="Provincia di Rimini">
@@ -26,7 +26,7 @@
                 <table class="table table-bordered table-hover" id="tbl_relazioni">
                     <thead>
                         <tr>
-                            @foreach ($columns_pdf as $name)
+                            @foreach ($columns as $name)
                                 <th>
                                   {!!$name!!}
                                 </th>
@@ -36,7 +36,7 @@
                     <tbody>
                         @foreach ($chunk as $volontario)
                         <tr>
-                            @foreach ($columns_pdf as $name)
+                            @foreach ($columns as $name)
                                 <td>
                                     {{$volontario[$name]}}
                                 </td>

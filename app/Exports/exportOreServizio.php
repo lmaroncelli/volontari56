@@ -5,6 +5,7 @@ use App\Associazione;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 
 /**
@@ -12,7 +13,7 @@ use Maatwebsite\Excel\Concerns\FromView;
  */
 
 //class exportOreServizio implements FromCollection
-class exportOreServizio implements FromView
+class exportOreServizio implements ShouldAutoSize, FromView
 {
 
 
@@ -41,9 +42,11 @@ class exportOreServizio implements FromView
 	   * 
 		 */
 		
-		public function __construct($volontari = [])
+		public function __construct($volontari = [], $columns = [], $filtro_ore= "")
 			{
 				 $this->volontari = $volontari;
+				 $this->columns = $columns;
+				 $this->filtro_ore = $filtro_ore;
 			}
 
 
@@ -55,7 +58,9 @@ class exportOreServizio implements FromView
     public function view(): View
       {
           return view('admin.relazioni.excel_ore', [
-              'volontari' => $this->volontari
+              'volontari' => $this->volontari,
+              'columns' => $this->columns,
+              'filtro_ore' => $this->filtro_ore
           ]);
       }
 

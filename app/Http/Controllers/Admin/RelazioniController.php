@@ -43,7 +43,7 @@ class RelazioniController extends AdminController
 
     public function exportOre()
       {
-      $filtro_pdf_ore[] = "<b>Riepilogo ore servizio:</b>";
+      $filtro_ore[] = "<b>Riepilogo ore servizio:</b>";
 
       $query = Relazione::with(['associazione','volontari'])->leftjoin('tblAssociazioni', function( $join )
                 {
@@ -59,7 +59,7 @@ class RelazioniController extends AdminController
         $query->where('dalle','>=',$dal_c);
         $query->where('alle','<=',$al_c);
 
-        $filtro_pdf_ore[] =  "Anno $anno_ore";
+        $filtro_ore[] =  "Anno $anno_ore";
         }
 
       if( $this->request->has('associazione_id_ore') && $this->request->get('associazione_id_ore') != 0 )
@@ -67,12 +67,12 @@ class RelazioniController extends AdminController
         $associazione_id_ore = $this->request->get('associazione_id_ore');
         $query->where('tblRelazioni.associazione_id', $associazione_id_ore);
 
-        $filtro_pdf_ore[] =  "Associazione " . Associazione::find($associazione_id_ore)->nome;
+        $filtro_ore[] =  "Associazione " . Associazione::find($associazione_id_ore)->nome;
         }
 
       $relazioni = $query->get();
       
-      $columns_pdf = ['Associazione','Volontario','Totale ore'];
+      $columns = ['Associazione','Volontario','Totale ore'];
 
       $volontari = [];
 
@@ -127,11 +127,11 @@ class RelazioniController extends AdminController
 
         if ($this->request->get('tipo_export') == 'csv') 
           {
-          return Excel::download(new exportOreServizio($volontari), 'data.xlsx');
+          return Excel::download(new exportOreServizio($volontari, $columns, $filtro_ore), 'data.xlsx');
           } 
         else 
           {
-          $pdf = PDF::loadView('admin.relazioni.pdf_ore', compact('volontari','columns_pdf','filtro_pdf_ore'));
+          $pdf = PDF::loadView('admin.relazioni.pdf_ore', compact('volontari','columns','filtro_ore'));
           return $pdf->stream();
           }
         

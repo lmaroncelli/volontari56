@@ -1,18 +1,46 @@
-<table>
-    <thead>
-    <tr>
-        <th>Associazione</th>
-        <th>Volontario</th>
-        <th>Totale ore</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach($volontari as $volontario)
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Export ore servizio</title>
+    <style type="text/css" media="screen">
+        th.filtro {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <table>
+        <thead>
         <tr>
-            <td>{{ $volontario['Associazione'] }}</td>
-            <td>{{ $volontario['Volontario'] }}</td>
-            <td>{{ $volontario['Totale ore'] }}</td>
+            <th colspan="{{count($columns)}}" class="filtro">
+                {!! implode(' ', $filtro_ore) !!}
+            </th>
         </tr>
-    @endforeach
-    </tbody>
-</table>
+        <tr>
+            @foreach ($columns as $column)
+                <th>{{$column}}</th>
+            @endforeach
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($volontari as $volontario)
+            <tr>
+                @foreach ($columns as $column)
+                    <td>{{ $volontario[$column] }}</td>
+                @endforeach
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+    
+    
+</body>
+</html>
+
+
