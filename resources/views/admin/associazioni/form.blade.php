@@ -27,6 +27,15 @@
 
 
 @section('content')
+		
+		@if ($asso->exists)
+		  <form action="{{ route('associazioni.destroy', $asso->id) }}" method="POST" id="record_delete">
+		  	{{ method_field('DELETE') }}
+		    {!! csrf_field() !!}
+		    <input type="hidden" name="id" value="{{$asso->id}}">
+		  </form>
+		@endif
+
     <div class="row">
       <!-- left column -->
       <div class="col-md-6">
@@ -63,10 +72,22 @@
 						Crea
 					@endif
 				</button>
+				<a href="{{ url('admin/associazioni') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
 				</div>
         	</form>
       	</div> <!-- /.box -->
       </div><!-- /.col -->
+     </div> <!-- /.row -->
+     <div class="row">
+       	<!-- left column -->
+       <div class="col-md-6">
+       	
+       	 <!-- general form elements -->
+       	<div class="box-operations">
+       		@include('admin.admin_inc_delete_button')
+       	</div> <!-- /.box -->
+       
+       	</div><!-- /.col -->
      </div> <!-- /.row -->
 @endsection
 

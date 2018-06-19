@@ -1,7 +1,7 @@
 @extends('layouts.grafica.app')
 
 @section('titolo')
-    Posts
+    Utenti
 @endsection
 
 @section('header_css')
@@ -14,42 +14,37 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Elenco Posts <span class="badge bg-blue">{{$posts->total()}}</span>
+            Elenco Utenti <span class="badge bg-blue">{{$utenti->total()}}</span>
         </h1>
         @component('admin.breadcrumb')
             @slot('title')
-                Posts
+                Utenti
             @endslot
         @endcomponent
 
-         @include('admin.posts.search')
+         {{-- @include('admin.posts.search') --}}
 
     </section>
     @endsection
 
 
 @section('content')
-	@if (!$posts->count())
+	@if (!$utenti->count())
     <div class="callout callout-info">
         <h4>
-            Nessuna Post presente!
+            Nessuna utente presente!
         </h4>
-        <p>
-            Creane uno
-            <a href="{{ route('posts.create') }}" title="Crea volontario">
-                adesso
-            </a>
-        </p>
     </div>
     @else
     {{--  CREO I FORM PER LA CENLLAZIONE DEI RECORD --}}
   
-    @foreach ($posts as $post)
-      <form action="{{ route('posts.destroy', $post->id) }}" id="form_{{$post->id}}" method="POST" id="record_delete">
-        {{ method_field('DELETE') }}
-        {!! csrf_field() !!}
-        <input type="hidden" name="id" value="{{$post->id}}">
-      </form>
+    @foreach ($utenti as $utente)
+      @if ($utente->hasRole('admin'))
+        <form action="{{ route('utenti.elimina', $utente->id) }}" id="form_{{$utente->id}}" method="POST" id="record_delete">
+          {!! csrf_field() !!}
+          <input type="hidden" name="id" value="{{$utente->id}}">
+        </form>
+      @endif
     @endforeach
 
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -113,35 +108,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($posts as $post)
-                        <tr @if ($post->trashed()) class="deleted" @endif>
+                        @foreach ($utenti as $utente)
+                        <tr>
                             @foreach ($columns as $field => $name)
                                 <td>
-                                    @if ($field == 'titolo' || $field == 'slug')
-                                        <a href="{{ route('posts.edit', $post->id) }}" title="Modifica post">
-                                            {{$post->$field}}
-                                        </a>
-                                    @elseif($field == 'autore')
-                                        @if ($post->has($field) && !is_null($post->$field))
-                                          {{$post->$field->name}}
-                                        @endif
-                                    @elseif($field == 'created_at' || $field == 'updated_at')
-                                        {{$post->$field->timezone('Europe/Rome')->format('d/m/Y H:i')}}
-                                    @elseif($field == 'featured')
-
-                                      @if ($post->$field)
-                                        <button type="button" class="btn btn-warning btn-flat" data-toggle="tooltip" title="Visible nella Dashboard"><i class="fa fa-star"></i></button>
-                                      @else
-                                        &nbsp;
-                                      @endif
-                                      
-                                    @else
-                                        {{$post->$field}}
-                                    @endif
+                                  @if ($field == 'name')
+                                    <a class="preventivo" href="{{ route('utenti.edita', $utente->id) }}" title="Modifica utente">
+                                      {{$utente->$field}}
+                                    </a>
+                                  @else
+                                    {{$utente->$field}}
+                                  @endif
                                 </td>
                             @endforeach
+                            
                             <td>
-                              <button type="button" class="btn btn-danger btn-flat delete_post pull-right" data-post-id="{{$post->id}}"><i class="fa fa-trash"></i></button>
+                              @if ($utente->hasRole('admin'))
+                                <button type="button" class="btn btn-danger btn-flat delete_post pull-right" data-post-id="{{$utente->id}}"><i class="fa fa-trash"></i></button>
+                              @endif
                             </td>
                         </tr>
                         @endforeach
@@ -154,15 +138,15 @@
     <div class="row">
         <div class="col-sm-5">
             <div aria-live="polite" class="dataTables_info" id="example2_info" role="status">
-             	Pagina {{$posts->currentPage()}} di {{$posts->lastPage()}}
+             	Pagina {{$utenti->currentPage()}} di {{$utenti->lastPage()}}
             </div>
         </div>
         <div class="col-sm-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
         		    @if ($ordering)
-                    {{ $posts->appends(['order_by' => $order_by, 'order' => $order])->links() }}
+                    {{ $utenti->appends(['order_by' => $order_by, 'order' => $order])->links() }}
                 @else
-                    {{ $posts->links() }}
+                    {{ $utenti->links() }}
                 @endif
             </div>
         </div>
@@ -170,34 +154,3 @@
     </div>
     @endif
 @endsection
-
-
-@section('script_footer')
-    <!-- DataTables -->
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}">
-    </script>
-    <script src="{{ asset('js/dataTables.bootstrap.min.js') }}">
-    </script>
-    <script type="text/javascript">
-      $(function () {
-    	    $('#tbl_volontari').DataTable({
-          'paging'      : false,
-          'lengthChange': false,
-          'searching'   : false,
-          'ordering'    : false,
-          'info'        : false,
-          'autoWidth'   : false
-        });
-
-        $(".delete_post").click(function(){
-
-            var postId = $(this).data("post-id");
-            if (window.confirm('Sei sicuro di voler cancellare il post?')) {
-                $("#form_"+postId).submit();
-            }
-
-        });
-	   });
-    </script>
-@endsection
-

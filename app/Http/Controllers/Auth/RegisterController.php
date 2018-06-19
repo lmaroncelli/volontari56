@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Associazione;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ModificaUtenteRequest;
 use App\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Registered;
 
 
 class RegisterController extends Controller
@@ -44,6 +45,39 @@ class RegisterController extends Controller
         //$this->middleware('guest');
         $this->middleware('auth');
     }
+
+    
+    public function editaUtente($utente_id)
+    {
+        $utente = User::find($utente_id);
+
+        return view('auth.edita_utente', compact('utente'));
+    }
+
+
+    public function modificaUtente(ModificaUtenteRequest $request, $utente_id)
+      {
+        $utente = User::find($utente_id);
+
+        if ($utente->hasRole('admin') && $request->filled('name')) 
+          {
+          $utente->name = $request->get('name');
+          }
+
+        $utente->email = $request->get('email');
+        $utente->username = $request->get('username');
+
+        if ($request->filled('password')) 
+          {
+          $utente->password = Hash::make($request->get('password'));
+          }
+
+        $utente->save();
+
+        return redirect('admin/utenti')->with('status', 'Utente \''.$utente->name.'\' modificato correttamente!');
+
+      }
+
 
     /**
      * Get a validator for an incoming registration request.
@@ -118,5 +152,40 @@ class RegisterController extends Controller
 
 
     }
+
+
+
+
+    public function elencoUtenti()
+    {
+
+        /////////////////
+        // ordinamento //
+        /////////////////
+        $order_by='name';
+        $order = 'asc';
+        $ordering = 0;
+
+       $query = User::select('id','name','username','ruolo');
+
+       $query->orderBy($order_by, $order);
+
+       $utenti = $query->paginate(15);
+
+       $columns = [
+               'name' => 'Nome',
+               'username' => 'Username',
+               'ruolo' => 'Ruolo',
+       ];
+       
+       return view('auth.elenco_utenti', compact('utenti', 'columns', 'order_by', 'order', 'ordering') ); 
+    }
+
+
+    public function destroyUtente($utente_id)
+    {
+    dd('destroyUtente id = '.$utente_id);    
+    }
+
 
 }

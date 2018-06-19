@@ -58,7 +58,7 @@ class PostsController extends Controller
         {
           $join->on('users.id', '=', 'tblPosts.user_id');
         })
-        ->select('tblPosts.*','users.name');;
+        ->select('tblPosts.*','users.name');
 
         if ( !$this->request->has('no_eliminati') || $this->request->get('no_eliminati') != 1 )
           {

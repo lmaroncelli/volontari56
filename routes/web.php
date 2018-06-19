@@ -16,6 +16,7 @@ $router->pattern('query_id', '[0-9]+');
 $router->pattern('relazione_id', '[0-9]+');
 $router->pattern('preventivo_id', '[0-9]+');
 $router->pattern('documento_id', '[0-9]+');
+$router->pattern('utente_id', '[0-9]+');
 
 //Auth::routes();
     
@@ -73,11 +74,15 @@ Route::group(['middleware' => ['admin']], function () {
     ////////////////////////////////////////////////
     Route::get('admin/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('admin/register', 'Auth\RegisterController@register');
+    Route::get('admin/utenti', 'Auth\RegisterController@elencoUtenti')->name('utenti');
+    Route::post('admin/utenti/elimina/{utente_id}', 'Auth\RegisterController@destroyUtente')->name('utenti.elimina');
+    Route::get('admin/utenti/edita/{utente_id}', 'Auth\RegisterController@editaUtente')->name('utenti.edita');
+    Route::post('admin/utenti/modifica/{utente_id}', 'Auth\RegisterController@modificaUtente')->name('utenti.modifica');
 
 
 
 
-	Route::resource('admin/associazioni', 'Admin\AssociazioniController');
+	Route::resource('admin/associazioni', 'Admin\AssociazioniController', ['except' => ['create','store']]);
 
     Route::post('admin/volontari/search', ['uses' => 'Admin\VolontariController@search', 'as' => 'volontari.search']);
     Route::get('admin/volontari/{query_id?}', ['uses' => 'Admin\VolontariController@index', 'as' => 'volontari.index']);

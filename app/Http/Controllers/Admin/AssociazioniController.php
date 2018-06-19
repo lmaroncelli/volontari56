@@ -28,11 +28,12 @@ class AssociazioniController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
+    /* 
     public function create()
       {
       $asso = new Associazione;
       return view('admin.associazioni.form', compact('asso'));
-      }
+      }*/
 
     /**
      * Store a newly created resource in storage.
@@ -40,13 +41,14 @@ class AssociazioniController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    /*   
     public function store(AssociazioneRequest $request)
         {
         Associazione::create($request->all());
 
         return redirect('admin/associazioni')->with('status', 'Associazione creata correttamente!');
 
-        }
+        }*/
 
     /**
      * Display the specified resource.
@@ -118,11 +120,15 @@ class AssociazioniController extends AdminController
 
         $volontari_da_asscociare_ids = $request->get('volontari');
 
-        foreach ($volontari_da_asscociare_ids as $id)
+        if (!is_null($volontari_da_asscociare_ids)) 
           {
-          $v = Volontario::find($id);
-          $asso->volontari()->save($v);
-          }
+          foreach ($volontari_da_asscociare_ids as $id)
+            {
+            $v = Volontario::find($id);
+            $asso->volontari()->save($v);
+            }
+         } 
+
         $asso->save();
 
          DB::commit();
@@ -153,7 +159,46 @@ class AssociazioniController extends AdminController
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
-    }
+      {
+
+      $asso = Associazione::find($id);
+      $nome_asso = $asso->nome;
+      
+      DB::beginTransaction();
+      $status = 'ok';
+
+      try
+        {
+
+        foreach ($asso->volontari as $v)
+          {
+          $v->associazione_id = 0;
+          $v->save();
+          }
+
+        $asso->utente->delete();
+
+        $asso->delete();
+         
+        DB::commit();
+        
+        }
+      catch (\Exception $e)
+        {
+
+        $status = 'ko';
+        DB::rollback();
+        
+        }
+
+      if ($status == 'ok')
+        {
+        return redirect('admin/associazioni')->with('status', 'Associazione "'.$nome_asso.'" eliminata correttamente!');
+        }
+      else
+        {
+        return redirect('admin/associazioni')->with('status', 'ERRORE!');
+        }
+
+      }
 }
