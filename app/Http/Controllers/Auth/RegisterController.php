@@ -37,7 +37,8 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        //$this->middleware('guest');
+        $this->middleware('auth');
     }
 
     /**
@@ -53,6 +54,19 @@ class RegisterController extends Controller
             'username' => 'required|string|max:20|unique:users', 
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+        ],
+        [
+        'name.required' => 'Il nome è obbligatorio',
+        'username.required' => 'Lo username è obbligatorio',
+        'username.unique' => 'Lo username è già utilizzato',
+        'username.max' => 'Lo username deve essere al massimo :max caratteri',
+
+        'email.required' => 'La mail è obbligatoria',
+        'email.unique' => 'La mail è già utilizzata',
+        
+        'password.required' => 'La password è obbligatoria',
+        'password.min' => 'Le password deve essere almeno :min caratteri',
+        'password.confirmed' => 'Le password non coincidono',
         ]);
     }
 

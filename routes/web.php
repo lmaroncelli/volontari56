@@ -17,7 +17,25 @@ $router->pattern('relazione_id', '[0-9]+');
 $router->pattern('preventivo_id', '[0-9]+');
 $router->pattern('documento_id', '[0-9]+');
 
-Auth::routes();
+//Auth::routes();
+    
+// Authentication Routes
+
+//Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+// Registration Routes...
+//Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+//Route::post('register', 'Auth\RegisterController@register');
+
+// Password Reset Routes...
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+
+
 
 
 // la home diventa il mio loginForm
@@ -28,9 +46,9 @@ Route::get('/','Auth\LoginController@showLoginForm');
 ////////////////////////////////
 // Disable registration route //
 ////////////////////////////////
-Route::match(['get', 'post'], 'register', function(){
+/*Route::match(['get', 'post'], 'register', function(){
     return redirect('/');
-});
+});*/
 
 
 
@@ -45,12 +63,21 @@ Route::group(['middleware' => ['admin']], function () {
 
 		
 
-		Route::get('/admin/prova/', function(){
-			Volontario::all();
-		});
+	Route::get('/admin/prova/', function(){
+		Volontario::all();
+	});
 
 
-		Route::resource('admin/associazioni', 'Admin\AssociazioniController');
+    ////////////////////////////////////////////////
+    // creazione nuovo utente (registration form) //
+    ////////////////////////////////////////////////
+    Route::get('admin/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+    Route::post('admin/register', 'Auth\RegisterController@register');
+
+
+
+
+	Route::resource('admin/associazioni', 'Admin\AssociazioniController');
 
     Route::post('admin/volontari/search', ['uses' => 'Admin\VolontariController@search', 'as' => 'volontari.search']);
     Route::get('admin/volontari/{query_id?}', ['uses' => 'Admin\VolontariController@index', 'as' => 'volontari.index']);

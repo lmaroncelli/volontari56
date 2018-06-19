@@ -157,3 +157,21 @@ https://www.youtube.com/watch?v=vBzg0Us5MDk
 1. https://laravel-excel.maatwebsite.nl/docs/3.0/export/basics
 2. https://investmentnovel.com/laravel-5-6-data-export-to-csv-and-excel/
 3. http://laraveldaily.com/laravel-excel-3-0-export-custom-array-excel/
+
+
+
+
+**Nuovo utente**
+
+Un utente è un'entità capace di fare login; quindi può essere
+
+- associazione
+- admin
+
+- creazione nuova associazione:
+	devo inserire il record nella tabella users (utilizzo lo scaffold di Laravel) ed un record collegato nella tabella tblAssociazioni
+
+
+1. tolgo dal RegisterController nel costruttore 
+	$this->middleware('guest');
+	perché così mi fa accedere al form di registrazione solo se NON sono loggato, invece io voglio che siano solo gli admin loggati ad accedervi

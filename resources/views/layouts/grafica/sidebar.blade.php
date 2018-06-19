@@ -64,7 +64,6 @@
           </ul>
         </li>
 
-
       @endif
 
       {{-- PREVENTIVI --}}
@@ -106,6 +105,10 @@
       </li>
       @endif
       
+      @if(Auth::user()->hasRole('admin'))
+        <li class="header">&nbsp;</li>
+        <li><a href="{{ route('register') }}"><i class="fa fa-plus-square text-aqua"></i> <span>Registra nuovo utente</span></a></li>
+      @endif
       
 
     </ul>
