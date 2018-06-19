@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Associazione;
 use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+
 
 class RegisterController extends Controller
 {
@@ -78,11 +82,41 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
+            'ruolo' => $data['ruolo'],
             'name' => $data['name'],
             'username' => $data['username'], 
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        if ($data['ruolo'] == 'associazione') 
+          {
+          Associazione::create([
+                                'nome' => $data['name'],
+                                'user_id' => $user->id,
+                                ]);
+          }
+
+        return $user;
     }
+
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return redirect('admin/home')->with('status', 'Utente \''.$user->name.'\' creato correttamente!');
+
+
+    }
+
 }

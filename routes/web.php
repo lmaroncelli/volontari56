@@ -22,7 +22,7 @@ $router->pattern('documento_id', '[0-9]+');
 // Authentication Routes
 
 //Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
+Route::post('login', 'Auth\LoginController@login')->name('login_post');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
@@ -39,7 +39,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
 // la home diventa il mio loginForm
-Route::get('/','Auth\LoginController@showLoginForm');
+Route::get('/','Auth\LoginController@showLoginForm')->name('login');
 
 
 

@@ -10,7 +10,7 @@ class Associazione extends Model
 	{
 	protected $table = 'tblAssociazioni';
 
-	protected $guarded = ['id','user_id'];
+	protected $guarded = ['id'];
 
 
 

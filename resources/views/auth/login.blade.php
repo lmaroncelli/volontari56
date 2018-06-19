@@ -5,7 +5,7 @@
 <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login_post') }}">
     {{ csrf_field() }}
         
         <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }} has-feedback">

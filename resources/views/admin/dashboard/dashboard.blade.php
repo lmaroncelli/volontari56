@@ -15,12 +15,6 @@
                 <div class="box-header"><h3 class="box-title">Preventivi in scadenza</h3></div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
                     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
                         <div class="col-xs-12">
