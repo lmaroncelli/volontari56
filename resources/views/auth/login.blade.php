@@ -40,6 +40,9 @@
           <div class="col-xs-4">
             <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
           </div>
+          <a class="btn btn-link" href="{{ route('password.request') }}">
+              {{ __('Password dimenticata ?') }}
+          </a>
           <!-- /.col -->
         </div>
     </form>
