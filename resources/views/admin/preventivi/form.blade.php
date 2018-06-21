@@ -252,12 +252,13 @@
 
 	@endif
 
-	$("#datepicker").datepicker({
-		language: "it",
-		startDate: '0d', // non posso mettere date MINORI DI OGGI
-		format: 'dd/mm/yyyy',
-	  	autoclose: true,
-	});
+	var _jsonObjDate = {language: "it", format: 'dd/mm/yyyy', autoclose: true};
+
+	@isAssoc
+	_jsonObjDate.startDate = '0d'; // non posso mettere date MINORI DI OGGI 
+	@endisAssoc
+
+	$("#datepicker").datepicker(_jsonObjDate);
 
 	//Timepicker
 	$('.timepicker').timepicker({
