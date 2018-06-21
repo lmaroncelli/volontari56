@@ -6,6 +6,7 @@ use App\Associazione;
 use App\Documento;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Requests\DocumentoRequest;
+use App\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,19 +14,15 @@ use Illuminate\Support\Facades\Storage;
 class DocumentiController extends AdminController
 {
 
-
-  private function _getAssociazioni(&$assos)
-    {
-    $assos = ['0' => 'Tutte'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
-    }
-
   public function formUpload()
     {
     $doc = new Documento;
 
     $associazioni_associate = ['0' => 'Tutte'];
-    $assos = null;
-    $this->_getAssociazioni($assos);
+   
+    $assos = Utility::getAssociazioni();
+   
+
     return view('admin.documenti.form', compact('doc','associazioni_associate','assos'));
   	}
 
@@ -46,8 +43,7 @@ class DocumentiController extends AdminController
           unset($associazioni_associate[0]);
         }
       }
-    $assos = null;
-    $this->_getAssociazioni($assos);
+    $assos = Utility::getAssociazioni();
 
     return view('admin.documenti.form', compact('doc','associazioni_associate','assos'));
     }
@@ -79,7 +75,6 @@ class DocumentiController extends AdminController
     $doc->update($request->except('associazioni'));
     
     $associazioni = is_null($request->get('associazioni')) ? 0 : $request->get('associazioni');
-
     $doc->associazioni()->sync($associazioni);
 
     return redirect('admin/documenti')->with('status', 'Documento modificato correttamente!');

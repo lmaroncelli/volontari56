@@ -117,8 +117,12 @@
                         <tr @if ($post->trashed()) class="deleted" @endif>
                             @foreach ($columns as $field => $name)
                                 <td>
-                                    @if ($field == 'titolo' || $field == 'slug')
+                                    @if ($field == 'titolo')
                                         <a href="{{ route('posts.edit', $post->id) }}" title="Modifica post">
+                                            {{$post->$field}}
+                                        </a>
+                                    @elseif($field == 'slug')
+                                        <a href="{{ route('posts.show', $post->id) }}" title="Visualizza post">
                                             {{$post->$field}}
                                         </a>
                                     @elseif($field == 'autore')

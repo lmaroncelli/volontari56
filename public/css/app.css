@@ -107,3 +107,23 @@ forza un elemento ad essere display:inline;
 .radio.inline {
 	margin-right: 25px;
 }
+
+
+
+/*
+Autore di un post
+ */
+
+
+a.post_author {
+	color: inherit;
+}
+
+a.post_author:hover {
+	color: inherit;
+}
+
+
+.user-block .username, .user-block .description, .user-block .comment {
+    margin-left: 0px!important;
+}

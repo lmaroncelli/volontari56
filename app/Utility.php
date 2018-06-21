@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Associazione;
 use Auth;
 use Carbon\Carbon;
 use Exception;
@@ -198,11 +199,17 @@ class Utility extends Model
 	}
 
 	public static function isIpDebug(Request $request)
-		{
-	    $ip = $request->ip();
-	    return in_array($ip, self::$ip_debug);
-		}
+	{
+    $ip = $request->ip();
+    return in_array($ip, self::$ip_debug);
+	}
 
+
+
+	public static function getAssociazioni()
+	  {
+	  return ['0' => 'Tutte'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
+	  }
 
 
 

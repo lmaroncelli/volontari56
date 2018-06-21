@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Post;
 use App\Preventivo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends AdminController
 {
@@ -31,7 +32,20 @@ class HomeController extends AdminController
         // elenco dei POST featured //
         //////////////////////////////
 
-        $posts = Post::featured()->orderBy('created_at', 'desc')->get();
+        $query = Post::featured();
+
+
+        /////////////////////////////////////////////////////////
+        // se sono un'ASSOCIAZIONE deveo vedere solo i miei !! //
+        /////////////////////////////////////////////////////////
+        if(Auth::user()->hasRole('associazione'))
+          {
+          $available_ids = Post::ownedByAssoc(Auth::user()); 
+          $query->whereIn('id',$available_ids);
+          }
+        
+
+        $posts = $query->orderBy('created_at', 'desc')->get();
 
 
         /////////////////////////////////////////////////////////////////////////

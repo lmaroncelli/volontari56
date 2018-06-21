@@ -57,7 +57,7 @@
           <div class="box box-widget">
               <div class="box-header">
                 <div class="user-block">
-                  <span class="username"><a href="#">{{$post->autore->name}}</a></span>
+                  <span class="username"><a class="post_author">{{$post->autore->name}}</a></span>
                   @php
                     Carbon\Carbon::setLocale('it'); /* in un middleware every request!!*/
                   @endphp

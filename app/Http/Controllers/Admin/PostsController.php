@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\AdminController;
 use App\Post;
+use App\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PostsController extends Controller
+class PostsController extends AdminController
 {   
 
     function __construct(Request $request)
@@ -73,6 +74,18 @@ class PostsController extends Controller
           $filtro_pdf[] =  "<i>Escluso gli eliminati</i>";
           }
 
+
+
+        /////////////////////////////////////////////////////////
+        // se sono un'ASSOCIAZIONE deveo vedere solo i miei !! //
+        /////////////////////////////////////////////////////////
+         if(Auth::user()->hasRole('associazione'))
+          {
+          $available_ids = Post::ownedByAssoc(); 
+          $query->whereIn('id',$available_ids);
+          }
+
+
         $query->orderBy($order_by, $order);
 
         $posts = $query->paginate(15);
@@ -103,7 +116,10 @@ class PostsController extends Controller
     {
         $post = new Post;
 
-        return view('admin.posts.form', compact('post'));
+        $associazioni_associate = ['0' => 'Tutte'];
+        $assos = Utility::getAssociazioni();
+
+        return view('admin.posts.form', compact('post','associazioni_associate','assos'));
 
     }
 
@@ -115,8 +131,13 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-    $post = Post::create($request->all());
+
+    //dd($request->all());
+    $post = Post::create($request->except('associazioni'));
     Auth::user()->posts()->save($post);
+
+    $associazioni = is_null($request->get('associazioni')) ? 0 : $request->get('associazioni');
+    $post->associazioni()->sync($associazioni);
 
     return redirect('admin/posts')->with('status', 'Post creato correttamente!');
 
@@ -144,8 +165,21 @@ class PostsController extends Controller
     public function edit($id)
     {
       $post = Post::withTrashed()->find($id);
+      $associazioni_associate = $post->associazioni->pluck('id','nome')->toArray();
+      if(!count($associazioni_associate))
+        {
+        $associazioni_associate = ['0' => 'Tutte'];
+        }
+      else
+        {
+        if(array_key_exists(0, $associazioni_associate))
+          {
+            unset($associazioni_associate[0]);
+          }
+        }
+      $assos = Utility::getAssociazioni();
 
-      return view('admin.posts.form', compact('post'));
+      return view('admin.posts.form', compact('post','associazioni_associate','assos'));
     }
 
     /**
@@ -158,11 +192,12 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
       $post = Post::find($id);
-      $post->fill($request->all());
-
+      $post->fill($request->except('associazioni'));
       $post->featured = $request->filled('featured');
-      
       $post->save();
+
+      $associazioni = is_null($request->get('associazioni')) ? 0 : $request->get('associazioni');
+      $post->associazioni()->sync($associazioni);
 
       return redirect('admin/posts')->with('status', 'Post aggiornato correttamente!');
     }

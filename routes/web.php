@@ -16,6 +16,7 @@ $router->pattern('query_id', '[0-9]+');
 $router->pattern('relazione_id', '[0-9]+');
 $router->pattern('preventivo_id', '[0-9]+');
 $router->pattern('documento_id', '[0-9]+');
+$router->pattern('post_id', '[0-9]+');
 $router->pattern('utente_id', '[0-9]+');
 
 //Auth::routes();
@@ -90,7 +91,7 @@ Route::group(['middleware' => ['admin']], function () {
 
     Route::post('admin/posts/slug_ajax', ['uses' => 'Admin\PostsController@slugAjax']);
     Route::any('admin/posts/upload', ['uses' => 'Admin\PostsController@upload', 'as' => 'posts.upload']);
-    Route::resource('admin/posts', 'Admin\PostsController');
+    Route::resource('admin/posts', 'Admin\PostsController', ['except' => ['show']]);
 
     Route::get('admin/documenti/upload', ['uses' => 'Admin\DocumentiController@formUpload', 'as' => 'documenti.form-upload']);
     Route::post('admin/documenti/upload', ['uses' => 'Admin\DocumentiController@upload', 'as' => 'documenti.upload']);
@@ -100,6 +101,9 @@ Route::group(['middleware' => ['admin']], function () {
 
 
 });
+
+
+Route::get('admin/posts/{post_id}', 'Admin\PostsController@show')->name('posts.show');
 
 Route::get('admin/documenti', ['uses' => 'Admin\DocumentiController@index', 'as' => 'documenti.index']);
 

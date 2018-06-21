@@ -51,6 +51,16 @@
 	        	@endif
 	        	{!! csrf_field() !!}
 				<div class="box-body">
+
+
+					<div class="form-group" id="associazioni_select">
+						<label for="associazioni">Associazioni:</label>
+						<select multiple="multiple" name="associazioni[]" id="associazioni" class="form-control select2" data-placeholder="Seleziona le associazioni" style="width: 100%;">
+						@foreach($assos as $id => $nome)
+							<option value="{{$id}}" @if ( in_array($id, $associazioni_associate) || collect(old('associazioni'))->contains($id) ) selected="selected" @endif>{{$nome}}</option>
+						@endforeach
+						</select>
+					</div>
 					
 					<div class="form-group">
 					  <label for="titolo">Titolo</label>
@@ -104,6 +114,15 @@
 
 <!-- Select2 -->
 <script src="{{ asset('js/select2.full.min.js') }}"></script>
+
+
+<script type="text/javascript">
+		$(function () {
+		    //Initialize Select2 Elements
+		    $('.select2').select2();
+		});
+</script>
+
 
 
 <script src='{{ asset('tinymce/tinymce.min.js') }}'></script>

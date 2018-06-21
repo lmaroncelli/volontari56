@@ -71,6 +71,10 @@ class Associazione extends Model
 	  return $this->belongsToMany('App\Documento', 'tblAssociazioniDocumenti', 'associazione_id', 'documento_id');
 	  }
 
+ public function posts()
+   {
+   return $this->belongsToMany('App\Post', 'tblAssociazioniPosts', 'associazione_id', 'post_id');
+   }
 
 
 
