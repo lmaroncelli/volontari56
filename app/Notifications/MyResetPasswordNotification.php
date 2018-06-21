@@ -46,7 +46,7 @@ class MyResetPasswordNotification extends Notification
             ->subject('Reimposta la tua Password!')
             ->greeting('Ricevi questa mail dalla applicazione per la gestione delle Guardie Volontarie della Provincia di Rimini')
             ->line('È stata avviata la richiesta per reimpostare la password dell\'utente con username "'.$this->username.'"')
-            ->line('Per completare la procedura clicca il link sotto')
+            ->line('Per completare la procedura clicca il link sotto (che ha una validità di '. config('auth.passwords.users.expire') .' minuti )')
             ->action('Reimposta Password', url(config('app.url').route('password.reset', $this->token, false)))
             ->line('Se non sei stato tu a richiederlo, semplicemente ignora questa email.')
             ->salutation('Cordiali saluti.');

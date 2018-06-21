@@ -8,7 +8,7 @@
     </div>
 @endif
 <div class="login-box-body">
-    <p class="login-box-msg">Reimposta la tua password</p>
+    <p class="login-box-msg">Richiesta di reimpostare la password</p>
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
