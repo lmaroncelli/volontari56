@@ -8,7 +8,7 @@
     </div>
 @endif
 <div class="login-box-body">
-    <p class="login-box-msg">Risetta la tua password</p>
+    <p class="login-box-msg">Reimposta la tua password</p>
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
@@ -26,7 +26,7 @@
         <div class="form-group row mb-0">
             <div class="col-md-6 offset-md-4">
                 <button type="submit" class="btn btn-primary">
-                    {{ __('Send Password Reset Link') }}
+                    {{ __('Richiedi il link per reimpostare la password') }}
                 </button>
                 <a class="btn btn-link" href="{{ route('login') }}">
                     {{ __('Torna al login') }}

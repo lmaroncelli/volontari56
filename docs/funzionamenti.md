@@ -175,3 +175,150 @@ Un utente è un'entità capace di fare login; quindi può essere
 1. tolgo dal RegisterController nel costruttore 
 	$this->middleware('guest');
 	perché così mi fa accedere al form di registrazione solo se NON sono loggato, invece io voglio che siano solo gli admin loggati ad accedervi
+
+
+
+
+**Reset Password Mail Notifications**
+
+// We will send the password reset link to this user. Once we have attempted
+// to send the link, we will examine the response then see the message we
+// need to show to the user. Finally, we'll send out a proper response.
+$response = $this->broker()->sendResetLink(
+    $request->only('username')
+);
+
+
+dove 
+
+public function broker()
+  {
+      return Password::broker();
+  }
+
+
+e dove
+
+
+namespace Illuminate\Auth\Passwords;
+
+
+use Closure;
+use Illuminate\Support\Arr;
+use UnexpectedValueException;
+use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+class PasswordBroker implements PasswordBrokerContract {
+
+
+	public function sendResetLink(array $credentials)
+	{
+	    // First we will check to see if we found a user at the given credentials and
+	    // if we did not we will redirect back to this current URI with a piece of
+	    // "flash" data in the session to indicate to the developers the errors.
+	    $user = $this->getUser($credentials);
+
+	    if (is_null($user)) {
+	        return static::INVALID_USER;
+	    }
+
+	    // Once we have the reset token, we are ready to send the message out to this
+	    // user with a link to reset their password. We will then redirect back to
+	    // the current URI having nothing set in the session to indicate errors.
+	    $user->sendPasswordResetNotification(
+	        $this->tokens->create($user)
+	    );
+
+	    return static::RESET_LINK_SENT;
+	}
+	
+}
+
+
+__Quindi la mail viene inviata con ATTRAVERSO LO $user__ 
+ 
+ $user->sendPasswordResetNotification(
+	        $this->tokens->create($user)
+	    );
+
+
+
+dove il metodo sendPasswordResetNotification è nel trait CanResetPassword
+
+
+
+
+namespace Illuminate\Auth\Passwords;
+
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+
+trait CanResetPassword
+{
+    /**
+     * Get the e-mail address where password reset links are sent.
+     *
+     * @return string
+     */
+    public function getEmailForPasswordReset()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
+}
+
+
+ed in 
+
+
+Illuminate\Auth\Notifications\ResetPassword
+
+
+ho il metodo che invia la mail
+
+ /**
+ * Build the mail representation of the notification.
+ *
+ * @param  mixed  $notifiable
+ * @return \Illuminate\Notifications\Messages\MailMessage
+ */
+
+public function toMail($notifiable)
+{
+    if (static::$toMailCallback) {
+        return call_user_func(static::$toMailCallback, $notifiable, $this->token);
+    }
+
+    return (new MailMessage)
+        ->subject(Lang::getFromJson('Reset Password Notification'))
+        ->line(Lang::getFromJson('You are receiving this email because we received a password reset request for your account.'))
+        ->action(Lang::getFromJson('Reset Password'), url(config('app.url').route('password.reset', $this->token, false)))
+        ->line(Lang::getFromJson('If you did not request a password reset, no further action is required.'));
+}
+
+
+
+
+https://laravel.com/docs/5.6/passwords#resetting-views
+
+You may easily modify the notification class used to send the password reset link to the user. 
+
+To get started, override the sendPasswordResetNotification method on your User model. 
+
+Within this method, you may send the notification using any notification class you choose. 
+The password reset $token is the first argument received by the method:
+
+Creo una nuova notification class
+
+php artisan make:notification MyResetPasswordNotification
