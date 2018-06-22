@@ -180,14 +180,8 @@
     </script>
 
     <!-- date-range-picker -->
-    <script src="{{ asset('js/moment.min.js') }}"></script>
-    
+    <script src="{{ asset('js/moment.min.js') }}"></script>    
     <script src="{{ asset('js/jquery.daterangepicker.min.js') }}"></script>
-
-    <!-- bootstrap datepicker -->
-    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
-
 
     <script type="text/javascript">
         $(function () {
@@ -223,7 +217,7 @@
         @if ($dal != '' &&  $al != '')
             var _dal = '{{$dal}}';
             var _al = '{{$al}}';
-            $('#daterange-btn span').html(_dal + ' - ' + _al);
+            $('#daterange-btn span').html(_dal + ' | ' + _al);
         @endif
 
     	});
