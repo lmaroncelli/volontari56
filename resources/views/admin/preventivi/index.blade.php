@@ -207,10 +207,13 @@
                 format: 'DD/MM/YYYY',
                 startOfWeek: 'monday',
                 language:'it',
+                separator: ' | ',
                 setValue: function(s)
                 {
                 this.innerHTML = s;
-                $('#cerca_dal').val(s);
+                var arr = s.split(' | ');
+                $('#cerca_dal').val(arr[0]);
+                $('#cerca_al').val(arr[1]);
                 }
             };
             //Date range as a button
