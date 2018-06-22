@@ -8,6 +8,10 @@
 <!-- DataTables -->
 <link href="{{ asset('css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
 
+{{-- jQuery datePicker css --}}
+<link href="{{ asset('css/daterangepicker.min.css') }}" rel="stylesheet">
+
+
 @endsection
 
 @section('briciole')
@@ -177,7 +181,9 @@
 
     <!-- date-range-picker -->
     <script src="{{ asset('js/moment.min.js') }}"></script>
-    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+    
+    <script src="{{ asset('js/jquery.daterangepicker.min.js') }}"></script>
+
     <!-- bootstrap datepicker -->
     <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
@@ -196,34 +202,20 @@
             });
 
 
+
+            var _configObject = {
+                format: 'DD/MM/YYYY',
+                startOfWeek: 'monday',
+                language:'it',
+                setValue: function(s)
+                {
+                this.innerHTML = s;
+                $('#cerca_dal').val(s);
+                }
+            };
             //Date range as a button
-            $('#daterange-btn').daterangepicker(
-
-              {
-                locale : {
-                    customRangeLabel: 'Seleziona periodo',
-                    format: 'DD/MM/YYYY',
-                    applyLabel: 'Conferma',
-                    cancelLabel: 'Annulla',
-                },
-                ranges   : {
-                  'Oggi'       : [moment(), moment()],
-                  'Ieri'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                  'Ultimi 7 Giorni' : [moment().subtract(6, 'days'), moment()],
-                  'Ultimi 30 Giorni': [moment().subtract(29, 'days'), moment()],
-                  'Questo Mese'  : [moment().startOf('month'), moment().endOf('month')],
-                  'Mese Scorso'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                startDate: moment().subtract(29, 'days'),
-                endDate  : moment()
-              },
-              function (start, end) {
-                $('#daterange-btn span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-                $('#cerca_dal').val(start.format('DD/MM/YYYY'));
-                $('#cerca_al').val(end.format('DD/MM/YYYY'));
-              }
-
-            )
+            $('#daterange-btn')
+                .dateRangePicker(_configObject);
 
         @if ($dal != '' &&  $al != '')
             var _dal = '{{$dal}}';

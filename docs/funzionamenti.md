@@ -325,3 +325,36 @@ The password reset $token is the first argument received by the method:
 Creo una nuova notification class
 
 php artisan make:notification MyResetPasswordNotification
+
+
+
+
+
+
+
+
+**Cambio il calendario nella ricerca ed invece di utilizzare bootstrap utilizzo longbill/jquery-date-range-picker**
+
+lancio git clone https://github.com/longbill/jquery-date-range-picker.git 
+da dentro la directory public/js 
+
+cd jquery-date-range-picker
+
+Install local dependencies
+
+npm install
+
+Generate new minified (dist) files by reading from the src folder
+
+gulp
+
+
+a questo punto demtro la cartellina dist/ ho le versioni minimizzate:
+
+-rw-rw-r-- 1 luigi luigi  9407 Jun 22 15:20 daterangepicker.css
+-rw-rw-r-- 1 luigi luigi  7936 Jun 22 15:20 daterangepicker.min.css
+-rwxrwxr-x 1 luigi luigi 53930 Jun 22 15:20 jquery.daterangepicker.min.js
+
+
+sposto i file jquery.daterangepicker.min.js e daterangepicker.min.css nelle rispettive folder dentro public/
+
