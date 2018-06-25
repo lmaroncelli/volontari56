@@ -201,7 +201,7 @@ class Utility extends Model
 	public static function isIpDebug(Request $request)
 	{
     $ip = $request->ip();
-    return in_array($ip, self::$ip_debug);
+    return in_array($ip, self::$ip_debug) && env('APP_ENV') !== 'production';
 	}
 
 
