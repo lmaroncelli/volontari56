@@ -32,11 +32,11 @@ class RelazioniSeeder extends Seeder
 	       	$p['alle'] = $data_relazioni.' '.$al_relazioni; 
        		}
        	
-       	$p['preventivo_id'] = $old_r->id_servizi; 
+       	$p['preventivo_id'] = $old_r->id_servizi;
        	$p['associazione_id'] = $old_r->id_utenti;
-       	$p['note'] = $old_r->note_relazioni; 
-       	$p['rapporto'] = $old_r->rapporto_relazioni; 
-       	$p['auto'] = $old_r->auto_relazioni; 
+       	$p['note'] = str_replace_first('-- NEW NOTE --','',$old_r->note_relazioni);
+       	$p['rapporto'] = str_replace_first('-- NEW RAPPORTO --','',$old_r->rapporto_relazioni);
+       	$p['auto'] = str_replace_first('-- NEW AUTO --','',$old_r->auto_relazioni);
 
         if ($old_r->annullato_relazioni) 
           {
