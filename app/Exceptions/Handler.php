@@ -4,10 +4,12 @@ namespace App\Exceptions;
 
 use App\Mail\ErrorNotification;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -62,7 +64,12 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
       {   
-      if (! $exception instanceof ValidationException) 
+      //dd($exception);
+      if (
+        ! $exception instanceof ValidationException // se è un errore dovuto ad una validazione NON INVIO MAIL
+        && ! $exception instanceof AuthenticationException // se è un errore di autenticazione (es: sessione scaduta)  NON INVIO MAIL
+        && ! $exception instanceof NotFoundHttpException // se è un errore di pagina non trovata NON INVIO MAIL
+         ) 
         { 
 
         try 

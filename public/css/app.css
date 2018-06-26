@@ -127,3 +127,13 @@ a.post_author:hover {
 .user-block .username, .user-block .description, .user-block .comment {
     margin-left: 0px!important;
 }
+
+
+
+/*
+Pagina di errore
+ */
+
+.error-page>.headline {
+	margin-top: -25px!important;
+}
