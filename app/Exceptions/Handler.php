@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
       {   
       if (! $exception instanceof ValidationException) 
         { 
-          
+
         try 
           {
           $myLog = $this->_getMyLog($exception);
@@ -75,6 +75,8 @@ class Handler extends ExceptionHandler
         catch (\Exception $e) 
           {
           //errore nell'inviare la mail oppure nello scrivere nel log file;
+          $myLog = $this->_getMyLog($e);
+          Log::critical($myLog);
           }
         
         }
