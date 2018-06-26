@@ -32,7 +32,7 @@ class HomeController extends AdminController
         // elenco dei POST featured //
         //////////////////////////////
 
-        $query = Post::featured();
+        $query = Post::featured()->get;
 
 
         /////////////////////////////////////////////////////////

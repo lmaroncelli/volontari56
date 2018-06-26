@@ -5,7 +5,7 @@
 - line: {{$line}}
 - exception: {{$msg}} 
 
-@component('mail::button', ['url' => ''])
+@component('mail::button', ['url' => $url])
 Vai
 @endcomponent
 

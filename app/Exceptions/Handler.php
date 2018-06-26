@@ -3,10 +3,10 @@
 namespace App\Exceptions;
 
 use App\Mail\ErrorNotification;
-use Dotenv\Exception\ValidationException;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Request;
 
 class Handler extends ExceptionHandler
@@ -62,16 +62,15 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
       {   
-      //dd($exception);
       if (! $exception instanceof ValidationException) 
         { 
-        
+          
         try 
           {
-          //$myLog = $this->_getMyLog($exception);
-          //Log::critical($myLog);
+          $myLog = $this->_getMyLog($exception);
+          Log::critical($myLog);
           
-          //\Mail::to('lmaroncelli@gmail.com')->send(new ErrorNotification($exception));  
+          \Mail::to('lmaroncelli@gmail.com')->send(new ErrorNotification($exception));  
           } 
         catch (\Exception $e) 
           {
