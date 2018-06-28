@@ -604,10 +604,14 @@ class RelazioniController extends AdminController
     public function destroy($id)
     {
       $relazione = Relazione::find($id);
+
+      $preventivo_id = $relazione->preventivo_id;
+
       // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
       // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
       $relazione->delete();
-      return redirect('admin/relazioni')->with('status', 'Relazione eliminata!');
+
+      return redirect("admin/preventivi/$preventivo_id/edit")->with('status', 'Hai eliminato la relazione (ID = '.$relazione->id.') associata a questo preventivo!! Adesso puoi eliminare anche il preventivo');
     }
 
     /**

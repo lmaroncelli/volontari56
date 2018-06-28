@@ -39,3 +39,49 @@ https://laracasts.com/series/laravel-5-fundamentals/episodes/15
 
 
 https://git-scm.com/book/it/v1/Git-sul-Server
+
+
+
+
+
+
+
+
+**I volontari devono __DIVENTARE__ users al posto delle associazioni**
+
+
+- cambiare la relazione tra Associazione e User e diventa tra Volontario e User
+
+- lo user_id viene messo sulla tabella tblVolontari
+
+- loop sui volonatri e creazione per ognuno di un record nella tabella users con:
+ 	ruolo: associazione
+ 	name: NOME + COGNOME
+ 	username: NOME + COGNOME
+ 	pwd: NOME + COGNOME (da cambiare) 
+
+
+
+
+1. Creazione nuovo Volonario/Utente
+
+Rimane il form di adesso, ma 
+
+se sono un utente ASSOCIAZIONE, aggiungo il form del volontario
+
+- una combo per la selezione dell'associazione se sono un utente di quel tipo 
+- nome 
+- cognome
+- registro
+- data di nascita
+- note 
+
+
+
+2. spostamento di un volontario da un'associazione ad un'altra
+
+anche cancellandolo da un'associazione non perde mai la relazione con lo user, quindi mantiene il suo login anche nello spostamento.
+
+
+3. fare in modo che alcuni users non possano fare login ???
+

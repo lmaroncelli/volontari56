@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PreventivoRequest extends FormRequest
 {
@@ -33,12 +34,15 @@ class PreventivoRequest extends FormRequest
 
         if(!is_null($this->get('data')))
           {
-          $rules["dal"] = function($attribute, $value, $fail) {
-                        if ( Carbon::createFromFormat('d/m/Y H:i', $this->get('data'). ' ' .$value)->lt(Carbon::now()) ) 
-                          {
-                          return $fail('Il preventivo NON PUÒ avere un inizio PRECEDENTE ad ORA');
-                          }
-                      };
+          if(Auth::user()->hasRole('associazione'))  
+            {
+            $rules["dal"] = function($attribute, $value, $fail) {
+                          if ( Carbon::createFromFormat('d/m/Y H:i', $this->get('data'). ' ' .$value)->lt(Carbon::now()) ) 
+                            {
+                            return $fail('Il preventivo NON PUÒ avere un inizio PRECEDENTE ad ORA');
+                            }
+                        };
+            }
           }
 
         return $rules;

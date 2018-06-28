@@ -169,7 +169,16 @@
 	     <div class="col-md-6">
 	     	 <!-- general form elements -->
 	     	 <div class="box-operations">
-	     		@include('admin.admin_inc_delete_button')
+					
+					{{-- se non c'è la relazione associata posso cancellare il preventivo --}}
+	     	 	@if (is_null($preventivo->relazione))
+	     			@include('admin.admin_inc_delete_button')
+	     		@else
+	     		 	{{-- visualizzo il preventivo con un link per modificarlo (probabilmente per cancellarlo) --}}
+	     		 	<a class="btn btn-success" href="{{ route('relazioni.edit', $preventivo->relazione->id) }}" data-toggle="tooltip"  title="Modifica relazione">
+	     		 	    {{$preventivo->relazione->id}}
+	     		 	</a>
+	     	 	@endif
 	     		
 	     		@if (Auth::user()->hasRole('admin') && !$preventivo->isInTime())
 	     			<a href="{{ route('preventivi.apri', $preventivo->id) }}" class="btn bg-navy btn-flat" id="apri_preventivo">Il preventivo è chiuso ! Vuoi aprirlo ?  	<i class="fa fa-unlock"></i></a>
@@ -178,9 +187,9 @@
 	     		@endif
 
 	     		@if ( (Auth::user()->hasRole('associazione') && !$preventivo->isInTime()) || !is_null($preventivo->relazione) )
-	     			<button type="button" class="btn btn-success pull-right disabled">Crea una relazione di servizio</button>
+	     			<button type="button" class="btn btn-success pull-right disabled" data-toggle="tooltip" title="Preventivo scaduto o esiste già la relazione">Crea una relazione di servizio</button>
 	     		@else
-		     		<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" title="Crea una relazione di servizio" class="btn btn-success pull-right">
+		     		<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" data-toggle="tooltip" title="Crea una relazione di servizio" class="btn btn-success pull-right">
 		     			Crea una relazione di servizio
 		     		</a>
 	     		@endif
