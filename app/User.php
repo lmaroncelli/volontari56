@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Notifications\MyResetPasswordNotification;
+use App\Volontario;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -45,10 +46,10 @@ class User extends Authenticatable
 
 
 
-    public function associazione()
+    public function volontario()
       { 
-          // the Associazione model is automatically assumed to have a user_id foreign key
-          return $this->hasOne('App\Associazione','user_id','id');
+          // the Volontario model is automatically assumed to have a user_id foreign key
+          return $this->hasOne('App\Volontario','user_id','id');
       }
 
 

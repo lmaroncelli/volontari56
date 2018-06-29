@@ -29,6 +29,11 @@ class Volontario extends Model
     return $this->belongsToMany('App\Relazione', 'tblRelazioniVolontari', 'volontario_id', 'relazione_id');
     }
 
+    public function utente()
+    {
+      return $this->belongsTo('App\User','user_id','id');
+    }
+
 
   public function setDataNascitaAttribute($value)
    	{

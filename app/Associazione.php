@@ -60,12 +60,6 @@ class Associazione extends Model
 			return $this->hasMany('App\Relazione','associazione_id','id');
 		}
 
-	public function utente()
-		{
-			return $this->belongsTo('App\User','user_id','id');
-		}
-
-
 	public function documenti()
 	  {
 	  return $this->belongsToMany('App\Documento', 'tblAssociazioniDocumenti', 'associazione_id', 'documento_id');

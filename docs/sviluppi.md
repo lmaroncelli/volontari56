@@ -49,10 +49,9 @@ https://git-scm.com/book/it/v1/Git-sul-Server
 
 **I volontari devono __DIVENTARE__ users al posto delle associazioni**
 
+- lo user_id viene messo sulla tabella tblVolontari
 
 - cambiare la relazione tra Associazione e User e diventa tra Volontario e User
-
-- lo user_id viene messo sulla tabella tblVolontari
 
 - loop sui volontari e creazione per ognuno di un record nella tabella users con:
  	ruolo: associazione
