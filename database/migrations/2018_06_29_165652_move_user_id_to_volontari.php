@@ -20,6 +20,15 @@ class MoveUserIdToVolontari extends Migration
         Schema::table('tblVolontari', function (Blueprint $table) {
             $table->integer('user_id')->after('associazione_id')->unsigned()->nullable()->default(null);
         });
+
+
+        // loop sui volontari e creazione per ognuno di un record nella tabella users
+
+        Artisan::call( 'db:seed', [
+            '--class' => 'VolontariToUserSeeder',
+            '--force' => true
+        ]);
+
     }
 
     /**
