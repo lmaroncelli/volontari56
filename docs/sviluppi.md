@@ -54,10 +54,10 @@ https://git-scm.com/book/it/v1/Git-sul-Server
 
 - lo user_id viene messo sulla tabella tblVolontari
 
-- loop sui volonatri e creazione per ognuno di un record nella tabella users con:
+- loop sui volontari e creazione per ognuno di un record nella tabella users con:
  	ruolo: associazione
  	name: NOME + COGNOME
- 	username: NOME + COGNOME
+ 	username: NOME + COGNOME + 3 lettere associazione
  	pwd: NOME + COGNOME (da cambiare) 
 
 
