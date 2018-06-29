@@ -13,18 +13,21 @@ class VolontariToUserSeeder extends Seeder
      */
     public function run()
     {
-    	
+
     	$volontari = Volontario::all();
     	$new_users = [];
-    	foreach ($volontari as $volontario) 
+    	foreach ($volontari as $key => $volontario) 
     		{
+    		$nu = [];
     		$nu['name'] = ucfirst(strtolower($volontario->nome)) . ' ' . ucfirst(strtolower($volontario->cognome));
-    		$nu['username'] = strtolower($volontario->nome).'_'.strtolower($volontario->cognome).'_'.$volontario->associazione_id;
+    		$nu['email'] = 'user_da_volontario@gmail.com';
+    		$nu['username'] = strtolower($volontario->nome).'_'.strtolower($volontario->cognome).'_'.$volontario->associazione_id.'_'.$key;
     		$nu['password'] = bcrypt(strtolower($volontario->nome).'_'.strtolower($volontario->cognome));
-    		$new_users[] = $nu;
+    		$user = User::create($nu);
+    		$volontario->user_id = $user->id;
+    		$volontario->save();
     		}
-
-    	User::create($new_users);
+    
 
     }
 }

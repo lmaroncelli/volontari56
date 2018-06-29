@@ -13,13 +13,13 @@ class MoveUserIdToVolontari extends Migration
      */
     public function up()
     {
-        Schema::table('tblAssociazioni', function (Blueprint $table) {
+       /* Schema::table('tblAssociazioni', function (Blueprint $table) {
             $table->dropColumn('user_id');
         });
 
         Schema::table('tblVolontari', function (Blueprint $table) {
             $table->integer('user_id')->after('associazione_id')->unsigned()->nullable()->default(null);
-        });
+        });*/
 
 
         // loop sui volontari e creazione per ognuno di un record nella tabella users
