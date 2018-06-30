@@ -62,7 +62,15 @@ https://git-scm.com/book/it/v1/Git-sul-Server
 
 
 
-1. Creazione nuovo Volonario/Utente
+- Creazione nuovo Volonario/Utente
+
+Se sono volontario devo riempire 2 tabelle:
+
+gli inserimenti li devo fare in una transaction dopo entrambe le validazioni (per la model Volontario e User)
+
+
+
+
 
 Rimane il form di adesso, ma 
 
@@ -77,12 +85,14 @@ se sono un utente ASSOCIAZIONE, aggiungo il form del volontario
 
 
 
-2. spostamento di un volontario da un'associazione ad un'altra
+- spostamento di un volontario da un'associazione ad un'altra
 
 anche cancellandolo da un'associazione non perde mai la relazione con lo user, quindi mantiene il suo login anche nello spostamento.
 
 
-3. fare in modo che alcuni users non possano fare login ???
+- fare in modo che alcuni users non possano fare login ???
+
+
 
 
 
@@ -93,4 +103,6 @@ Auth::user()->associazione->id
 
 cioè l'associazione a cui appartiene l'utente corrente NON si trova più cosi MA 
 
- 
+Auth::user()->volontario->associazione->id 
+
+

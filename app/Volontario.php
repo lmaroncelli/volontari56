@@ -13,7 +13,7 @@ class Volontario extends Model
   
   protected $table = 'tblVolontari';
 
-  protected $guarded = ['id'];
+  protected $fillable = ['associazione_id', 'user_id', 'nome','cognome','nota','registro','data_nascita','deleted_at','created_at','updated_at'];
 
   protected $dates = ['data_nascita','deleted_at'];
 

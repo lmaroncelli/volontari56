@@ -50,7 +50,7 @@ class Documento extends Model
    		    // anche se nella tabella di associazione c'è il record con associazione_id = 0, la relazione mi da [] perché NON ESISTE un'associazione con id = 0 //
    		    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    		    $associazioni_ids = $doc->associazioni->pluck('id')->toArray();
-   		    if (empty($associazioni_ids) || in_array(Auth::user()->associazione->id,$associazioni_ids)) 
+   		    if (empty($associazioni_ids) || in_array(Auth::user()->volontario->associazione->id,$associazioni_ids)) 
    		      {
    		      $available_ids[] = $doc->id;
    		      }

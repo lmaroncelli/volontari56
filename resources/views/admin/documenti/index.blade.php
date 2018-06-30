@@ -30,7 +30,7 @@
 	@if (!$documenti->count())
     <div class="callout callout-info">
         <h4>
-            Nessuna documento presente!
+            Nessun documento presente!
         </h4>
         @isAdmin
         <p>

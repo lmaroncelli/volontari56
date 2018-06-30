@@ -34,7 +34,7 @@ class Associazione extends Model
     	  {
     	  if(Auth::user()->hasRole('associazione'))
     	    {
-    	    return $query->where('id', Auth::user()->associazione->id);  
+    	    return $query->where('id', Auth::user()->volontario->associazione->id);  
     	    }
     	  }
     	 else

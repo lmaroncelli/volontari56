@@ -22,7 +22,7 @@ class RelazioniOwnedByScope implements Scope
           {
           if(Auth::user()->hasRole('associazione'))
             {
-            $builder->where('tblRelazioni.associazione_id', '=', Auth::user()->associazione->id);  
+            $builder->where('tblRelazioni.associazione_id', '=', Auth::user()->volontario->associazione->id);  
             }
           }
     }

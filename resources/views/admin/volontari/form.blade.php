@@ -46,21 +46,25 @@
 	  			@if ($volontario->exists)
 	        	<form role="form" action="{{ route('volontari.update', $volontario->id) }}" method="POST">
 	        	{{ method_field('PUT') }}
-					@else
-	        	<form role="form" action="{{ route('volontari.store') }}" method="POST">
+				@else
+	        	{{-- registro nuovo utente volontario --}}
+	        	<form method="POST" action="{{ route('register') }}">
+	        	<input type="hidden" name="user" value="volontario">		
 	        	@endif
 	        	{!! csrf_field() !!}
 				<div class="box-body">
 					
-					<div class="form-group">
-					  <label for="nome">Nome</label>
-					  <input type="nome" class="form-control" name="nome" id="nome" placeholder="nome" value="{{$volontario->nome}}">
+					<div class="form-group has-feedback">        
+					    <input id="nome" type="text" placeholder="nome" class="form-control{{ $errors->has('nome') ? ' is-invalid' : '' }}" name="nome" value="{{ old('nome') }}" required autofocus>
+					    <span class="glyphicon glyphicon-user form-control-feedback"></span> 
 					</div>
-					
-					<div class="form-group">
-					  <label for="cognome">Cognome</label>
-					  <input type="cognome" class="form-control" name="cognome" id="cognome" placeholder="cognome" value="{{$volontario->cognome}}">
+
+					<div class="form-group has-feedback">        
+					    <input id="cognome" type="text" placeholder="cognome" class="form-control{{ $errors->has('cognome') ? ' is-invalid' : '' }}" name="cognome" value="{{ old('cognome') }}" required autofocus>
+					    <span class="glyphicon glyphicon-user form-control-feedback"></span> 
 					</div>
+
+					@include('auth._subform_register_user')
 
 					<div class="form-group">
 					  <label for="registro">Registro</label>
