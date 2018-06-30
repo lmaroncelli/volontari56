@@ -84,3 +84,13 @@ anche cancellandolo da un'associazione non perde mai la relazione con lo user, q
 
 3. fare in modo che alcuni users non possano fare login ???
 
+
+
+
+__FIX__
+
+Auth::user()->associazione->id 
+
+cioè l'associazione a cui appartiene l'utente corrente NON si trova più cosi MA 
+
+ 

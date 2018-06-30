@@ -22,7 +22,7 @@ class PreventiviOwnedByScope implements Scope
           {
           if(Auth::user()->hasRole('associazione'))
             {
-            $builder->where('tblPreventivi.associazione_id', '=', Auth::user()->associazione->id);  
+            $builder->where('tblPreventivi.associazione_id', '=', Auth::user()->volontario->associazione->id);  
             }
           }
     }

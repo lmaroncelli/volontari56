@@ -77,7 +77,7 @@ class Handler extends ExceptionHandler
           $myLog = $this->_getMyLog($exception);
           Log::critical($myLog);
           
-          \Mail::to('lmaroncelli@gmail.com')->send(new ErrorNotification($exception));  
+         /* \Mail::to('lmaroncelli@gmail.com')->send(new ErrorNotification($exception));  */
           } 
         catch (\Exception $e) 
           {
