@@ -21,9 +21,13 @@ class MoveUserIdToVolontari extends Migration
             $table->integer('user_id')->after('associazione_id')->unsigned()->nullable()->default(null);
         });
 
+        // gli utenti che avevo già importato di tipo associazione (quelli generici tipo ARCICACCIA,...) devono avere un volontario corrispondente
+        Artisan::call( 'db:seed', [
+            '--class' => 'UsersToVolontariSeeder',
+            '--force' => true
+        ]);
 
-        // loop sui volontari e creazione per ognuno di un record nella tabella users
-
+        // loop sui volontari (che non hanno nota == "GENERICO") e creazione per ognuno di un record nella tabella users
         Artisan::call( 'db:seed', [
             '--class' => 'VolontariToUserSeeder',
             '--force' => true

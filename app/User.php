@@ -67,6 +67,14 @@ class User extends Authenticatable
 
 
 
+    public function scopeWithRole($query, $role)
+      {
+          return $query->where('ruolo', $role);
+      }
+
+
+
+
 
     /**
      * Send the password reset notification.
@@ -78,5 +86,7 @@ class User extends Authenticatable
     {
         $this->notify(new MyResetPasswordNotification($token, $this->username));
     }
+
+
 
 }

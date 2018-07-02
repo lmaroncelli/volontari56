@@ -53,11 +53,24 @@ https://git-scm.com/book/it/v1/Git-sul-Server
 
 - cambiare la relazione tra Associazione e User e diventa tra Volontario e User
 
+
+- gli utenti che avevo già importato di tipo associazione (quelli generici tipo ARCICACCIA,...) devono avere un volontario corrispondente 
+	looop sugli users di tipo "associazione" e creazione di un volontario con:
+
+	associazione_id: trovo associazione con il campo "name"
+	user_id: utente corrente
+	nome: name
+	cognome: vuoto
+
+
+
 - loop sui volontari e creazione per ognuno di un record nella tabella users con:
  	ruolo: associazione
  	name: NOME + COGNOME
  	username: NOME + COGNOME + 3 lettere associazione
  	pwd: NOME + COGNOME (da cambiare) 
+
+
 
 
 

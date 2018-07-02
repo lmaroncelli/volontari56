@@ -14,7 +14,7 @@ class VolontariToUserSeeder extends Seeder
     public function run()
     {
 
-    	$volontari = Volontario::all();
+    	$volontari = Volontario::where('nota', '!=' , "GENERICO")->get();
     	$new_users = [];
     	foreach ($volontari as $key => $volontario) 
     		{
