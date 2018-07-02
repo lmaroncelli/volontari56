@@ -59,7 +59,12 @@ class RegisterController extends Controller
       {
         $utente = User::find($utente_id);
 
-        if ($utente->hasRole('admin') && $request->filled('name')) 
+        if ($request->has('user') && $request->get('user') == 'volontario') 
+          {
+          $utente->name = $request->get('nome') . ' ' . $request->get('cognome');
+          $utente->ruolo = 'associazione';
+          }
+        else
           {
           $utente->name = $request->get('name');
           }
@@ -74,7 +79,28 @@ class RegisterController extends Controller
 
         $utente->save();
 
-        return redirect('admin/utenti')->with('status', 'Utente \''.$utente->name.'\' modificato correttamente!');
+        if ( !is_null($utente) && $request->has('user') && $request->get('user') == 'volontario')
+          {
+            
+          $volontario = $utente->volontario;
+          /////////////////////////////////////////////////////////////////////
+          // ho inserito il salvataggio della data come Carbon in un mutator //
+          /////////////////////////////////////////////////////////////////////
+          $volontario->fill($request->except('elimina'));
+          $volontario->save();
+
+          if ($request->filled('elimina') && $request->get('elimina') == 1) 
+            {
+            $volontario->delete();
+            return redirect('admin/volontari')->with('status', 'Volontario eliminato!');
+            } 
+          else 
+            {
+
+            return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
+            }
+
+          }  
 
       }
 
@@ -94,23 +120,8 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ];
 
-      /*aggiungo le regole di validazione per il volontario*/
-      if ( array_key_exists('user', $data) && $data['user'] == 'volontario' ) 
-        {
-        $validation_rules['data_nascita'] = 'required|date_format:d/m/Y';
-        $validation_rules['nome'] = 'required|string|max:255';
-        $validation_rules['cognome'] = 'required|string|max:255';
-        }
-      else
-        {
-        $validation_rules['name'] = 'required|string|max:255';
-        }
-      
-        return Validator::make(
-          $data,  
-          $validation_rules,
-          [
-          'name.required' => 'Il nome è obbligatorio',
+
+      $validation_messages =  [
           'username.required' => 'Lo username è obbligatorio',
           'username.unique' => 'Lo username è già utilizzato',
           'username.max' => 'Lo username deve essere al massimo :max caratteri',
@@ -123,7 +134,32 @@ class RegisterController extends Controller
           'password.confirmed' => 'Le password non coincidono',
           'data_nascita.required' => 'La data di nascita è obbligatoria',
           'data_nascita.date_format' => 'La data di nascita non ha un formato valido',
-          ]
+          ];
+
+      /*aggiungo le regole di validazione per il volontario*/
+      if ( array_key_exists('user', $data) && $data['user'] == 'volontario' ) 
+        {
+        $validation_rules['data_nascita'] = 'required|date_format:d/m/Y';
+        $validation_rules['nome'] = 'required|string|max:255';
+        $validation_rules['cognome'] = 'required|string|max:255';
+        
+        $validation_messages['nome.required'] = 'Il nome è obbligatoria';
+        $validation_messages['cognome.required'] = 'Il cognome è obbligatoria';
+        }
+      else
+        {
+        $validation_rules['name'] = 'required|string|max:255';
+        $validation_messages['name.required'] = 'Il nome è obbligatoria';
+        
+        }
+
+
+      
+      
+        return Validator::make(
+          $data,  
+          $validation_rules,
+          $validation_messages
         );
     }
 

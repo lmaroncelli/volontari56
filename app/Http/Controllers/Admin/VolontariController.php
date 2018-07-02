@@ -92,7 +92,7 @@ class VolontariController extends AdminController
       }
 
 
-    $query = Volontario::with(['associazione'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
+    $query = Volontario::with(['associazione','utente'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
     {
       $join->on('tblAssociazioni.id', '=', 'tblVolontari.associazione_id');
     })
@@ -255,7 +255,7 @@ class VolontariController extends AdminController
      */
     public function edit($id)
     {
-        $volontario = Volontario::withTrashed()->find($id);
+        $volontario = Volontario::with(['utente'])->withTrashed()->find($id);
         $assos = Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
 
         $assos = ['0' => 'Seleziona...'] + $assos;

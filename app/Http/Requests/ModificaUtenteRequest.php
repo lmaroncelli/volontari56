@@ -28,6 +28,15 @@ class ModificaUtenteRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users,email,'.$this->get('utente_id'),
         ];
 
+        /*aggiungo le regole di validazione per il volontario*/
+        if ( !is_null($this->get('user')) && $this->get('user') == 'volontario' ) 
+          {
+          $rules['data_nascita'] = 'required|date_format:d/m/Y';
+          $rules['nome'] = 'required|string|max:255';
+          $rules['cognome'] = 'required|string|max:255';
+          }
+
+
         if(!is_null($this->get('name')))
           {
           $rules["name"] = 'required|string|max:255';
@@ -57,6 +66,9 @@ class ModificaUtenteRequest extends FormRequest
                 'password.required' => 'La password è obbligatoria',
                 'password.min' => 'Le password deve essere almeno :min caratteri',
                 'password.confirmed' => 'Le password non coincidono',
+
+                'data_nascita.required' => 'La data di nascita è obbligatoria',
+                'data_nascita.date_format' => 'La data di nascita non ha un formato valido',
                 ];
 
          return $messages;

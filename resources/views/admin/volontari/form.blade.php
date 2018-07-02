@@ -44,23 +44,22 @@
         <!-- general form elements -->
         <div class="box box-primary">
 	  			@if ($volontario->exists)
-	        	<form role="form" action="{{ route('volontari.update', $volontario->id) }}" method="POST">
-	        	{{ method_field('PUT') }}
-				@else
+	  				<form method="POST" action="{{ route('utenti.modifica',$volontario->utente->id) }}">
+					@else
 	        	{{-- registro nuovo utente volontario --}}
 	        	<form method="POST" action="{{ route('register') }}">
-	        	<input type="hidden" name="user" value="volontario">		
-	        	@endif
+	        @endif
+	        	<input type="hidden" name="user" value="volontario">
 	        	{!! csrf_field() !!}
 				<div class="box-body">
 					
 					<div class="form-group has-feedback">        
-					    <input id="nome" type="text" placeholder="nome" class="form-control{{ $errors->has('nome') ? ' is-invalid' : '' }}" name="nome" value="{{ old('nome') }}" required autofocus>
+					    <input id="nome" type="text" placeholder="nome" class="form-control{{ $errors->has('nome') ? ' is-invalid' : '' }}" name="nome" @if ($volontario->exists) value="{{ old('nome') != '' ? old('nome') : $volontario->nome }}" @else value="{{ old('nome')}}" @endif required autofocus>
 					    <span class="glyphicon glyphicon-user form-control-feedback"></span> 
 					</div>
 
 					<div class="form-group has-feedback">        
-					    <input id="cognome" type="text" placeholder="cognome" class="form-control{{ $errors->has('cognome') ? ' is-invalid' : '' }}" name="cognome" value="{{ old('cognome') }}" required autofocus>
+					    <input id="cognome" type="text" placeholder="cognome" class="form-control{{ $errors->has('cognome') ? ' is-invalid' : '' }}" name="cognome" @if ($volontario->exists) value="{{ old('cognome') != '' ? old('cognome') : $volontario->cognome }}" @else value="{{ old('cognome')}}" @endif  required autofocus>
 					    <span class="glyphicon glyphicon-user form-control-feedback"></span> 
 					</div>
 
@@ -68,7 +67,7 @@
 
 					<div class="form-group">
 					  <label for="registro">Registro</label>
-					  <input type="registro" class="form-control" name="registro" id="registro" placeholder="registro" value="{{$volontario->registro}}">
+					  <input type="registro" class="form-control" name="registro" id="registro" placeholder="registro" @if ($volontario->exists) value="{{ old('registro') != '' ? old('registro') : $volontario->registro }}" @else value="{{ old('registro')}}" @endif>
 					</div>
 					<div class="form-group">
 					  <label for="data_nascita">Data di nascita</label>
@@ -76,7 +75,7 @@
 					    <div class="input-group-addon">
 					      <i class="fa fa-calendar"></i>
 					    </div>
-					    <input type="text" class="form-control pull-right" id="datepicker" name="data_nascita" id="data_nascita" value="{{$volontario->data_nascita}}">
+					    <input type="text" class="form-control pull-right" id="datepicker" name="data_nascita" id="data_nascita" @if ($volontario->exists) value="{{ old('data_nascita') != '' ? old('data_nascita') : $volontario->data_nascita }}" @else value="{{ old('data_nascita')}}" @endif>
 					  </div>
 					  <!-- /.input group -->
 					</div>
@@ -99,7 +98,7 @@
 					  <label for="associazione_id">Associazione</label>
 					  <select class="form-control select2" style="width: 100%;" name="associazione_id" id="associazione_id">
 					    @foreach ($assos as $id => $nome)
-					    	<option value="{{$id}}" @if ($volontario->associazione_id == $id) selected="selected" @endif>{{$nome}}</option>
+					    	<option value="{{$id}}" @if ($volontario->associazione_id == $id || old('associazione_id') == $id) selected="selected" @endif>{{$nome}}</option>
 					    @endforeach
 					  </select>
 					</div>
