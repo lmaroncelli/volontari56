@@ -83,6 +83,46 @@ gli inserimenti li devo fare in una transaction dopo entrambe le validazioni (pe
 
 
 
+__ELENCO VOLONTARI__
+
+- admin/volontari 
+
+- Volontario::with(['associazione','utente']) legge dalla tabella tblVolontari con eagerLoading ('associazione' e 'utente'), quindi visuliazzo solo i volontari e non gli admin 
+
+__NUOVO VOLONTARIO__
+
+- Volontari > Nuovo => volontari/create => admin.volontari.form => action = [route('register')]
+
+- Auth\RegisterController@register è la route PREDEFINITA di laravel opportunamente modificata per inserire user e volontario in una transaction
+
+
+__MODIFICA VOLONTARIO__
+
+- volontari/1553/edit => admin.volontari.form => action = [route('utenti.modifica',$volontario->utente->id)]  
+
+- Auth\RegisterController@modificaUtente
+
+
+
+
+
+__ELENCO ADMIN__
+
+- admin/utenti => Auth\RegisterController@elencoUtenti seleziona solo gli utenti di tipo admin User::withRole('admin')
+
+
+__NUOVO ADMIN__
+
+- route('register') => Auth\RegisterController@showRegistrationForm => auth.register è il form predefinito di Laravel => action = [route('register')]
+
+- Auth\RegisterController@register è la route PREDEFINITA di laravel opportunamente modificata per inserire user (senza volontario)
+
+
+__MODIFICA ADMIN__
+
+
+
+
 
 
 Rimane il form di adesso, ma 

@@ -106,8 +106,8 @@
       
       @if(Auth::user()->hasRole('admin'))
         <li class="header">&nbsp;</li>
-        <li><a href="{{ route('utenti') }}"><i class="fa fa-navicon text-aqua"></i> <span>Elenco utenti</span></a></li>
-        <li><a href="{{ route('register') }}"><i class="fa fa-plus-square text-aqua"></i> <span>Registra nuovo utente</span></a></li>
+        <li><a href="{{ route('utenti') }}"><i class="fa fa-navicon text-aqua"></i> <span>Elenco admin</span></a></li>
+        <li><a href="{{ route('register') }}"><i class="fa fa-plus-square text-aqua"></i> <span>Registra nuovo admin</span></a></li>
 
       @endif
       

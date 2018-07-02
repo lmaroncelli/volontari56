@@ -45,6 +45,7 @@
         <div class="box box-primary">
 	  			@if ($volontario->exists)
 	  				<form method="POST" action="{{ route('utenti.modifica',$volontario->utente->id) }}">
+	  				<input type="hidden" name="utente_id" value="{{$volontario->utente->id}}">
 					@else
 	        	{{-- registro nuovo utente volontario --}}
 	        	<form method="POST" action="{{ route('register') }}">
@@ -63,7 +64,7 @@
 					    <span class="glyphicon glyphicon-user form-control-feedback"></span> 
 					</div>
 
-					@include('auth._subform_register_user')
+					@include('auth._subform_register_volontario')
 
 					<div class="form-group">
 					  <label for="registro">Registro</label>

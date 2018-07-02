@@ -9,6 +9,7 @@ use App\Volontario;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -46,6 +47,20 @@ class RegisterController extends Controller
         $this->middleware('auth');
     }
 
+
+
+      /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {   
+        $user = new User;
+        
+        return view('auth.register', compact('user'));
+    }
+
     
     public function editaUtente($utente_id)
     {
@@ -57,6 +72,7 @@ class RegisterController extends Controller
 
     public function modificaUtente(ModificaUtenteRequest $request, $utente_id)
       {
+
         $utente = User::find($utente_id);
 
         if ($request->has('user') && $request->get('user') == 'volontario') 
@@ -77,30 +93,37 @@ class RegisterController extends Controller
           $utente->password = Hash::make($request->get('password'));
           }
 
-        $utente->save();
+        DB::transaction(function() use ($request, $utente) {
 
-        if ( !is_null($utente) && $request->has('user') && $request->get('user') == 'volontario')
+          $utente->save();
+
+          if ( !is_null($utente) && $request->has('user') && $request->get('user') == 'volontario')
+            {
+              
+            $volontario = $utente->volontario;
+            /////////////////////////////////////////////////////////////////////
+            // ho inserito il salvataggio della data come Carbon in un mutator //
+            /////////////////////////////////////////////////////////////////////
+            $volontario->fill($request->except('elimina'));
+            $volontario->save();
+
+            if ($request->filled('elimina') && $request->get('elimina') == 1) 
+              {
+              $volontario->delete();
+              } 
+            }  
+
+        });
+
+        if ($request->filled('elimina') && $request->get('elimina') == 1) 
           {
-            
-          $volontario = $utente->volontario;
-          /////////////////////////////////////////////////////////////////////
-          // ho inserito il salvataggio della data come Carbon in un mutator //
-          /////////////////////////////////////////////////////////////////////
-          $volontario->fill($request->except('elimina'));
-          $volontario->save();
+          return redirect('admin/volontari')->with('status', 'Volontario eliminato!');
+          } 
+        else 
+          {
+          return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
+          }
 
-          if ($request->filled('elimina') && $request->get('elimina') == 1) 
-            {
-            $volontario->delete();
-            return redirect('admin/volontari')->with('status', 'Volontario eliminato!');
-            } 
-          else 
-            {
-
-            return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
-            }
-
-          }  
 
       }
 
@@ -173,7 +196,7 @@ class RegisterController extends Controller
     {
 
       $user = null;
-      DB::transaction(function () {
+      DB::transaction(function() use ($data) {
         
         $user =  User::create([
             'ruolo' => $data['ruolo'],
@@ -185,7 +208,7 @@ class RegisterController extends Controller
 
         if ( !is_null($user) && array_key_exists('user', $data) && $data['user'] == 'volontario') 
           {
-          $volontario = Volontario::create($request->all());
+          $volontario = Volontario::create($data);
           $volontario->user_id = $user->id;
           $volontario->save();
           }
@@ -221,8 +244,15 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-        return redirect('admin/home')->with('status', 'Utente \''.$user->name.'\' creato correttamente!');
 
+        if ($request->has('user') && $request->get('user') == 'volontario') 
+          {
+          return redirect('admin/volontari')->with('status', 'Volontario reato correttamente!');
+          }
+        else
+          {
+          return redirect('admin/utenti')->with('status', 'Admin reato correttamente!');
+          }
 
     }
 
@@ -239,7 +269,7 @@ class RegisterController extends Controller
         $order = 'asc';
         $ordering = 0;
 
-       $query = User::select('id','name','username','ruolo');
+       $query = User::withRole('admin')->select('id','name','username','ruolo');
 
        $query->orderBy($order_by, $order);
 

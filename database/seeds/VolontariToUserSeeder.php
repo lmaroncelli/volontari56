@@ -18,10 +18,11 @@ class VolontariToUserSeeder extends Seeder
     	$new_users = [];
     	foreach ($volontari as $key => $volontario) 
     		{
+            $unique = strtolower($volontario->nome).'_'.strtolower($volontario->cognome).'_'.$volontario->associazione_id.'_'.$key;
     		$nu = [];
     		$nu['name'] = ucfirst(strtolower($volontario->nome)) . ' ' . ucfirst(strtolower($volontario->cognome));
-    		$nu['email'] = 'user_da_volontario@gmail.com';
-    		$nu['username'] = strtolower($volontario->nome).'_'.strtolower($volontario->cognome).'_'.$volontario->associazione_id.'_'.$key;
+    		$nu['email'] = $unique.'@gmail.com';
+    		$nu['username'] = $unique;
     		$nu['password'] = bcrypt(strtolower($volontario->nome).'_'.strtolower($volontario->cognome));
     		$user = User::create($nu);
     		$volontario->user_id = $user->id;
