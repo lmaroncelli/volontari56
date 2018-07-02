@@ -64,9 +64,9 @@ class RegisterController extends Controller
     
     public function editaUtente($utente_id)
     {
-        $utente = User::find($utente_id);
+        $user = User::find($utente_id);
 
-        return view('auth.edita_utente', compact('utente'));
+        return view('auth.register', compact('user'));
     }
 
 
@@ -115,13 +115,21 @@ class RegisterController extends Controller
 
         });
 
-        if ($request->filled('elimina') && $request->get('elimina') == 1) 
+
+        if ($request->has('user') && $request->get('user') == 'volontario') 
           {
-          return redirect('admin/volontari')->with('status', 'Volontario eliminato!');
-          } 
-        else 
+          if ($request->filled('elimina') && $request->get('elimina') == 1) 
+            {
+            return redirect('admin/volontari')->with('status', 'Volontario eliminato!');
+            } 
+          else 
+            {
+            return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
+            }  
+          }
+        else
           {
-          return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
+          return redirect('admin/utenti')->with('status', 'Admin modificato correttamente!');
           }
 
 

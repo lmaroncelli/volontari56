@@ -100,7 +100,7 @@ __MODIFICA VOLONTARIO__
 
 - volontari/1553/edit => admin.volontari.form => action = [route('utenti.modifica',$volontario->utente->id)]  
 
-- Auth\RegisterController@modificaUtente
+- Auth\RegisterController@modificaUtente (modifica utente e/o volontario in una transaction)
 
 
 
@@ -120,7 +120,9 @@ __NUOVO ADMIN__
 
 __MODIFICA ADMIN__
 
+- utenti/edita/{utente_id} => Auth\RegisterController@editaUtente => auth.register è il form predefinito di Laravel => action = [route('utenti.modifica',$utente->id)]
 
+- Auth\RegisterController@modificaUtente (modifica utente e/o volontario in una transaction)
 
 
 

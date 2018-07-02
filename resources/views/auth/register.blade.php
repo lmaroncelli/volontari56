@@ -30,12 +30,19 @@
       <div class="col-md-6">
         <!-- general form elements -->
         <div class="box box-primary">
-           <form method="POST" action="{{ route('register') }}">
+            @if ($user->exists)
+                <form method="POST" action="{{ route('utenti.modifica',$user->id) }}">
+                {{-- Questo parametro serve nella validazione per escludere l'utente corrente dalle unicità --}}
+                <input type="hidden" name="utente_id" value="{{$user->id}}">
+            @else
+                <form method="POST" action="{{ route('register') }}">
+            @endif
                @csrf
                
             <div class="box-body">
+               
                <div class="form-group has-feedback">        
-                   <input id="name" type="text" placeholder="nome" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                   <input id="name" type="text" placeholder="nome" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" @if ($user->exists) value="{{ old('name') != '' ? old('name') : $user->name }}" @else value="{{ old('name')}}" @endif" required autofocus>
                    <span class="glyphicon glyphicon-user form-control-feedback"></span> 
                </div>
 
