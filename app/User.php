@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-       'id', 'ruolo', 'name', 'email', 'password', 'username'
+       'id', 'ruolo', 'name', 'email', 'password', 'username', 'login_capabilities'
     ];
 
 
@@ -86,6 +86,16 @@ class User extends Authenticatable
     {
         $this->notify(new MyResetPasswordNotification($token, $this->username));
     }
+
+
+
+    /**
+     * [HasLoginCapabilites definisce se un utente può fare login n base al boolean login_capabilities MA l'admin può FARE SEMPRE LOGIN]
+     */
+    public function HasLoginCapabilites()
+      {
+      return $this->ruolo == 'admin' || $this->login_capabilities;
+      }
 
 
 

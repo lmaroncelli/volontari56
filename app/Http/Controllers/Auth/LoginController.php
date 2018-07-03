@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -61,6 +62,13 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
+            // Get the last user we attempted to authenticate.
+            $user_attempt = $this->guard()->getLastAttempted();
+            if(!$user_attempt->HasLoginCapabilites())
+              {
+              $this->guard()->logout();
+              $this->sendNoPermissionLoginResponse($request);
+              }
             return $this->sendLoginResponse($request);
         }
 
@@ -81,5 +89,21 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+
+    /**
+     * Get the cannot login response instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function sendNoPermissionLoginResponse(Request $request)
+    {
+        throw ValidationException::withMessages([
+            $this->username() => ['Non hai permesso di fare login !!!'],
+        ]);
     }
 }
