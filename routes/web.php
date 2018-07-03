@@ -83,7 +83,7 @@ Route::group(['middleware' => ['admin']], function () {
 
 
 
-	Route::resource('admin/associazioni', 'Admin\AssociazioniController', ['except' => ['create','store']]);
+	Route::resource('admin/associazioni', 'Admin\AssociazioniController');
 
     Route::post('admin/volontari/search', ['uses' => 'Admin\VolontariController@search', 'as' => 'volontari.search']);
     Route::get('admin/volontari/{query_id?}', ['uses' => 'Admin\VolontariController@index', 'as' => 'volontari.index']);

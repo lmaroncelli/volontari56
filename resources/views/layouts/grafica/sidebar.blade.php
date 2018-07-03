@@ -20,6 +20,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('associazioni.index') }}">Elenco</a></li>
+            <li><a href="{{ route('associazioni.create') }}">Nuova</a></li>
           </ul>
         </li>
 

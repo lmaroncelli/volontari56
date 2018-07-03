@@ -78,17 +78,19 @@
       	</div> <!-- /.box -->
       </div><!-- /.col -->
      </div> <!-- /.row -->
-     <div class="row">
-       	<!-- left column -->
-       <div class="col-md-6">
-       	
-       	 <!-- general form elements -->
-       	<div class="box-operations">
-       		@include('admin.admin_inc_delete_button')
-       	</div> <!-- /.box -->
-       
-       	</div><!-- /.col -->
-     </div> <!-- /.row -->
+     @if ($asso->exists)
+	     <div class="row">
+	       	<!-- left column -->
+	       <div class="col-md-6">
+	       	
+	       	 <!-- general form elements -->
+	       	<div class="box-operations">
+	       		@include('admin.admin_inc_delete_button')
+	       	</div> <!-- /.box -->
+	       
+	       	</div><!-- /.col -->
+	     </div> <!-- /.row -->
+     @endif
 @endsection
 
 

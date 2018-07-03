@@ -28,12 +28,12 @@ class AssociazioniController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    /* 
+     
     public function create()
       {
       $asso = new Associazione;
       return view('admin.associazioni.form', compact('asso'));
-      }*/
+      }
 
     /**
      * Store a newly created resource in storage.
@@ -41,14 +41,14 @@ class AssociazioniController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    /*   
+       
     public function store(AssociazioneRequest $request)
         {
         Associazione::create($request->all());
 
         return redirect('admin/associazioni')->with('status', 'Associazione creata correttamente!');
 
-        }*/
+        }
 
     /**
      * Display the specified resource.
@@ -170,14 +170,15 @@ class AssociazioniController extends AdminController
       try
         {
 
-        foreach ($asso->volontari as $v)
+        if ($asso->volontari->count()) 
           {
-          $v->associazione_id = 0;
-          $v->save();
+          foreach ($asso->volontari as $v)
+            {
+            $v->associazione_id = 0;
+            $v->save();
+            }
           }
-
-        $asso->utente->delete();
-
+          
         $asso->delete();
          
         DB::commit();
