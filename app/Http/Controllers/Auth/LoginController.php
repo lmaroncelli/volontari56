@@ -64,7 +64,7 @@ class LoginController extends Controller
         if ($this->attemptLogin($request)) {
             // Get the last user we attempted to authenticate.
             $user_attempt = $this->guard()->getLastAttempted();
-            if(!$user_attempt->HasLoginCapabilites())
+            if(!$user_attempt->hasLoginCapabilites())
               {
               $this->guard()->logout();
               $this->sendNoPermissionLoginResponse($request);

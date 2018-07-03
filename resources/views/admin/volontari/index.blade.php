@@ -122,6 +122,12 @@
                                         @if ($volontario->has($field) && !is_null($volontario->$field))
                                           {{$volontario->$field->nome}}
                                         @endif
+                                    @elseif($field == 'login_capabilities')
+                                      @if ($volontario->utente->login_capabilities)
+                                        <i class="fa fa-check text-green"></i>
+                                      @else
+                                        <i class="fa fa-times text-red"></i>
+                                      @endif
                                     @else
                                         {{$volontario->$field}}
                                     @endif

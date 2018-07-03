@@ -73,6 +73,8 @@ class RegisterController extends Controller
     public function modificaUtente(ModificaUtenteRequest $request, $utente_id)
       {
 
+        //dd($request->all());
+
         $utente = User::find($utente_id);
 
         if ($request->has('user') && $request->get('user') == 'volontario') 
@@ -87,6 +89,15 @@ class RegisterController extends Controller
 
         $utente->email = $request->get('email');
         $utente->username = $request->get('username');
+
+        if ($request->filled('login_capabilities')) 
+          {
+          $utente->login_capabilities = true;
+          }
+        else
+          {
+          $utente->login_capabilities = false;
+          }
 
         if ($request->filled('password')) 
           {
@@ -109,7 +120,15 @@ class RegisterController extends Controller
 
             if ($request->filled('elimina') && $request->get('elimina') == 1) 
               {
+
+              $user = $volontario->utente;
+              
+              // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
+              // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
               $volontario->delete();
+
+              $user->login_capabilities = false;
+              $user->save();
               } 
             }  
 

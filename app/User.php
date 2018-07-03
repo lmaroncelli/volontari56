@@ -90,9 +90,9 @@ class User extends Authenticatable
 
 
     /**
-     * [HasLoginCapabilites definisce se un utente può fare login n base al boolean login_capabilities MA l'admin può FARE SEMPRE LOGIN]
+     * [hasLoginCapabilites definisce se un utente può fare login n base al boolean login_capabilities MA l'admin può FARE SEMPRE LOGIN]
      */
-    public function HasLoginCapabilites()
+    public function hasLoginCapabilites()
       {
       return $this->ruolo == 'admin' || $this->login_capabilities;
       }

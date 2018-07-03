@@ -7,6 +7,10 @@
 	<link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
 	<!-- Select2 -->
 	<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+
+	{{-- bootstrap toogle button --}}
+	<link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
+
 @endsection
 
 
@@ -53,6 +57,14 @@
 	        	<input type="hidden" name="user" value="volontario">
 	        	{!! csrf_field() !!}
 				<div class="box-body">
+					
+					@if ($volontario->exists)
+						<div class="form-group has-feedback">        
+							<label class="checkbox-inline">
+							  <input type="checkbox" name="login_capabilities" value="1" @if ($volontario->utente->hasLoginCapabilites()) checked @endif data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="150" data-height="25" data-off="Login Disabilitato" data-on="Login Abilitato"> <b>LOGIN</b>
+							</label>
+						</div>
+					@endif
 					
 					<div class="form-group has-feedback">        
 					    <input id="nome" type="text" placeholder="nome" class="form-control{{ $errors->has('nome') ? ' is-invalid' : '' }}" name="nome" @if ($volontario->exists) value="{{ old('nome') != '' ? old('nome') : $volontario->nome }}" @else value="{{ old('nome')}}" @endif required autofocus>
@@ -133,6 +145,9 @@
 <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
 
+
+{{-- bootstrap toogle button --}}
+<script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
 
 
 <script type="text/javascript">

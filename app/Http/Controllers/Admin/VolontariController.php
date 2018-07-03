@@ -91,12 +91,22 @@ class VolontariController extends AdminController
       $order_by = "tblAssociazioni.nome";
       }
 
+    if ($order_by == 'login_capabilities')
+      {
+      $order_by = "users.login_capabilities";
+      }
 
-    $query = Volontario::with(['associazione','utente'])->leftjoin('tblAssociazioni', function( $join ) use ($order)
+
+    $query = Volontario::with(['associazione','utente'])
+    ->leftjoin('tblAssociazioni', function( $join )
     {
       $join->on('tblAssociazioni.id', '=', 'tblVolontari.associazione_id');
     })
-    ->select('tblVolontari.*','tblAssociazioni.nome as nome_asso');
+    ->join('users', function( $join )
+    {
+      $join->on('users.id', '=', 'tblVolontari.user_id');
+    })
+    ->select('tblVolontari.*','tblAssociazioni.nome as nome_asso', 'users.login_capabilities');
 
     /////////////
     // ricerca //
@@ -173,11 +183,17 @@ class VolontariController extends AdminController
             'registro' => 'Registro',
             'data_nascita' => 'Data di nascita',
             'associazione' => 'Associazione',
+            'login_capabilities' => 'Login'
     ];
 
     if ($order_by == 'tblAssociazioni.nome')
       {
       $order_by = "associazione";
+      }
+
+    if ($order_by == 'users.login_capabilities')
+      {
+      $order_by = "login_capabilities";
       }
 
 
@@ -301,9 +317,16 @@ class VolontariController extends AdminController
     public function destroy($id)
     {
     $volontario = Volontario::find($id);
+    
+    $user = $volontario->utente;
+
     // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
     // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
     $volontario->delete();
+
+    $user->login_capabilities = false;
+    $user->save();
+
     return redirect('admin/preventivi')->with('status', 'Preventivo eliminato!');
     }
 
