@@ -60,16 +60,11 @@
         <!-- general form elements -->
         <div class="box box-primary">
 	  		@if ($relazione->exists)
-	        	@isAdmin
 		        	<form role="form" action="{{ route('relazioni.update', $relazione->id) }}" method="POST">
 		        	{{ method_field('PUT') }}
 				@else
-		        	<form role="form" action="{{ route('relazioni.index') }}" method="GET">
-					<fieldset disabled="disabled">
-				@endisAdmin
-			@else
 	        	<form role="form" action="{{ route('relazioni.store') }}" method="POST">
-	        @endif
+	      @endif
 	        	{!! csrf_field() !!}
 				<div class="box-body">
 					
@@ -156,11 +151,6 @@
 				</div>
 				@endif
 
-			@if ($relazione->exists)
-				@isAssoc
-				</fieldset>
-				@endisAssoc
-        	@endif
         	</form>
       	</div> <!-- /.box -->
       </div><!-- /.col -->
@@ -198,7 +188,6 @@
 
 
 <script type="text/javascript">
-	@if (!$relazione->exists || ($relazione->exists && Auth::user()->hasRole('admin')))
 		$(function () {
 		    //Initialize Select2 Elements
 		    $('.select2').select2();
@@ -223,7 +212,7 @@
 		    });
 
 		});
-	@endif
+
 
 	$("#datepicker").datepicker({
 		format: 'dd/mm/yyyy',
