@@ -550,7 +550,8 @@ class RelazioniController extends AdminController
       $volontari = $relazione->associazione()->first()->getVolontariFullName();
 
       $volontari_associati = $relazione->volontari->pluck('id')->toArray();
-      $assos = ['0' => 'Seleziona'] + Associazione::orderBy('nome')->pluck('nome', 'id')->toArray();
+      $assos = Associazione::getForSelect($select = 0);
+      
       return view('admin.relazioni.form', compact('relazione', 'assos', 'volontari','volontari_associati'));
       
     }

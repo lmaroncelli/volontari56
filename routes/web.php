@@ -124,7 +124,7 @@ Route::get('admin/relazioni/stampa/{relazione_id?}', ['uses' => 'Admin\Relazioni
 
 Route::get('admin/relazioni/{query_id?}', ['uses' => 'Admin\RelazioniController@index', 'as' => 'relazioni.index'])->middleware('log');
 
-Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create']);
+Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create'])->middleware('log');
 
 
 Route::get('admin/pdf', function(){

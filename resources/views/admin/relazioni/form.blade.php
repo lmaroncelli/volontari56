@@ -142,7 +142,7 @@
 				<div class="box-footer">
 					<button type="submit" class="btn btn-primary">
 						@if ($relazione->exists)
-							Salva
+							Aggiorna
 						@else
 							Crea
 						@endif
