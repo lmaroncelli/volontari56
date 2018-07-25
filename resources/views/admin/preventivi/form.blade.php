@@ -257,6 +257,17 @@
 				return window.confirm("Il preventivo verrà riaperto e sarà possibile creare la relazione. Sei sicuro ?")
 		    });
 
+
+		    ////////////////////////////////////////
+		    // retrieve selected elements select2 //
+		    ////////////////////////////////////////
+		    @if ( count(collect(old('volontari')))  ) 
+		    $('#volontari').val({{  str_replace('"',' ', collect(old('volontari'))) }}); // Select the option with a value of value
+				$('#volontari').trigger('change'); // Notify any JS components that the value changed		    	
+		    @endif
+
+
+
 		});
 
 	@endif

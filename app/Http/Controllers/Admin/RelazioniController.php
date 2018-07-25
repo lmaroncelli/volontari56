@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Associazione;
 use App\Exports\exportOreServizio;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Requests\RelazioneRequest;
 use App\Preventivo;
 use App\Relazione;
 use App\Utility;
@@ -522,7 +523,7 @@ class RelazioniController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RelazioneRequest $request)
     {
     
     }
@@ -563,7 +564,7 @@ class RelazioniController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RelazioneRequest $request, $id)
     {
       /**
         dd($request->all());
