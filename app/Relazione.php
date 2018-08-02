@@ -86,17 +86,20 @@ class Relazione extends Model
 
     public function getHours()
       {
-      /* ATTENZIONE SE ALLE è 00:00 */
-      if ($this->alle->toTimeString() == '00:00:00') 
+
+      /*
+      dalle: "2018-02-14 20:00:00",
+      alle: "2018-02-14 00:20:00",
+       */
+      if ( $this->dalle->gt($this->alle) ) 
         {
-        //aggiungo un giorno in modo che 00:00::00 sia mezzanotte cioè lo 0 del gg dopo
-        //
         return $this->dalle->diffInHours($this->alle->addDay(1));
         } 
       else 
         {
         return $this->dalle->diffInHours($this->alle);
         }
+
       }
 			
 }
