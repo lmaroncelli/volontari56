@@ -229,8 +229,10 @@
 
 	//Timepicker
 	$('.timepicker').timepicker({
+	  language: "it",
 	  showInputs: false,
-	  showMeridian: false
+	  showMeridian: false,
+	  minuteStep: 1
 	})
 
 </script>
