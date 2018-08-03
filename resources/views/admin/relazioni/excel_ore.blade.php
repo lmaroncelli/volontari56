@@ -32,7 +32,15 @@
         @foreach($volontari as $volontario)
             <tr>
                 @foreach ($columns as $column)
-                    <td>{{ $volontario[$column] }}</td>
+                    @if ($column == 'Totale ore')
+                      <td nowrap="nowrap">
+                      {{Utility::getHoursForView($volontario[$column])}}
+                      </td>
+                    @else
+                      <td>
+                      {{$volontario[$column]}}
+                      </td>
+                    @endif
                 @endforeach
             </tr>
         @endforeach
