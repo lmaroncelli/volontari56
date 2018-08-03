@@ -213,4 +213,30 @@ class Utility extends Model
 
 
 
+
+	 public static function getHoursForView($total_minutes)
+	 	{
+
+	 	if (!is_numeric($total_minutes)) 
+	 		{
+	 		return $total_minutes;
+	 		}
+
+	 	$hours = intval($total_minutes/60);
+
+	 	if ($total_minutes%60 == 0) 
+	 	  {
+	 	  $minutes = '';  
+	 	  } 
+	 	else 
+	 	  {
+	 	  $minutes = ' : '. $total_minutes%60;  
+	 	  }
+	 	
+
+	 	return $hours . $minutes;
+	 	}
+
+
+
 }

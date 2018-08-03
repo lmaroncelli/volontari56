@@ -95,7 +95,7 @@ class RelazioniController extends AdminController
           {
           if (array_key_exists($v->id,$volontari)) 
             {
-            $volontari[$v->id]['Totale ore'] += $relazione->getHours();
+            $volontari[$v->id]['Totale ore'] += $relazione->getMinutes();
             } 
           } // end volontari
         } // end relazioni
@@ -441,13 +441,13 @@ class RelazioniController extends AdminController
               {
               if (array_key_exists($v->id,$volontari)) 
                 {
-                $volontari[$v->id]['Totale ore'] += $relazione->getHours();
+                $volontari[$v->id]['Totale ore'] += $relazione->getMinutes();
                 } 
               else 
                 {
                 $volontari[$v->id]['Associazione'] = $v->associazione->nome;
                 $volontari[$v->id]['Volontario'] = $v->cognome .' ' .$v->nome;
-                $volontari[$v->id]['Totale ore'] = $relazione->getHours();
+                $volontari[$v->id]['Totale ore'] = $relazione->getMinutes();
                 }
               } // end volontari
 

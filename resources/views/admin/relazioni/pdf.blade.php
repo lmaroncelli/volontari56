@@ -58,7 +58,7 @@
                                {{$relazione->auto}}
                             </td>
                             <td>
-                                {{$relazione->getHours()}}
+                                {{$relazione->getHoursForView()}}
                             </td>
                             <td><button type="button" class="btn btn-success no_link">{{$relazione->preventivo_id}}</button></td>
                         </tr>

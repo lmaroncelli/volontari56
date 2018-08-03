@@ -23,7 +23,7 @@
                         <tr><td>Data: {{$relazione->dalle->format('d/m/Y')}}</td></tr>
                         <tr><td>Dalle: {{$relazione->dalle->format('H:i')}}</td></tr>
                         <tr><td>Alle: {{ $relazione->alle->format('H:i')}}</td></tr>
-                        <tr><td>Ore: {{$relazione->getHours()}}</td></tr>
+                        <tr><td>Ore: {{$relazione->getHoursForView()}}</td></tr>
                         <tr><td>Auto: {{$relazione->auto}}</td></tr>
                         <tr><td>Note: {{$relazione->note}}</td></tr>
                         <tr><td>Rapporto: {{$relazione->rapporto}}</td></tr>

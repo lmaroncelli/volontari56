@@ -4,6 +4,7 @@ namespace App;
 
 use App\Preventivo;
 use App\Scopes\RelazioniOwnedByScope;
+use App\Utility;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -84,7 +85,7 @@ class Relazione extends Model
       }
 
 
-    public function getHours()
+    public function getMinutes()
       {
 
       /*
@@ -93,13 +94,36 @@ class Relazione extends Model
        */
       if ( $this->dalle->gt($this->alle) ) 
         {
-        return $this->dalle->diffInHours($this->alle->addDay(1));
+        $total_minutes =  $this->dalle->diffInMinutes($this->alle->addDay(1));
         } 
       else 
         {
-        return $this->dalle->diffInHours($this->alle);
+        $total_minutes = $this->dalle->diffInMinutes($this->alle);
         }
 
+      return $total_minutes;
+
       }
+
+
+    public function getHoursForView()
+      {
+
+      /*
+      dalle: "2018-02-14 20:00:00",
+      alle: "2018-02-14 00:20:00",
+       */
+      
+
+      $total_minutes = $this->getMinutes();
+
+  
+      return Utility::getHoursForView($total_minutes);
+
+
+      }
+
+
+    
 			
 }
