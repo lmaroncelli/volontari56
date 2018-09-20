@@ -136,6 +136,12 @@
 					  <textarea class="form-control" rows="3" placeholder="Auto ..." name="auto" id="auto">@if(old('auto') != ''){{ old('auto') }}@else{{ $relazione->auto }}@endif</textarea>
 					</div>
 
+
+					<div class="form-group">
+					  <label for="km">Km</label>
+					  <input type="km" class="form-control" name="km" id="km" placeholder="km" value="{{ old('km') != '' ?  old('km') : $relazione->km}}">
+					</div>	
+
 				</div> <!-- /.box-body -->
 				
 				@if (!$relazione->trashed())

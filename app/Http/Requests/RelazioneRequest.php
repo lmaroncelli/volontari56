@@ -27,6 +27,7 @@ class RelazioneRequest extends FormRequest
                "associazione_id" => ["integer", "min:1"],
                "volontari" => ["required"],
                "data" => ["required", "date_format:d/m/Y"],
+               "km" => ["integer", "min:0"]
                ];  
 
     return $rules;
@@ -42,6 +43,8 @@ class RelazioneRequest extends FormRequest
                 "volontari.required" => "Selezionare i Volontari",
                 "data.required" => "Selzionare la Data",
                 "data.date_format" => "La Data deve avere il formato d/m/Y",
+                 "km.integer" => "Specificare i km con un numero intero positivo",
+                 "km.min" => "Specificare i km con un numero intero positivo"
                 ];
 
          return $messages;

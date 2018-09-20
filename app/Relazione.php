@@ -124,6 +124,15 @@ class Relazione extends Model
       }
 
 
+    public function setKmAttribute($value)
+      {   
+        if(empty($value))
+          $this->attributes['km'] = 0;
+        else
+          $this->attributes['km'] = abs($value);
+      }
+
+
     
 			
 }
