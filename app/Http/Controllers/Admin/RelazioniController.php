@@ -73,7 +73,7 @@ class RelazioniController extends AdminController
 
       $relazioni = $query->get();
       
-      $columns = ['Associazione','Volontario','Totale ore'];
+      $columns = ['Associazione','Volontario','Totale ore', 'Totale km'];
 
       $volontari = [];
 
@@ -86,6 +86,7 @@ class RelazioniController extends AdminController
           $volontari[$volontario->id]['Associazione'] = $relazione->associazione->nome;
           $volontari[$volontario->id]['Volontario'] = $volontario->cognome .' ' .$volontario->nome;
           $volontari[$volontario->id]['Totale ore'] = 0;
+          $volontari[$volontario->id]['Totale km'] = 0;
           }
         }
 
@@ -96,6 +97,7 @@ class RelazioniController extends AdminController
           if (array_key_exists($v->id,$volontari)) 
             {
             $volontari[$v->id]['Totale ore'] += $relazione->getMinutes();
+            $volontari[$v->id]['Totale km'] += $relazione->km;
             } 
           } // end volontari
         } // end relazioni
@@ -591,6 +593,7 @@ class RelazioniController extends AdminController
       $relazione->note = $request->get('note');
       $relazione->rapporto = $request->get('rapporto');
       $relazione->auto = $request->get('auto');
+      $relazione->km = $request->get('km');
       $relazione->save();
       $relazione->volontari()->sync($request->get('volontari'));
 
