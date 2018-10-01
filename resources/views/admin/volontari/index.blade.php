@@ -32,7 +32,7 @@
 	@if (!$volontari->count())
     <div class="callout callout-info">
         <h4>
-            Nessuna volontariolontario presente!
+            Nessuna volontario presente!
         </h4>
         <p>
             Creane un
@@ -115,7 +115,7 @@
                             @foreach ($columns as $field => $name)
                                 <td>
                                     @if ($field == 'cognome' || $field == 'nome')
-                                        <a class="volontario" href="{{ route('volontari.edit', $volontario->id) }}" title="Modifica volontariolontario">
+                                        <a class="volontario" href="{{ route('volontari.edit', $volontario->id) }}" title="Modifica volontario">
                                             {{$volontario->$field}}
                                         </a>
                                     @elseif($field == 'associazione')
@@ -123,7 +123,11 @@
                                           {{$volontario->$field->nome}}
                                         @endif
                                     @elseif($field == 'login_capabilities')
-                                      @if ($volontario->utente->login_capabilities)
+                                      @if (!is_null($volontario->deleted_at))
+                                        <a class="ripristina" href="{{ route('volontari.restore', $volontario->id) }}" title="Ripristina volontario">
+                                            Ripristina
+                                        </a>
+                                      @elseif ($volontario->utente->login_capabilities)
                                         <i class="fa fa-check text-green"></i>
                                       @else
                                         <i class="fa fa-times text-red"></i>
@@ -163,6 +167,17 @@
 
 
 @section('script_footer')
+    
+    <script type="text/javascript">
+      $(function () {
+        
+        $(".ripristina").click(function(){
+          return window.confirm("Il volontario selezionato verrà ripristinato con le sue eventuali capacità di fare login. Sei sicuro ?")
+        });
+
+      });
+    </script>
+
     <!-- DataTables -->
     <script src="{{ asset('js/jquery.dataTables.min.js') }}">
     </script>

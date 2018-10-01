@@ -18,6 +18,7 @@ $router->pattern('preventivo_id', '[0-9]+');
 $router->pattern('documento_id', '[0-9]+');
 $router->pattern('post_id', '[0-9]+');
 $router->pattern('utente_id', '[0-9]+');
+$router->pattern('volontario_id', '[0-9]+');
 
 //Auth::routes();
     
@@ -87,6 +88,8 @@ Route::group(['middleware' => ['admin']], function () {
 
     Route::post('admin/volontari/search', ['uses' => 'Admin\VolontariController@search', 'as' => 'volontari.search']);
     Route::get('admin/volontari/{query_id?}', ['uses' => 'Admin\VolontariController@index', 'as' => 'volontari.index']);
+    Route::get('admin/volontari/restore/{volontario_id}', ['uses' => 'Admin\VolontariController@restore', 'as' => 'volontari.restore']);
+
     Route::resource('admin/volontari', 'Admin\VolontariController', ['except' => ['index']]);
 
     Route::post('admin/posts/slug_ajax', ['uses' => 'Admin\PostsController@slugAjax']);

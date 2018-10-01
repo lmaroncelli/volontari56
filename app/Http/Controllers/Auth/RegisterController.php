@@ -121,14 +121,14 @@ class RegisterController extends Controller
             if ($request->filled('elimina') && $request->get('elimina') == 1) 
               {
 
-              $user = $volontario->utente;
+              //$user = $volontario->utente;
               
               // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
               // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
               $volontario->delete();
 
-              $user->login_capabilities = false;
-              $user->save();
+              //$user->login_capabilities = false;
+              //$user->save();
               } 
             }  
 

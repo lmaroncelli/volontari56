@@ -287,25 +287,7 @@ class VolontariController extends AdminController
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-    $volontario = Volontario::find($id);
-    /////////////////////////////////////////////////////////////////////
-    // ho inserito il salvataggio della data come Carbon in un mutator //
-    /////////////////////////////////////////////////////////////////////
-    $volontario->fill($request->except('elimina'));
-    $volontario->save();
-
-    if ($request->filled('elimina') && $request->get('elimina') == 1) 
-      {
-      $volontario->delete();
-      return redirect('admin/volontari')->with('status', 'Volontario eliminato!');
-      } 
-    else 
-      {
-
-      return redirect('admin/volontari')->with('status', 'Volontario modificato correttamente!');
-      }
-        
+    {    
     }
 
     /**
@@ -316,19 +298,31 @@ class VolontariController extends AdminController
      */
     public function destroy($id)
     {
-    $volontario = Volontario::find($id);
-    
-    $user = $volontario->utente;
-
-    // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
-    // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
-    $volontario->delete();
-
-    $user->login_capabilities = false;
-    $user->save();
-
-    return redirect('admin/preventivi')->with('status', 'Preventivo eliminato!');
     }
+
+
+    /**
+     * [restore "un-delete" soft deleted model]
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function restore($id)
+      {
+      $volontario = Volontario::withTrashed()->find($id);
+      
+      if(!is_null($volontario))
+        {
+        $volontario->nota = "";
+        $volontario->restore();
+        return redirect('admin/volontari')->with('status', 'Volontario ripristinato correttamente!');
+        }
+      else
+        {
+        return redirect('admin/volontari')->with('status', 'Nessun volontario da ripristinare!');
+
+        }
+      
+      }
 
 
 
