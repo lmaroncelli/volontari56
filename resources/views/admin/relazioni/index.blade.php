@@ -110,16 +110,30 @@
                     <tbody>
                         @foreach ($relazioni as $relazione)
                         <tr @if ($relazione->trashed()) class="deleted" @endif>
-                            <td>
-                                <a class="relazione" href="{{ route('relazioni.edit', $relazione->id) }}" title="Modifica relazione">
-                                    {{$relazione->id}}
-                                </a>
-                            </td>
-                            <td>
-                                <a class="relazione" href="{{ route('relazioni.edit', $relazione->id) }}" title="Modifica relazione">
-                                    {{$relazione->associazione->nome}}
-                                </a>
-                            </td>
+                            @isAdmin
+                                <td>
+                                    <a class="relazione" href="{{ route('relazioni.edit', $relazione->id) }}" title="Modifica relazione">
+                                        {{$relazione->id}}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="relazione" href="{{ route('relazioni.edit', $relazione->id) }}" title="Modifica relazione">
+                                        {{$relazione->associazione->nome}}
+                                    </a>
+                                </td>
+                            @else
+                                <td>
+                                    <a class="relazione" href="{{ route('relazioni.show', $relazione->id) }}" title="Modifica relazione">
+                                        {{$relazione->id}}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="relazione" href="{{ route('relazioni.show', $relazione->id) }}" title="Modifica relazione">
+                                        {{$relazione->associazione->nome}}
+                                    </a>
+                                </td>
+                            @endisAdmin
+                            
                             <td>
                                 {{ implode( ', ', $relazione->getVolontariFullName() ) }}
                             </td>

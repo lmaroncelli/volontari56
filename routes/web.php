@@ -126,8 +126,9 @@ Route::post('admin/relazioni/export_ore', ['uses' => 'Admin\RelazioniController@
 Route::get('admin/relazioni/stampa/{relazione_id?}', ['uses' => 'Admin\RelazioniController@stampa', 'as' => 'relazioni.stampa'])->middleware('log');
 
 Route::get('admin/relazioni/{query_id?}', ['uses' => 'Admin\RelazioniController@index', 'as' => 'relazioni.index'])->middleware('log');
+Route::get('admin/relazioni_show/{relazione_id}', ['uses' => 'Admin\RelazioniController@show', 'as' => 'relazioni.show'])->middleware('log');
 
-Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create'])->middleware('log');
+Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create', 'show'])->middleware('log');
 
 
 Route::get('admin/pdf', function(){

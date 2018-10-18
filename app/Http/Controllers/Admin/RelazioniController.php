@@ -37,7 +37,10 @@ class RelazioniController extends AdminController
       $relazione->alle = $preventivo->alle;
       $relazione->save();
       $relazione->volontari()->sync($preventivo->volontari->pluck('id')->toArray());
-      return redirect()->route('relazioni.edit', [$relazione->id]);
+
+      $this->_relazione_edit($relazione->id);
+
+      //return redirect()->route('relazioni.edit', [$relazione->id]);
       
       }
 
@@ -538,8 +541,33 @@ class RelazioniController extends AdminController
      */
     public function show($id)
     {
-        //
+      $relazione = Relazione::withTrashed()->find($id);
+      $v_a = $relazione->volontari->pluck('nome', 'cognome');
+      $volontari_associati_arr = [];
+      foreach ($v_a as $cognome => $nome) 
+        {
+        $volontari_associati_arr[] = $nome . " " . $cognome;
+        }
+      $volontari_associati = implode(', ', $volontari_associati_arr);
+      return view('admin.relazioni.show', compact('relazione','volontari_associati'));
+      
     }
+
+
+
+    private function _relazione_edit($id)
+      {
+      
+      $relazione = Relazione::withTrashed()->find($id);
+      $volontari = $relazione->associazione()->first()->getVolontariFullName();
+
+      $volontari_associati = $relazione->volontari->pluck('id')->toArray();
+      $assos = Associazione::getForSelect($select = 0);
+      
+      return view('admin.relazioni.form', compact('relazione', 'assos', 'volontari','volontari_associati'));
+        
+      }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -549,13 +577,15 @@ class RelazioniController extends AdminController
      */
     public function edit($id)
     {
-      $relazione = Relazione::withTrashed()->find($id);
-      $volontari = $relazione->associazione()->first()->getVolontariFullName();
 
-      $volontari_associati = $relazione->volontari->pluck('id')->toArray();
-      $assos = Associazione::getForSelect($select = 0);
-      
-      return view('admin.relazioni.form', compact('relazione', 'assos', 'volontari','volontari_associati'));
+    if(Auth::user()->hasRole('admin'))
+      {
+      return $this->_relazione_edit($id);
+      }
+    else
+      {
+      return redirect("admin/relazioni_show/".$id);
+      }
       
     }
 
