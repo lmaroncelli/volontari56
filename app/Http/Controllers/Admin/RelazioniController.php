@@ -35,10 +35,11 @@ class RelazioniController extends AdminController
       $relazione->associazione_id = $preventivo->associazione_id;
       $relazione->dalle = $preventivo->dalle;
       $relazione->alle = $preventivo->alle;
-      $relazione->save();
-      $relazione->volontari()->sync($preventivo->volontari->pluck('id')->toArray());
+      
+      $relazione->setRelation('volontari', $preventivo->volontari);  
 
-      return $this->_relazione_edit($relazione->id);
+      
+      return $this->_relazione_edit($relazione);
 
       //return redirect()->route('relazioni.edit', [$relazione->id]);
       
@@ -530,7 +531,10 @@ class RelazioniController extends AdminController
      */
     public function store(RelazioneRequest $request)
     {
-    
+    $relazione = new Relazione;
+    $this->_saveRelazione($relazione, $request);
+
+    return redirect("admin/relazioni")->with('status', 'Relazione creata correttamente!');;
     }
 
     /**
@@ -555,15 +559,15 @@ class RelazioniController extends AdminController
 
 
 
-    private function _relazione_edit($id)
+    private function _relazione_edit($relazione)
       {
       
-      $relazione = Relazione::withTrashed()->find($id);
+      
       $volontari = $relazione->associazione()->first()->getVolontariFullName();
 
       $volontari_associati = $relazione->volontari->pluck('id')->toArray();
       $assos = Associazione::getForSelect($select = 0);
-      
+
       return view('admin.relazioni.form', compact('relazione', 'assos', 'volontari','volontari_associati'));
         
       }
@@ -580,6 +584,7 @@ class RelazioniController extends AdminController
 
     if(Auth::user()->hasRole('admin'))
       {
+      $relazione = Relazione::withTrashed()->find($id);
       return $this->_relazione_edit($id);
       }
     else
@@ -615,9 +620,19 @@ class RelazioniController extends AdminController
        */
 
       $relazione = Relazione::find($id);
+      
+      $this->_saveRelazione($relazione, $request);
+
+      return redirect("admin/relazioni")->with('status', 'Relazione modificata correttamente!');
+    }
+
+
+    public function _saveRelazione(&$relazione, $request)
+      {
       $dalle = $request->get('data'). ' ' . $request->get('dal');
       $alle = $request->get('data'). ' ' . $request->get('al');
       $relazione->associazione_id = $request->get('associazione_id');
+      $relazione->preventivo_id = $request->get('preventivo_id');
       $relazione->dalle = Utility::getCarbonDateTime($dalle);
       $relazione->alle = Utility::getCarbonDateTime($alle);
       $relazione->note = $request->get('note');
@@ -626,9 +641,7 @@ class RelazioniController extends AdminController
       $relazione->km = $request->get('km');
       $relazione->save();
       $relazione->volontari()->sync($request->get('volontari'));
-
-      return redirect("admin/relazioni");
-    }
+      }
 
     /**
      * Remove the specified resource from storage.

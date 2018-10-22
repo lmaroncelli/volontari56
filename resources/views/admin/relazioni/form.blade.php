@@ -66,6 +66,7 @@
 	        	<form role="form" action="{{ route('relazioni.store') }}" method="POST">
 	      @endif
 	        	{!! csrf_field() !!}
+	    			<input type="hidden" name="preventivo_id" value="{{$relazione->preventivo_id}}">
 				<div class="box-body">
 					
 					<div class="form-group">
@@ -92,14 +93,14 @@
 							  <div class="input-group-addon">
 							    <i class="fa fa-calendar"></i>
 							  </div>
-							  <input type="text" name="data" @if ($relazione->exists) value="{{ old('data') != '' ? old('data') : $relazione->dalle->format('d/m/Y')}}"  @else value="{{ old('data')}}" @endif class="form-control pull-right" id="datepicker">
+							  <input type="text" name="data" value="{{ old('data') != '' ? old('data') : $relazione->dalle->format('d/m/Y')}}" class="form-control pull-right" id="datepicker">
 							</div>
 						</div>
 						
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Dalle:</label>
 							<div class="input-group">
-							  <input type="text" name="dal" @if ($relazione->exists) value="{{ old('dal') != '' ? old('dal') : $relazione->dalle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="dal" value="{{ old('dal') != '' ? old('dal') : $relazione->dalle->format('H:i')}}" class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
@@ -110,7 +111,7 @@
 						<div class="col-md-4 bootstrap-timepicker">
 							<label>Alle:</label>
 							<div class="input-group">
-							  <input type="text" name="al" @if ($relazione->exists) value="{{old('al') != ''  ? old('al') : $relazione->alle->format('H:i')}}" @endif class="form-control timepicker">
+							  <input type="text" name="al" value="{{old('al') != ''  ? old('al') : $relazione->alle->format('H:i')}}" class="form-control timepicker">
 
 							  <div class="input-group-addon">
 							    <i class="fa fa-clock-o"></i>
