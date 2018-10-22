@@ -38,7 +38,7 @@ class RelazioniController extends AdminController
       $relazione->save();
       $relazione->volontari()->sync($preventivo->volontari->pluck('id')->toArray());
 
-      $this->_relazione_edit($relazione->id);
+      return $this->_relazione_edit($relazione->id);
 
       //return redirect()->route('relazioni.edit', [$relazione->id]);
       

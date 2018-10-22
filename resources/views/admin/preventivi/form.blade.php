@@ -59,16 +59,25 @@
         <!-- general form elements -->
         <div class="box box-primary">
 	  		@if ($preventivo->exists)
-	  			@isAdmin
+			  		
+	  				@isAdmin
 		        	<form role="form" action="{{ route('preventivi.update', $preventivo->id) }}" method="POST">
 		        	{{ method_field('PUT') }}
 	        	@else
-		        	<form role="form" action="{{ route('preventivi.index') }}" method="GET">
-		        	<fieldset disabled="disabled">
+	        		{{-- se non c'è una relazione lo può ancora modificare anche l'associato --}}
+	        		@if ( is_null($preventivo->relazione) )
+	        			<form role="form" action="{{ route('preventivi.update', $preventivo->id) }}" method="POST">
+		        		{{ method_field('PUT') }}
+	        		@else
+			        	<form role="form" action="{{ route('preventivi.index') }}" method="GET">
+			        	<fieldset disabled="disabled">
+	        		@endif
 	        	@endisAdmin
-			@else
-	        	<form role="form" action="{{ route('preventivi.store') }}" method="POST">
-	        @endif
+								
+				@else
+	      
+	        <form role="form" action="{{ route('preventivi.store') }}" method="POST">
+	      @endif
 	        	{!! csrf_field() !!}
 				<div class="box-body">
 					
@@ -135,8 +144,8 @@
 					</div>
 
 					<div class="form-group">
-					  <label for="motivazione">Motivazione</label>
-					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazione" id="motivazione">@if(old('motivazione') != ''){{ old('motivazione') }}@else{{ $preventivo->motivazione }}@endif</textarea>
+					  <label for="motivazioni">Motivazione</label>
+					  <textarea class="form-control" rows="3" placeholder="Motivazione ..." name="motivazioni" id="motivazioni">@if(old('motivazioni') != ''){{ old('motivazioni') }}@else{{ $preventivo->motivazioni }}@endif</textarea>
 					</div>
 
 				</div> <!-- /.box-body -->
