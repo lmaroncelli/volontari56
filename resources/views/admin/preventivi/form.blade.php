@@ -369,25 +369,25 @@ function initMap() {
     markersArray.push(marker);
     
     // Update lat/long value of div when anywhere in the map is clicked    
-    @if (!$preventivo->exists)
-    google.maps.event.addListener(map,'dblclick',function(event) {          
-        data = { 
-        	'lat': event.latLng.lat(), 
-        	'long': event.latLng.lng(),
-        	'_token': jQuery('input[name=_token]').val() 
-        	}
-        jQuery.ajax({
-                type: "POST",
-                url: '<?=url("admin/preventivi/reverse_geocode_ajax") ?>',
-                data: data,
-                success: success_reverse_geocode
-            });
+    {{-- @if (!$preventivo->exists)  --}}
+	    google.maps.event.addListener(map,'dblclick',function(event) {          
+	        data = { 
+	        	'lat': event.latLng.lat(), 
+	        	'long': event.latLng.lng(),
+	        	'_token': jQuery('input[name=_token]').val() 
+	        	}
+	        jQuery.ajax({
+	                type: "POST",
+	                url: '<?=url("admin/preventivi/reverse_geocode_ajax") ?>',
+	                data: data,
+	                success: success_reverse_geocode
+	            });
 
-       	function success_reverse_geocode(result) {
-       	   jQuery("#localita").val(result);
-       	}
-    });
-    @endif
+	       	function success_reverse_geocode(result) {
+	       	   jQuery("#localita").val(result);
+	       	}
+	    });
+  {{-- @endif  --}}
     
     // Create new marker on double click event on the map
     google.maps.event.addListener(map,'dblclick',function(event) {
