@@ -152,6 +152,7 @@
                             <td nowrap="nowrap">
                                 {{$relazione->getHoursForView()}}
                             </td>
+                            <td>{{$relazione->km}}</td>
                             <td>
                                 <button type="button" class="btn btn-success no_link">{{$relazione->preventivo_id}}</button> 
                             </td>

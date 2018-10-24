@@ -77,12 +77,13 @@ class RelazioniController extends AdminController
 
       $relazioni = $query->get();
       
-      $columns = ['Associazione','Volontario','Totale ore', 'Totale km'];
+      $columns = ['Associazione','Volontario','Totale ore'];
 
       $volontari = [];
-
+      $totale_km = 0;
       foreach ($relazioni as $relazione) 
         {
+        $totale_km += $relazione->km;
         //inizializzo tutti i volontari dell'associazione a 0
         $all_volontari_associazione = $relazione->associazione->volontari;
         foreach ($all_volontari_associazione as $volontario) 
@@ -90,7 +91,6 @@ class RelazioniController extends AdminController
           $volontari[$volontario->id]['Associazione'] = $relazione->associazione->nome;
           $volontari[$volontario->id]['Volontario'] = $volontario->cognome .' ' .$volontario->nome;
           $volontari[$volontario->id]['Totale ore'] = 0;
-          $volontari[$volontario->id]['Totale km'] = 0;
           }
         }
 
@@ -101,13 +101,13 @@ class RelazioniController extends AdminController
           if (array_key_exists($v->id,$volontari)) 
             {
             $volontari[$v->id]['Totale ore'] += $relazione->getMinutes();
-            $volontari[$v->id]['Totale km'] += $relazione->km;
             } 
           } // end volontari
         } // end relazioni
 
 
-
+      $filtro_ore[] = "Totale km associazione ".$totale_km;
+        
         /**
          *
          * dd($volontari);
@@ -473,6 +473,7 @@ class RelazioniController extends AdminController
             'rapporto' => 'Rapporto|Order',
             'auto' => 'Auto|Order',
             'ore' => 'Ore|No_Order',
+            'km' => 'Km|No_Order',
             'preventivo_id' => 'Preventivo|Order'
         ];
 
@@ -585,7 +586,7 @@ class RelazioniController extends AdminController
     if(Auth::user()->hasRole('admin'))
       {
       $relazione = Relazione::withTrashed()->find($id);
-      return $this->_relazione_edit($id);
+      return $this->_relazione_edit($relazione);
       }
     else
       {
