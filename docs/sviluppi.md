@@ -161,3 +161,28 @@ cioè l'associazione a cui appartiene l'utente corrente NON si trova più cosi M
 Auth::user()->volontario->associazione->id 
 
 
+
+
+#Relazione Associazione-Volontario deve diventare molti-a-molti 
+
+**La necessità  sarebbe quella che il volontario che si sposta ad un'altra associazione riparta da zero ore in quella nuova ma almeno in quella vecchia rimangano i dati storici in visualizzazione e nei report**
+
+
+- Costruire la tabella di relazione associazione-volontario 
+- Importare tutti gli associazione_id,id della "tblVolontari" in associazione-volontario(associazione_id, volontario_id)
+- **DEVO** lasciare la colonna associazione_id in "tblVolontari" perché ogni volontario deve vedere solo preventivi e relazioni della sua "Associazione"
+- Cambiare le relazioni nelle model
+- i dati dello storico devono rimanere nelle relazioni
+- Cambiare tutte le chiamate opportunamente nel codice
+
+
+
+NOOOOOOOO!!!
+QUESTA STRADA E' SBAGLIATA !!!!!
+
+
+1) Nel momento in cui creo il preventivo, oltre a salvare la associazione, salvo anche i singoli volontari (preventivi-volontari molti-a-molti)
+2) Nel momnento in cui creo la relazione oltre a salvare la associazione D**EVO SALVARE** anche i singoli volontari (relazioni-volontari molti-a-molti **ESISTE GIA**)
+
+
+ES: "Massari Walter" è in GEV e se filtro le relazioni per GEV ho delle righe in cui c'è questo volontario
