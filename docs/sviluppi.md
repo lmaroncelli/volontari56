@@ -201,4 +201,10 @@ Quando ho creato la relazione ne ho aggiunto uno, sono diventati 3 e li ha messi
  3369 	GEV 	Abati Romano, Amaducci Renzo, Bacchiocchi Sauro 
 
 
- cosa succede se tolgo " Amaducci Renzo" da GEV ?? DOvrebbe rimanere nell'elenco delle relazioni
+ cosa succede se tolgo " Amaducci Renzo" da GEV ?? DOvrebbe rimanere nell'elenco delle relazioni e nelle ore (PDF)
+
+GEV Amaducci Renzo 25
+
+
+In effetti NON RIMANE nell'elenco del PDF perché probabilente seleziono i volontari dall'associazione invece devo prendere quelli di tutte le relazioni
+
