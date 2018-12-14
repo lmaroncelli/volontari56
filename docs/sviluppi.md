@@ -186,3 +186,8 @@ QUESTA STRADA E' SBAGLIATA !!!!!
 
 
 ES: "Massari Walter" è in GEV e se filtro le relazioni per GEV ho delle righe in cui c'è questo volontario
+
+Quando creo la relazione devo inserire anche i volontari e non solo l'associazione
+Quando elenco le relazioni, prendo i volontari associati alla relazione al momento della creazione e non i volontari dell'associazione (in quesro modo se "Massari Walter" non è più in GEV adesso, lo vedo lo stesso nelle relazioni che ho creato quando c'era !!!)
+
+
