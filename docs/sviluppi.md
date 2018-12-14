@@ -184,10 +184,21 @@ QUESTA STRADA E' SBAGLIATA !!!!!
 1) Nel momento in cui creo il preventivo, oltre a salvare la associazione, salvo anche i singoli volontari (preventivi-volontari molti-a-molti)
 2) Nel momnento in cui creo la relazione oltre a salvare la associazione D**EVO SALVARE** anche i singoli volontari (relazioni-volontari molti-a-molti **ESISTE GIA**)
 
+- devo aggiungere i volontari a tutte le relazioni prendendoli dalle associazioni, quindi praticamente copio 
 
-ES: "Massari Walter" è in GEV e se filtro le relazioni per GEV ho delle righe in cui c'è questo volontario
+
 
 Quando creo la relazione devo inserire anche i volontari e non solo l'associazione
 Quando elenco le relazioni, prendo i volontari associati alla relazione al momento della creazione e non i volontari dell'associazione (in quesro modo se "Massari Walter" non è più in GEV adesso, lo vedo lo stesso nelle relazioni che ho creato quando c'era !!!)
 
 
+
+ES: 
+
+Ho creato un preventivo con 2 volontari e li ha messi nella tabella di  relazione
+Quando ho creato la relazione ne ho aggiunto uno, sono diventati 3 e li ha messi nella tabella di relazione
+
+ 3369 	GEV 	Abati Romano, Amaducci Renzo, Bacchiocchi Sauro 
+
+
+ cosa succede se tolgo " Amaducci Renzo" da GEV ?? DOvrebbe rimanere nell'elenco delle relazioni
