@@ -182,7 +182,7 @@ QUESTA STRADA E' SBAGLIATA !!!!!
 
 
 1) Nel momento in cui creo il preventivo, oltre a salvare la associazione, salvo anche i singoli volontari (preventivi-volontari molti-a-molti)
-2) Nel momnento in cui creo la relazione oltre a salvare la associazione D**EVO SALVARE** anche i singoli volontari (relazioni-volontari molti-a-molti **ESISTE GIA**)
+2) Nel momnento in cui creo la relazione oltre a salvare la associazione **DEVO SALVARE** anche i singoli volontari (relazioni-volontari molti-a-molti **ESISTE GIA**)
 
 - devo aggiungere i volontari a tutte le relazioni prendendoli dalle associazioni, quindi praticamente copio 
 
