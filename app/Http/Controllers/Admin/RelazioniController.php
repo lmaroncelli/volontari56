@@ -84,9 +84,9 @@ class RelazioniController extends AdminController
       foreach ($relazioni as $relazione) 
         {
         $totale_km += $relazione->km;
-        //inizializzo tutti i volontari dell'associazione a 0
-        $all_volontari_associazione = $relazione->associazione->volontari;
-        foreach ($all_volontari_associazione as $volontario) 
+        //inizializzo tutti i volontari delle relazioni a 0
+        $all_volontari_relazione = $relazione->volontari;
+        foreach ($all_volontari_relazione as $volontario) 
           {
           $volontari[$volontario->id]['Associazione'] = $relazione->associazione->nome;
           $volontari[$volontario->id]['Volontario'] = $volontario->cognome .' ' .$volontario->nome;
@@ -105,7 +105,14 @@ class RelazioniController extends AdminController
           } // end volontari
         } // end relazioni
 
-
+      /*
+      How to sort an array of associative arrays by value of a given key in PHP?
+      https://stackoverflow.com/questions/1597736/how-to-sort-an-array-of-associative-arrays-by-value-of-a-given-key-in-php
+       */
+      usort($volontari, function ($item2, $item1) {
+          return $item2['Volontario'] <=> $item1['Volontario'];
+      });
+        
       $filtro_ore[] = "Totale km associazione ".$totale_km;
         
         /**
@@ -458,7 +465,6 @@ class RelazioniController extends AdminController
               } // end volontari
 
             } // end relazioni
-            
           }
 
 

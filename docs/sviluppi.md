@@ -161,3 +161,50 @@ cioè l'associazione a cui appartiene l'utente corrente NON si trova più cosi M
 Auth::user()->volontario->associazione->id 
 
 
+
+
+#Relazione Associazione-Volontario deve diventare molti-a-molti 
+
+**La necessità  sarebbe quella che il volontario che si sposta ad un'altra associazione riparta da zero ore in quella nuova ma almeno in quella vecchia rimangano i dati storici in visualizzazione e nei report**
+
+
+- Costruire la tabella di relazione associazione-volontario 
+- Importare tutti gli associazione_id,id della "tblVolontari" in associazione-volontario(associazione_id, volontario_id)
+- **DEVO** lasciare la colonna associazione_id in "tblVolontari" perché ogni volontario deve vedere solo preventivi e relazioni della sua "Associazione"
+- Cambiare le relazioni nelle model
+- i dati dello storico devono rimanere nelle relazioni
+- Cambiare tutte le chiamate opportunamente nel codice
+
+
+
+NOOOOOOOO!!!
+QUESTA STRADA E' SBAGLIATA !!!!!
+
+
+1) Nel momento in cui creo il preventivo, oltre a salvare la associazione, salvo anche i singoli volontari (preventivi-volontari molti-a-molti)
+2) Nel momnento in cui creo la relazione oltre a salvare la associazione D**EVO SALVARE** anche i singoli volontari (relazioni-volontari molti-a-molti **ESISTE GIA**)
+
+- devo aggiungere i volontari a tutte le relazioni prendendoli dalle associazioni, quindi praticamente copio 
+
+
+
+Quando creo la relazione devo inserire anche i volontari e non solo l'associazione
+Quando elenco le relazioni, prendo i volontari associati alla relazione al momento della creazione e non i volontari dell'associazione (in quesro modo se "Massari Walter" non è più in GEV adesso, lo vedo lo stesso nelle relazioni che ho creato quando c'era !!!)
+
+
+
+ES: 
+
+Ho creato un preventivo con 2 volontari e li ha messi nella tabella di  relazione
+Quando ho creato la relazione ne ho aggiunto uno, sono diventati 3 e li ha messi nella tabella di relazione
+
+ 3369 	GEV 	Abati Romano, Amaducci Renzo, Bacchiocchi Sauro 
+
+
+ cosa succede se tolgo " Amaducci Renzo" da GEV ?? DOvrebbe rimanere nell'elenco delle relazioni e nelle ore (PDF)
+
+GEV Amaducci Renzo 25
+
+
+In effetti NON RIMANE nell'elenco del PDF perché probabilente seleziono i volontari dall'associazione invece devo prendere quelli di tutte le relazioni
+
