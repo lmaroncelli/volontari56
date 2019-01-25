@@ -86,6 +86,22 @@ class RelazioniController extends AdminController
         $totale_km += $relazione->km;
         //inizializzo tutti i volontari delle relazioni a 0
         $all_volontari_relazione = $relazione->volontari;
+
+        if( $this->request->has('associazione_id_ore') && $this->request->get('associazione_id_ore') != 0 )
+          {
+          $volontari_associazione = Associazione::find($associazione_id_ore)->volontari;
+          $all_volontari_relazione = $all_volontari_relazione->merge($volontari_associazione);
+          }
+
+
+        /**
+         * @Luigi 25/01/2019 - Questi sono i volontari partendo dalle Relazioni, 
+         * ma ci possono essere dei volontari dell'Associazione che non sono nelle relazioni e che quindi non ci sono
+         * ma che devono essere mostrati PERCHE' AVRANNO '0'
+         */
+        
+
+
         foreach ($all_volontari_relazione as $volontario) 
           {
           $volontari[$volontario->id]['Associazione'] = $relazione->associazione->nome;
