@@ -259,7 +259,11 @@ class PreventiviController extends AdminController
           $filtro_pdf[] =  "<i>Escluso gli eliminati</i>";
           }
         }
+      
+        // SE SONO UN GEV AVANZATO VEDO SOLO I PREVENTIVI A CUI SONO ASSOCIATO
 
+        // POSSO FARE UN LOOP SUI PREVENTIVI e fare una callback per verificare se l'utente loggato è tra i volontari
+        // MA POI DEVO RIFARE LA PAGINAZIONE MANULAMENTE !!!!
 
         $query->orderBy($order_by, $order);
 

@@ -208,3 +208,85 @@ GEV Amaducci Renzo 25
 
 In effetti NON RIMANE nell'elenco del PDF perché probabilente seleziono i volontari dall'associazione invece devo prendere quelli di tutte le relazioni
 
+
+
+
+# Ipotesi pannello autorizzazioni per singolo utente
+
+Ogni volontario avrà un ruolo: 
+
+- referente associazione (QUELLO DI ADESSO)
+- GGV avanzato
+- GGV semplice
+- Organi di Polizia
+
+
+Es. volontario "Lucia Zavatta" 
+		associazione GEV
+		user: lucia_z
+		pwd: lucia_z
+
+DOVRA' ESSERE il ruolo "Referente associazione"
+=======================================================
+
+
+- vede solo i PREVENTIVI della sua associazione (PreventiviOwnedByScope è un global scope che seleziona solo i preventivi dell'associazione di cui l'utente loggato fa parte, se è un'associazione); crea solo preventivi per la sua associazione.
+
+- la stessa cosa vale per le relazioni: vede solo quelli della sua associazione (RelazioniOwnedByScope)
+
+
+
+GGV Avanzato
+=====================
+
+
+ha un ulteriore filtro rispetto al referente sopra: accede solo ai preventivi dell'associazione di cui l'utente loggato fa parte, SE è DIRETTAMENTE ASSOCIATO A QUELLA RELAZIONE TRA i volontari dell'associazione
+
+
+Ad esempio, "Lucia Zavatta"
+
+Relazione;
+64 giorni fa	 - 4190 - GEV -	Massari Walter, Siniscalchi Andrea - 21/04/2019 dalle 07:00 alle 12:00 - 	zone s.i.c. e zps e zone 4/5/6	vigilanza ittico venatoria in convenzione
+
+se fosse GGV Avanzato non vederebbe questa relazione, perché è nell'associazione GEV MA ha associata 2 volontari (Massari Walter, Siniscalchi Andrea) e non "Lucia Zavatta"
+
+Attenzione Associazione::getForSelect(); crea una select con le associazioni dell'utente loggato: si utilizza lo scopeFiltered dell'Associazione
+
+
+Associazioen GEV
+muccini
+123456
+
+
+In PreventivoContrller
+dopo che ho trovato i preventivi con la query (devo fare get() e non paginate())
+
+// SE SONO UN GEV AVANZATO VEDO SOLO I PREVENTIVI A CUI SONO ASSOCIATO
+
+// POSSO FARE UN LOOP SUI PREVENTIVI e fare una callback per verificare se l'utente loggato è tra i volontari
+// MA POI DEVO RIFARE LA PAGINAZIONE MANULAMENTE !!!!
+
+
+
+$volontari_ids = $this->volontari->pluck('id);
+            
+// se l'utente logato NON è associato al preventivo, lo devo scartare
+if( !in_array(Auth::user()->volontario->id, $volontari_ids) )
+{
+  // scarta questo preventivo  
+}
+
+
+
+
+GGV Semplice
+=====================
+
+Come sopra MA SOLO VISUALIZZAZIONE
+
+
+
+POLIZIA
+===================
+
+Come Admin MA SOLO IN LETTURA
