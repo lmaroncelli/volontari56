@@ -290,3 +290,66 @@ POLIZIA
 ===================
 
 Come Admin MA SOLO IN LETTURA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Ripreso 18/06/20
+
+Quando sono sulla pagina di modifica di un volontario (http://volontari.local/volontari/public/admin/volontari/1537/edit) oltre al check per abilitare/disabilitare il login potrò selezionare 4 PROFILI di visualizzazione differenti
+
+"Rferente associazione": 
+Può accedere a tutti i dati della sua Associazione
+è quello attuale, cioè quelli che adesso hanno login_capabilities = 1; bisognera aggiungere un campo enum "Role" che con login_capabilities = 1 dirà se sei "Referente Associazione", "GGV Avanzato", "GGV Semplce", "Polizia"
+
+
+
+"GGV Avanzato":
+Può accedere a tutti i dati in cui c'è lui (anche se un preventivo è associato alla SUA associazione, ma lui non c'è NON CI PUO operare)
+
+
+Ad esempio Ivan Morolli è "referente" per la 	ASSOCIAZIONE NAZIONALE LIBERA CACCIA
+
+setto la pwd a 'luigi'
+
+$user = App\User::where('email', 'balistica72@gmail.com')->first();
+$user->password = Hash::make('luigi');
+$user->save();
+
+
+Adesso lui vede tutti i preventivi della relazione ASSOCIAZIONE NAZIONALE LIBERA CACCIA, __MA SE FOSSE un GGC Avanzato__ vedrebbe solo 
+
+5670	ASSOCIAZIONE NAZIONALE LIBERA CACCIA	Galli Marco, Morolli Ivan
+e la relazione associata 
+perché c'è anche lui
+
+
+
+"GGV Semplice":
+Può accedere a tutti i dati in cui c'è lui MA IN SOLA LETTURA
+
+
+
+
+
+
+
+
+
+Q:
+Attualmente il "Referente di Associazione" NON PUO' MODIFICARE, può solo leggere; quindi NON E' l'utente che c'è ADESSO MA VA AGGIUNTO la possibilità di editare
+
