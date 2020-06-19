@@ -336,7 +336,7 @@ Adesso lui vede tutti i preventivi della relazione ASSOCIAZIONE NAZIONALE LIBERA
 5670	ASSOCIAZIONE NAZIONALE LIBERA CACCIA	Galli Marco, Morolli Ivan
 e la relazione associata 
 perché c'è anche lui
-
+MA PUO' ANCHE MODIFICARE??
 
 
 "GGV Semplice":
@@ -353,3 +353,12 @@ Può accedere a tutti i dati in cui c'è lui MA IN SOLA LETTURA
 Q:
 Attualmente il "Referente di Associazione" NON PUO' MODIFICARE, può solo leggere; quindi NON E' l'utente che c'è ADESSO MA VA AGGIUNTO la possibilità di editare
 
+
+
+To Do:
+
+Bisognera aggiungere un campo enum "Role" che con login_capabilities = 1 dirà se sei "Referente Associazione", "GGV Avanzato", "GGV Semplce", "Polizia"
+Il campo esiste già users::ruolo ['admin'|'associazione']
+Chi ha il login_capabilities = 1 dovrebbe passare da associazione a "Referente Associazione", "GGV Avanzato", "GGV Semplce", "Polizia"
+
+La Relazione ha un GLOBAL QUERY SCOPE RelazioniOwnedByScope

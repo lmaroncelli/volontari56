@@ -55,7 +55,7 @@ Route::get('/','Auth\LoginController@showLoginForm')->name('login');
 
 
 
-Route::get('admin/home', 'Admin\HomeController@index')->name('home')->middleware('log');
+Route::get('admin/home', 'Admin\HomeController@index')->name('home')/*->middleware('log')*/;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ROUTE ACCESSIBILI SOLO AL PROFILO ADMIN: oltre a dover essere loggato perché estende AdminController, è in un  //
@@ -111,24 +111,24 @@ Route::get('admin/posts/{post_id}', 'Admin\PostsController@show')->name('posts.s
 Route::get('admin/documenti', ['uses' => 'Admin\DocumentiController@index', 'as' => 'documenti.index']);
 
 Route::any('admin/preventivi/carica_volontari_ajax', 'Admin\PreventiviController@caricaVolontariAjax');
-Route::post('admin/preventivi/search', ['uses' => 'Admin\PreventiviController@search', 'as' => 'preventivi.search'])->middleware('log');
+Route::post('admin/preventivi/search', ['uses' => 'Admin\PreventiviController@search', 'as' => 'preventivi.search'])/*->middleware('log')*/;
 
 Route::post('admin/preventivi/geocode_ajax', ['uses' => 'Admin\PreventiviController@geocodeAjax', 'as' => 'preventivi.geocode_ajax']);
 Route::post('admin/preventivi/reverse_geocode_ajax', ['uses' => 'Admin\PreventiviController@reverseGeocodeAjax', 'as' => 'preventivi.reverse_geocode_ajax']);
 
-Route::get('admin/preventivi/{query_id?}', ['uses' => 'Admin\PreventiviController@index', 'as' => 'preventivi.index'])->middleware('log');
-Route::get('admin/preventivi/apri/{preventivo_id}', ['uses' => 'Admin\PreventiviController@apri', 'as' => 'preventivi.apri'])->middleware('log');
-Route::resource('admin/preventivi', 'Admin\PreventiviController')->except(['index'])->middleware('log');
+Route::get('admin/preventivi/{query_id?}', ['uses' => 'Admin\PreventiviController@index', 'as' => 'preventivi.index'])/*->middleware('log')*/;
+Route::get('admin/preventivi/apri/{preventivo_id}', ['uses' => 'Admin\PreventiviController@apri', 'as' => 'preventivi.apri'])/*->middleware('log')*/;
+Route::resource('admin/preventivi', 'Admin\PreventiviController')->except(['index'])/*->middleware('log')*/;
 
 Route::get('admin/relazioni/crea-da-preventivo/{preventivo_id}', ['uses' => 'Admin\RelazioniController@creaDaPreventivo', 'as' => 'relazioni.crea-da-preventivo']);
-Route::post('admin/relazioni/search', ['uses' => 'Admin\RelazioniController@search', 'as' => 'relazioni.search'])->middleware('log');
+Route::post('admin/relazioni/search', ['uses' => 'Admin\RelazioniController@search', 'as' => 'relazioni.search'])/*->middleware('log')*/;
 Route::post('admin/relazioni/export_ore', ['uses' => 'Admin\RelazioniController@exportOre', 'as' => 'relazioni.export_ore']);
-Route::get('admin/relazioni/stampa/{relazione_id?}', ['uses' => 'Admin\RelazioniController@stampa', 'as' => 'relazioni.stampa'])->middleware('log');
+Route::get('admin/relazioni/stampa/{relazione_id?}', ['uses' => 'Admin\RelazioniController@stampa', 'as' => 'relazioni.stampa'])/*->middleware('log')*/;
 
-Route::get('admin/relazioni/{query_id?}', ['uses' => 'Admin\RelazioniController@index', 'as' => 'relazioni.index'])->middleware('log');
-Route::get('admin/relazioni_show/{relazione_id}', ['uses' => 'Admin\RelazioniController@show', 'as' => 'relazioni.show'])->middleware('log');
+Route::get('admin/relazioni/{query_id?}', ['uses' => 'Admin\RelazioniController@index', 'as' => 'relazioni.index'])/*->middleware('log')*/;
+Route::get('admin/relazioni_show/{relazione_id}', ['uses' => 'Admin\RelazioniController@show', 'as' => 'relazioni.show'])/*->middleware('log')*/;
 
-Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create', 'show'])->middleware('log');
+Route::resource('admin/relazioni', 'Admin\RelazioniController')->except(['index', 'create', 'show'])/*->middleware('log')*/;
 
 
 Route::get('admin/pdf', function(){

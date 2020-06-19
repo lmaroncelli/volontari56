@@ -20,10 +20,19 @@ class RelazioniOwnedByScope implements Scope
     {   
         if (Auth::check()) 
           {
-          if(Auth::user()->hasRole('associazione'))
+          
+          if(Auth::user()->hasRole('associazione') || Auth::user()->hasRole('Referente Associazione'))
             {
             $builder->where('tblRelazioni.associazione_id', '=', Auth::user()->volontario->associazione->id);  
             }
+
+          // solo dove c'è lui
+          if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplce'))
+            {
+            $builder->join('tblRelazioniVolontari', 'tblRelazioni.id', '=', 'tblRelazioniVolontari.relazione_id')
+                    ->where('tblRelazioniVolontari.volontario_id', '=', Auth::user()->volontario->id);  
+            }
+
           }
     }
 }

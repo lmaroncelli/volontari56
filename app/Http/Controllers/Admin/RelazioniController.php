@@ -50,11 +50,24 @@ class RelazioniController extends AdminController
       {
       $filtro_ore[] = "<b>Riepilogo ore servizio:</b>";
 
-      $query = Relazione::with(['associazione','volontari'])->leftjoin('tblAssociazioni', function( $join )
+      
+
+      $query = Relazione::with(['associazione','volontari']);
+
+
+      $query = $query->leftjoin('tblAssociazioni', function( $join )
                 {
                   $join->on('tblAssociazioni.id', '=', 'tblRelazioni.associazione_id');
-                })
-                ->select('tblRelazioni.*','tblAssociazioni.nome as nome_asso');
+                });
+
+       if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplce'))
+        {
+        // devo filtrare solo per la mia associazione
+        $query = $query->where('tblRelazioni.associazione_id', '=', Auth::user()->volontario->associazione->id);
+        }
+
+      $query = $query->select('tblRelazioni.*','tblAssociazioni.nome as nome_asso');
+
 
       if ( $this->request->has('anno_ore') )
         {
@@ -76,6 +89,8 @@ class RelazioniController extends AdminController
         }
 
       $relazioni = $query->get();
+
+
       
       $columns = ['Associazione','Volontario','Totale ore'];
 
@@ -84,15 +99,25 @@ class RelazioniController extends AdminController
       foreach ($relazioni as $relazione) 
         {
         $totale_km += $relazione->km;
+
         //inizializzo tutti i volontari delle relazioni a 0
-        $all_volontari_relazione = $relazione->volontari;
 
-        if( $this->request->has('associazione_id_ore') && $this->request->get('associazione_id_ore') != 0 )
+        if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplce'))
           {
-          $volontari_associazione = Associazione::find($associazione_id_ore)->volontari;
-          $all_volontari_relazione = $all_volontari_relazione->merge($volontari_associazione);
+          $all_volontari_relazione = $relazione->volontari->where('id',Auth::user()->volontario->id);           
           }
+        else
+          {
+            
+          $all_volontari_relazione = $relazione->volontari;
 
+          if( $this->request->has('associazione_id_ore') && $this->request->get('associazione_id_ore') != 0 )
+            {
+            $volontari_associazione = Associazione::find($associazione_id_ore)->volontari;
+            $all_volontari_relazione = $all_volontari_relazione->merge($volontari_associazione);
+            }
+
+          }
 
         /**
          * @Luigi 25/01/2019 - Questi sono i volontari partendo dalle Relazioni, 
@@ -154,6 +179,9 @@ class RelazioniController extends AdminController
          * 
          */
 
+
+
+        //return view('welcome');
 
         if ($this->request->get('tipo_export') == 'csv') 
           {
