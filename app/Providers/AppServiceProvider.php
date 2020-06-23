@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::if('isAssoc', function () 
           {
-          return Auth::user()->hasRole('associazione') || Auth::user()->hasRole('Referente Associazione') || Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplice');
+          return Auth::user()->hasRole(['associazione','Referente Associazione','GGV Avanzato','GGV Semplice']);
           });
 
         setlocale(LC_TIME, "it_IT.utf8");

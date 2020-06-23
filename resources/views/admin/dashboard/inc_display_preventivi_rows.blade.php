@@ -10,16 +10,24 @@
             {!!$preventivo->displayInTime()!!}
         </td>
         <td>
-            <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
+            @if (Auth::user()->hasRole('GGV Semplice'))
                 {{$preventivo->id}}
-            </a>
+            @else
+                <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
+                    {{$preventivo->id}}
+                </a>
+            @endif
         </td>
         <td>
-            <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
-                @if (!is_null($preventivo->associazione))
+            @if (!is_null($preventivo->associazione))
+                @if (Auth::user()->hasRole('GGV Semplice'))
                     {{$preventivo->associazione->nome}}
+                @else
+                    <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
+                        {{$preventivo->associazione->nome}}
+                    </a>
                 @endif
-            </a>
+            @endif
         </td>
         <td>
             {{ implode( ', ', $preventivo->getVolontariFullName() ) }}

@@ -320,7 +320,7 @@ function initMap() {
 	
 	@if ($preventivo->exists)
 		
-		var indirizzo = '{{$preventivo->localita}}';
+		var indirizzo = "{{$preventivo->localita}}";
 
 		data = { 
 		       'indirizzo': indirizzo, 

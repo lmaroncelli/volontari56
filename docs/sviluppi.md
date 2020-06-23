@@ -364,10 +364,16 @@ pdf
 (quello che vedi)
 
 
+# export delle ore
+
+
+
+
 
 
 # home page preventivi in scadenza
 
+se sono GGV Semplice e Polizia li vedo solo e non li poddo editare
 
 
 

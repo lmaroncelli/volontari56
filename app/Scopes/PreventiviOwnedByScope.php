@@ -20,13 +20,13 @@ class PreventiviOwnedByScope implements Scope
     {   
         if (Auth::check()) 
           {
-          if(Auth::user()->hasRole('associazione') || Auth::user()->hasRole('Referente Associazione'))
+          if(Auth::user()->hasRole(['associazione','Referente Associazione']))
             {
             $builder->where('tblPreventivi.associazione_id', '=', Auth::user()->volontario->associazione->id);  
             }
 
             // solo dove c'è lui
-          if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplice'))
+          if(Auth::user()->hasRole(['GGV Avanzato','GGV Semplice']))
             {
             $builder->join('tblPreventiviVolontari', 'tblPreventivi.id', '=', 'tblPreventiviVolontari.preventivo_id')
                     ->where('tblPreventiviVolontari.volontario_id', '=', Auth::user()->volontario->id)
