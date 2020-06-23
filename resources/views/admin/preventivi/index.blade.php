@@ -33,6 +33,7 @@
 
 
 @section('content')
+    
 	@if (!$preventivi->count())
     <div class="callout callout-info">
         <h4>
@@ -137,8 +138,8 @@
                             </td>
                             <td>
                                 @if (!is_null($preventivo->relazione))
-                                    <a class="btn btn-success" href="{{ route('relazioni.edit', $preventivo->relazione->id) }}" title="Modifica relazione">
-                                        {{$preventivo->relazione->id}}
+                                    <a class="btn btn-success" href="{{ route('relazioni.edit', $preventivo->relazione_id) }}" title="Modifica relazione">
+                                        {{$preventivo->relazione_id}}
                                     </a>
                                     {{-- <button type="button" class="btn btn-success no_link">{{$preventivo->relazione->id}}</button> --}}
                                 @endif

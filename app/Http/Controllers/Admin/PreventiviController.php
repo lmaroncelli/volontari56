@@ -133,7 +133,7 @@ class PreventiviController extends AdminController
                   })
                   ->select('tblPreventivi.*','tblAssociazioni.nome as nome_asso', 'tblRelazioni.id as relazione_id');
 
-
+      
         /////////////
         // ricerca //
         /////////////
@@ -267,6 +267,9 @@ class PreventiviController extends AdminController
 
         $query->orderBy($order_by, $order);
 
+        /*$sql_with_bindings = str_replace_array('?', $query->getBindings(), $query->toSql());
+        dd($sql_with_bindings);*/
+
         if($export_pdf)
           {
           $preventivi = $query->get();
@@ -394,6 +397,7 @@ class PreventiviController extends AdminController
     public function edit($id)
     {
         $preventivo = Preventivo::withTrashed()->find($id);
+
         $volontari = $preventivo->associazione()->first()->getVolontariFullName();
         
         $volontari_associati = $preventivo->volontari->pluck('id')->toArray();

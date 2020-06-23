@@ -336,22 +336,22 @@ Adesso lui vede tutti i preventivi della relazione ASSOCIAZIONE NAZIONALE LIBERA
 5670	ASSOCIAZIONE NAZIONALE LIBERA CACCIA	Galli Marco, Morolli Ivan
 e la relazione associata 
 perché c'è anche lui
-MA PUO' ANCHE MODIFICARE??
 
 
 "GGV Semplice":
 Può accedere a tutti i dati in cui c'è lui MA IN SOLA LETTURA
 
 
+per la 	ASSOCIAZIONE NAZIONALE LIBERA CACCIA do il login anche a Galli Marco
+
+username: galli
+pwd: luigi1
 
 
 
 
 
 
-
-Q:
-Attualmente il "Referente di Associazione" NON PUO' MODIFICARE, può solo leggere; quindi NON E' l'utente che c'è ADESSO MA VA AGGIUNTO la possibilità di editare
 
 
 

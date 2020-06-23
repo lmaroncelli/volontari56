@@ -37,7 +37,6 @@
 
 
 @section('content')
-	
 	@if ($preventivo->exists)
 	  <form action="{{ route('preventivi.destroy', $preventivo->id) }}" method="POST" id="record_delete">
 	  	{{ method_field('DELETE') }}
@@ -59,7 +58,6 @@
         <!-- general form elements -->
         <div class="box box-primary">
 	  		@if ($preventivo->exists)
-			  		
 	  				@isAdmin
 		        	<form role="form" action="{{ route('preventivi.update', $preventivo->id) }}" method="POST">
 		        	{{ method_field('PUT') }}
@@ -195,7 +193,7 @@
         			<button type="button" class="btn bg-navy btn-flat">Riaperto</button>
 	     		@endif
 
-	     		@if ( (Auth::user()->hasRole('associazione') && !$preventivo->isInTime()) || !is_null($preventivo->relazione) )
+	     		@if ( (!Auth::user()->hasRole('admin') && !$preventivo->isInTime()) || !is_null($preventivo->relazione) )
 	     			<button type="button" class="btn btn-success pull-right disabled" data-toggle="tooltip" title="Preventivo scaduto o esiste già la relazione">Crea una relazione di servizio</button>
 	     		@else
 		     		<a href="{{ route('relazioni.crea-da-preventivo', $preventivo->id) }}" data-toggle="tooltip" title="Crea una relazione di servizio" class="btn btn-success pull-right">
