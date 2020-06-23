@@ -26,7 +26,7 @@ class PreventiviOwnedByScope implements Scope
             }
 
             // solo dove c'è lui
-          if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplce'))
+          if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplice'))
             {
             $builder->join('tblPreventiviVolontari', 'tblPreventivi.id', '=', 'tblPreventiviVolontari.preventivo_id')
                     ->where('tblPreventiviVolontari.volontario_id', '=', Auth::user()->volontario->id)

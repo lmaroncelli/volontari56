@@ -32,7 +32,7 @@ class Associazione extends Model
     {		
     	if (Auth::check()) 
     	  {
-    	  if(Auth::user()->hasRole('associazione'))
+    	  if(Auth::user()->hasRole(['associazione','Referente Associazione','GGV Avanzato','GGV Semplice']))
     	    {
     	    return $query->where('id', Auth::user()->volontario->associazione->id);  
     	    }

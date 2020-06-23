@@ -15,7 +15,7 @@ class AddRolesToUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            DB::statement("ALTER TABLE `users` CHANGE `ruolo` `ruolo` ENUM('admin', 'associazione','Referente Associazione', 'GGV Avanzato', 'GGV Semplce', 'Polizia');");
+            DB::statement("ALTER TABLE `users` CHANGE `ruolo` `ruolo` ENUM('admin', 'associazione','Referente Associazione', 'GGV Avanzato', 'GGV Semplice', 'Polizia');");
         });
     }
 

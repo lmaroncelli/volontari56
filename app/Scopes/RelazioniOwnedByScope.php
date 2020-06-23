@@ -27,7 +27,7 @@ class RelazioniOwnedByScope implements Scope
             }
 
           // solo dove c'è lui
-          if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplce'))
+          if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplice'))
             {
             $builder->join('tblRelazioniVolontari', 'tblRelazioni.id', '=', 'tblRelazioniVolontari.relazione_id')
                     ->where('tblRelazioniVolontari.volontario_id', '=', Auth::user()->volontario->id)

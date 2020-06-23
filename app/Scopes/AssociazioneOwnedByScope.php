@@ -20,9 +20,9 @@ class AssociazioneOwnedByScope implements Scope
     {   
         if (Auth::check()) 
           {
-          if(Auth::user()->hasRole('associazione'))
+          if(Auth::user()->hasRole(['associazione','Referente Associazione','GGV Avanzato','GGV Semplice']))
             {
-            $builder->where('tblAssociazioni.id', Auth::user()->volontario->associazione->id);  
+            $builder->where('tblAssociazioni.id', Auth::user()->volontario->associazione->id);
             }
           }
     }

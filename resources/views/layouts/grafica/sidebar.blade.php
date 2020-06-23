@@ -75,7 +75,11 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ route('preventivi.index') }}">Elenco</a></li>
-          <li><a href="{{ route('preventivi.create') }}">Nuovo</a></li>
+          
+          @if (!Auth::user()->hasRole('GGV Semplice'))
+            <li><a href="{{ route('preventivi.create') }}">Nuovo</a></li>
+          @endif  
+        
         </ul>
       </li>
 

@@ -113,16 +113,24 @@
                                 {!!$preventivo->displayInTime()!!}
                             </td>
                             <td>
-                                <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
+                                @if (Auth::user()->hasRole('GGV Semplice'))
                                     {{$preventivo->id}}
-                                </a>
+                                @else
+                                    <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
+                                        {{$preventivo->id}}
+                                    </a>
+                                @endif
                             </td>
                             <td>
-                                <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
-                                    @if (!is_null($preventivo->associazione))
+                                @if (!is_null($preventivo->associazione))
+                                    @if (Auth::user()->hasRole('GGV Semplice'))
                                         {{$preventivo->associazione->nome}}
+                                    @else
+                                        <a class="preventivo" href="{{ route('preventivi.edit', $preventivo->id) }}" title="Modifica preventivo">
+                                            {{$preventivo->associazione->nome}}
+                                        </a>
                                     @endif
-                                </a>
+                                @endif
                             </td>
                             <td>
                                 {{ implode( ', ', $preventivo->getVolontariFullName() ) }}
@@ -138,10 +146,11 @@
                             </td>
                             <td>
                                 @if (!is_null($preventivo->relazione))
-                                    <a class="btn btn-success" href="{{ route('relazioni.edit', $preventivo->relazione_id) }}" title="Modifica relazione">
-                                        {{$preventivo->relazione_id}}
+                                    {{-- solo admin va in edit altri redirect in show --}}
+                                    <a class="btn btn-success" href="{{ route('relazioni.edit', $preventivo->relazione->id) }}" title="Modifica relazione">
+                                        {{$preventivo->relazione->id}}
                                     </a>
-                                    {{-- <button type="button" class="btn btn-success no_link">{{$preventivo->relazione->id}}</button> --}}
+                                    
                                 @endif
                             </td>
                         </tr>

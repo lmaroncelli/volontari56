@@ -314,7 +314,7 @@ Quando sono sulla pagina di modifica di un volontario (http://volontari.local/vo
 
 "Rferente associazione": 
 Può accedere a tutti i dati della sua Associazione
-è quello attuale, cioè quelli che adesso hanno login_capabilities = 1; bisognera aggiungere un campo enum "Role" che con login_capabilities = 1 dirà se sei "Referente Associazione", "GGV Avanzato", "GGV Semplce", "Polizia"
+è quello attuale, cioè quelli che adesso hanno login_capabilities = 1; bisognera aggiungere un campo enum "Role" che con login_capabilities = 1 dirà se sei "Referente Associazione", "GGV Avanzato", "GGV Semplice", "Polizia"
 
 
 
@@ -342,12 +342,31 @@ perché c'è anche lui
 Può accedere a tutti i dati in cui c'è lui MA IN SOLA LETTURA
 
 
+
+
 per la 	ASSOCIAZIONE NAZIONALE LIBERA CACCIA do il login anche a Galli Marco
 
 username: galli
 pwd: luigi1
 
 
+
+Faccio diventare Morolli un "GGC Semplice"
+
+
+
+# filtri
+
+Elenco Associazioni
+- Referente, GGV select con solo la loro associazione
+
+pdf  
+(quello che vedi)
+
+
+
+
+# home page preventivi in scadenza
 
 
 
@@ -357,8 +376,8 @@ pwd: luigi1
 
 To Do:
 
-Bisognera aggiungere un campo enum "Role" che con login_capabilities = 1 dirà se sei "Referente Associazione", "GGV Avanzato", "GGV Semplce", "Polizia"
+Bisognera aggiungere un campo enum "Role" che con login_capabilities = 1 dirà se sei "Referente Associazione", "GGV Avanzato", "GGV Semplice", "Polizia"
 Il campo esiste già users::ruolo ['admin'|'associazione']
-Chi ha il login_capabilities = 1 dovrebbe passare da associazione a "Referente Associazione", "GGV Avanzato", "GGV Semplce", "Polizia"
+Chi ha il login_capabilities = 1 dovrebbe passare da associazione a "Referente Associazione", "GGV Avanzato", "GGV Semplice", "Polizia"
 
 La Relazione ha un GLOBAL QUERY SCOPE RelazioniOwnedByScope

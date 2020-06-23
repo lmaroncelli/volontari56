@@ -60,7 +60,7 @@ class RelazioniController extends AdminController
                   $join->on('tblAssociazioni.id', '=', 'tblRelazioni.associazione_id');
                 });
 
-       if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplce'))
+       if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplice'))
         {
         // devo filtrare solo per la mia associazione
         $query = $query->where('tblRelazioni.associazione_id', '=', Auth::user()->volontario->associazione->id);
@@ -102,7 +102,7 @@ class RelazioniController extends AdminController
 
         //inizializzo tutti i volontari delle relazioni a 0
 
-        if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplce'))
+        if(Auth::user()->hasRole('GGV Avanzato') || Auth::user()->hasRole('GGV Semplice'))
           {
           $all_volontari_relazione = $relazione->volontari->where('id',Auth::user()->volontario->id);           
           }
