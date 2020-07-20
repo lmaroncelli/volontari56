@@ -159,6 +159,7 @@ class Utility extends Model
 		    'associazione_id' => $request->get('associazione_id'),
 		    'no_eliminati' => $request->get('no_eliminati'),
 		    'anno_filtro' => $request->get('anno_filtro'),
+		    'only_login' => $request->get('only_login'),
 		    ];
 
 		$query_id = DB::table('tblQueryString')->insertGetId(

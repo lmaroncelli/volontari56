@@ -23,6 +23,14 @@
           </label>
         </div>
        </div>
+       <div class="col-sm-2">
+        <div class="checkbox">
+          <label>
+           <input type="checkbox" name="only_login" value="1" @if ($only_login) checked="checked" @endif>
+            Solo "Login"
+          </label>
+        </div>
+       </div>
     </div> 
     <div class="row" style="padding-bottom: 20px;">
         <div class="col-sm-3 col-sm-offset-1">

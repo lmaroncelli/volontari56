@@ -312,7 +312,7 @@ Come Admin MA SOLO IN LETTURA
 
 Quando sono sulla pagina di modifica di un volontario (http://volontari.local/volontari/public/admin/volontari/1537/edit) oltre al check per abilitare/disabilitare il login potrò selezionare 4 PROFILI di visualizzazione differenti
 
-"Rferente associazione": 
+"Referente associazione": 
 Può accedere a tutti i dati della sua Associazione
 è quello attuale, cioè quelli che adesso hanno login_capabilities = 1; bisognera aggiungere un campo enum "Role" che con login_capabilities = 1 dirà se sei "Referente Associazione", "GGV Avanzato", "GGV Semplice", "Polizia"
 

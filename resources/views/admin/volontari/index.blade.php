@@ -132,6 +132,10 @@
                                       @else
                                         <i class="fa fa-times text-red"></i>
                                       @endif
+                                    @elseif($field == 'ruolo')
+                                      @if ($volontario->utente->login_capabilities)
+                                        {{$volontario->utente->ruolo == 'associazione' ? 'Referente associazione' : $volontario->utente->ruolo}}
+                                      @endif
                                     @else
                                         {{$volontario->$field}}
                                     @endif

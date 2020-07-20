@@ -93,11 +93,14 @@ class RegisterController extends Controller
         if ($request->filled('login_capabilities')) 
           {
           $utente->login_capabilities = true;
+          $utente->ruolo = $request->get('ruolo');
           }
         else
           {
           $utente->login_capabilities = false;
           }
+
+
 
         if ($request->filled('password')) 
           {

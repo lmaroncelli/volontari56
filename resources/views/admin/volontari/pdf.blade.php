@@ -28,7 +28,7 @@
                         <tr>
                             @foreach ($columns as $field => $name)
                                 <th>
-                                  {!!$field!!}
+                                  {!!$name!!}
                                 </th>
                             @endforeach
                         </tr>
@@ -49,7 +49,19 @@
                                 {{$volontario->data_nascita}}
                             </td>
                             <td>
-                                {{$volontario->associazione->nome}}
+                                {{optional($volontario->associazione)->nome}}
+                            </td>
+                            <td>
+                                @if ($volontario->utente->login_capabilities)
+                                  Sì
+                                @else
+                                  No
+                                @endif
+                            </td>
+                            <td>
+                                @if ($volontario->utente->login_capabilities)
+                                  {{$volontario->utente->ruolo == 'associazione' ? 'Referente associazione' : $volontario->utente->ruolo}}
+                                @endif
                             </td>
                         </tr>
                         @endforeach

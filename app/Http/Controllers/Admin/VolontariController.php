@@ -63,6 +63,7 @@ class VolontariController extends AdminController
     $valore = "";
     $assos = Associazione::getForSelect();
     $no_eliminati = 0;
+    $only_login = 0;
 
     if ($query_id > 0)
       {
@@ -165,6 +166,16 @@ class VolontariController extends AdminController
       }
 
 
+    if ( $this->request->has('only_login') || $this->request->get('only_login') == 1 )
+      {
+      $query->where('users.login_capabilities', 1);    
+
+      $filtro_pdf[] =  "<i>Solo chi può fare login</i>";
+
+      $only_login = $this->request->get('only_login');      
+      }
+    
+  
     $query->orderBy($order_by, $order);
     
     if($export_pdf)
@@ -183,7 +194,8 @@ class VolontariController extends AdminController
             'registro' => 'Registro',
             'data_nascita' => 'Data di nascita',
             'associazione' => 'Associazione',
-            'login_capabilities' => 'Login'
+            'login_capabilities' => 'Login',
+            'ruolo' => 'Ruolo',
     ];
 
     if ($order_by == 'tblAssociazioni.nome')
@@ -213,7 +225,7 @@ class VolontariController extends AdminController
     else
       {
       $limit_for_export = 500;
-      return view('admin.volontari.index', compact('volontari', 'assos', 'associazione_id', 'order_by','order','ordering', 'columns','campo', 'valore', 'no_eliminati', 'pdf_export_url','query_id', 'limit_for_export'));
+      return view('admin.volontari.index', compact('volontari', 'assos', 'associazione_id', 'order_by','order','ordering', 'columns','campo', 'valore', 'no_eliminati', 'pdf_export_url','query_id', 'limit_for_export','only_login'));
       }
     }
 
@@ -331,7 +343,8 @@ class VolontariController extends AdminController
       if (
         $this->request->has('search') && $this->request->filled('q') ||
         ($this->request->has('associazione_id') && $this->request->get('associazione_id') != 0)||
-        ($this->request->has('no_eliminati') && $this->request->get('no_eliminati') == 1) 
+        ($this->request->has('no_eliminati') && $this->request->get('no_eliminati') == 1) ||
+        ($this->request->has('only_login') && $this->request->get('only_login') == 1)  
         )
         {
         $query_id = Utility::createQueryStringSearch($this->request);
