@@ -18,6 +18,15 @@ class PreventiviController extends AdminController
 {
 
 
+
+    public function __construct(Request $request)
+     {
+       $this->middleware('forbiddenIfRole:Polizia')->only(['create','apri','edit', 'store', 'update','destroy']);
+
+       // Invoke parent
+       parent::__construct($request);
+     }
+
     public function _savePreventivo(&$preventivo, $request)
       {
         $dalle = $request->get('data'). ' ' . $request->get('dal');

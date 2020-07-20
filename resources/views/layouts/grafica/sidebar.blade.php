@@ -76,7 +76,7 @@
         <ul class="treeview-menu">
           <li><a href="{{ route('preventivi.index') }}">Elenco</a></li>
           
-          @if (!Auth::user()->hasRole('GGV Semplice'))
+          @if (!Auth::user()->hasRole(['GGV Semplice','Polizia']))
             <li><a href="{{ route('preventivi.create') }}">Nuovo</a></li>
           @endif  
         
