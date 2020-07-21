@@ -61,7 +61,7 @@ class Post extends Model
 	 	{
 	 		$available_ids = [];
 
-	 		if($current_user->hasRole('associazione')) 
+	 		if($current_user->hasRole('associazione','Referente Associazione', 'GGV Avanzato', 'GGV Semplice')) 
 	 		  {
 
 	 		  foreach (self::all() as $post) 

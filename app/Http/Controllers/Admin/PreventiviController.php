@@ -22,6 +22,7 @@ class PreventiviController extends AdminController
     public function __construct(Request $request)
      {
        $this->middleware('forbiddenIfRole:Polizia')->only(['create','apri','edit', 'store', 'update','destroy']);
+       $this->middleware('forbiddenIfRole:GGV Semplice')->only(['create','apri','edit', 'store', 'update','destroy']);
 
        // Invoke parent
        parent::__construct($request);

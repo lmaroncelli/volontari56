@@ -28,6 +28,9 @@ class HomeController extends AdminController
      */
     public function index()
     {
+
+        $preventivi_arr = [];
+        
         //////////////////////////////
         // elenco dei POST featured //
         //////////////////////////////
@@ -38,7 +41,7 @@ class HomeController extends AdminController
         /////////////////////////////////////////////////////////
         // se sono un'ASSOCIAZIONE deveo vedere solo i miei !! //
         /////////////////////////////////////////////////////////
-        if(Auth::user()->hasRole('associazione'))
+        if(Auth::user()->hasRole('associazione','Referente Associazione', 'GGV Avanzato', 'GGV Semplice'))
           {
           $available_ids = Post::ownedByAssoc(Auth::user()); 
           $query->whereIn('id',$available_ids);
@@ -48,13 +51,18 @@ class HomeController extends AdminController
         $posts = $query->orderBy('created_at', 'desc')->get();
 
 
-        /////////////////////////////////////////////////////////////////////////
-        // se sono ASSOCIAZIONE: elenco Preventivi che scadono oggi e/o domani //
-        /////////////////////////////////////////////////////////////////////////
-        
-        $preventivi_arr['oggi'] = Preventivo::scadutoDaGiorni(0)->get();
-        $preventivi_arr['domani'] = Preventivo::scadutoDaGiorni(1)->get();
-        $preventivi_arr['dopodomani'] = Preventivo::scadutoDaGiorni(2)->get();
+        if(!Auth::user()->hasRole('Polizia') && !Auth::user()->hasRole('GGV Semplice'))
+          {
+
+          /////////////////////////////////////////////////////////////////////////
+          // se sono ASSOCIAZIONE: elenco Preventivi che scadono oggi e/o domani //
+          /////////////////////////////////////////////////////////////////////////
+          
+          $preventivi_arr['oggi'] = Preventivo::scadutoDaGiorni(0)->get();
+          $preventivi_arr['domani'] = Preventivo::scadutoDaGiorni(1)->get();
+          $preventivi_arr['dopodomani'] = Preventivo::scadutoDaGiorni(2)->get();
+
+          }
 
 
         ///////////////////////////////

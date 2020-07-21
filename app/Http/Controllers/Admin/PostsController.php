@@ -79,7 +79,7 @@ class PostsController extends AdminController
         /////////////////////////////////////////////////////////
         // se sono un'ASSOCIAZIONE deveo vedere solo i miei !! //
         /////////////////////////////////////////////////////////
-         if(Auth::user()->hasRole('associazione'))
+         if(Auth::user()->hasRole('associazione','Referente Associazione', 'GGV Avanzato', 'GGV Semplice'))
           {
           $available_ids = Post::ownedByAssoc(); 
           $query->whereIn('id',$available_ids);

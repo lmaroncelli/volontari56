@@ -40,7 +40,7 @@ class Documento extends Model
     */
    public static function listaDocumenti($order_by, $order, $paginate = 15, $limit = 0)
    	{
-   		if(Auth::user()->hasRole('associazione'))
+   		if(Auth::user()->hasRole('associazione','Referente Associazione', 'GGV Avanzato', 'GGV Semplice'))
    		  {
    		  $available_ids = [];
 

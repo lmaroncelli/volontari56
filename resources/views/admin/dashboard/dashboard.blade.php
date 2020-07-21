@@ -8,44 +8,45 @@
 @section('content')
 <div class="container">
 
+    @if (count($preventivi_arr))
+      <div class="row justify-content-center">
+          <div class="col-xs-12">
+              <div class="box box-primary">
+                  <div class="box-header"><h3 class="box-title">Preventivi in scadenza</h3></div>
 
-    <div class="row justify-content-center">
-        <div class="col-xs-12">
-            <div class="box box-primary">
-                <div class="box-header"><h3 class="box-title">Preventivi in scadenza</h3></div>
-
-                <div class="card-body">
-                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <table class="table table-bordered table-hover" id="tbl_preventivi">
-                                    <thead>
-                                        <tr>
-                                            @foreach ($columns_posts as $field => $name)
-                                                <th>
-                                                  {!!$name!!}
-                                                </th>
-                                            @endforeach
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                            @foreach ($preventivi_arr as $title => $preventivi)
-                                                @include('admin.dashboard.inc_display_preventivi_rows', ['preventivi' => $preventivi, 'title' => $title])
-                                            @endforeach
-                                    </tbody>
-                                </table>
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-                    </div>
-                    </div>
-                </div>
-        </div> {{-- \.box --}}
-        </div> {{-- \ col-xs-12 --}}
-    </div>
-
+                  <div class="card-body">
+                      <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                      <div class="row">
+                          <div class="col-xs-12">
+                              <!-- /.box-header -->
+                              <div class="box-body">
+                                  <table class="table table-bordered table-hover" id="tbl_preventivi">
+                                      <thead>
+                                          <tr>
+                                              @foreach ($columns_posts as $field => $name)
+                                                  <th>
+                                                    {!!$name!!}
+                                                  </th>
+                                              @endforeach
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                              @foreach ($preventivi_arr as $title => $preventivi)
+                                                  @include('admin.dashboard.inc_display_preventivi_rows', ['preventivi' => $preventivi, 'title' => $title])
+                                              @endforeach
+                                      </tbody>
+                                  </table>
+                                  </div>
+                              </div>
+                              <!-- /.box-body -->
+                      </div>
+                      </div>
+                  </div>
+          </div> {{-- \.box --}}
+          </div> {{-- \ col-xs-12 --}}
+      </div>
+    @endif
+    
     
     @if ($posts->count())
 

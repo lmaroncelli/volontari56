@@ -34,7 +34,7 @@ class PreventivoRequest extends FormRequest
 
         if(!is_null($this->get('data')))
           {
-          if(Auth::user()->hasRole('associazione'))  
+          if(Auth::user()->hasRole('associazione','Referente Associazione', 'GGV Avanzato'))  
             {
             $rules["dal"] = function($attribute, $value, $fail) {
                           if ( Carbon::createFromFormat('d/m/Y H:i', $this->get('data'). ' ' .$value)->lt(Carbon::now()) ) 
