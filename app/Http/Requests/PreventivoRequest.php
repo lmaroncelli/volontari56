@@ -32,9 +32,24 @@ class PreventivoRequest extends FormRequest
                ];  
 
 
+
+        // ci deve essere anche il GGV Avanzato tra i volontari associati al preventivo
+        if(Auth::user()->hasRole('GGV Avanzato'))
+          {
+
+          $rules["volontari"] = function($attribute, $value, $fail) 
+            {
+              if( !in_array(Auth::user()->volontario->id, $value) )
+                {
+                return $fail("L'utente connesso '".Auth::user()->name."' deve essere tra i volontari selezionati");
+                }
+            };
+
+          }  
+
         if(!is_null($this->get('data')))
           {
-          if(Auth::user()->hasRole('associazione','Referente Associazione', 'GGV Avanzato'))  
+          if(Auth::user()->hasRole(['associazione','Referente Associazione', 'GGV Avanzato']))  
             {
             $rules["dal"] = function($attribute, $value, $fail) {
                           if ( Carbon::createFromFormat('d/m/Y H:i', $this->get('data'). ' ' .$value)->lt(Carbon::now()) ) 

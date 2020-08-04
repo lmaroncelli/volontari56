@@ -387,3 +387,5 @@ Il campo esiste già users::ruolo ['admin'|'associazione']
 Chi ha il login_capabilities = 1 dovrebbe passare da associazione a "Referente Associazione", "GGV Avanzato", "GGV Semplice", "Polizia"
 
 La Relazione ha un GLOBAL QUERY SCOPE RelazioniOwnedByScope
+
+

@@ -245,7 +245,7 @@
 	}
 
 	
-	@if (!$preventivo->exists || ($preventivo->exists && Auth::user()->hasRole('admin')) )
+	@if ( !$preventivo->exists || ($preventivo->exists && Auth::user()->hasRole(['admin', 'GGV Avanzato'])) )
 		
 		$(function () {
 		    //Initialize Select2 Elements

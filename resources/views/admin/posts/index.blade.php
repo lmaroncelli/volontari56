@@ -36,7 +36,7 @@
         </h4>
         <p>
             Creane uno
-            <a href="{{ route('posts.create') }}" title="Crea volontario">
+            <a href="{{ route('posts.create') }}" title="Crea Post">
                 adesso
             </a>
         </p>

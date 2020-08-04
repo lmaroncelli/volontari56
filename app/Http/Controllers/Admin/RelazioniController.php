@@ -21,7 +21,7 @@ class RelazioniController extends AdminController
     public function __construct(Request $request)
      {
        $this->middleware('forbiddenIfRole:Polizia')->only(['creaDaPreventivo','exportOre','edit', 'store', 'update','destroy']);
-       $this->middleware('forbiddenIfRole:GGV Semplice')->only(['creaDaPreventivo','exportOre','edit', 'store', 'update','destroy']);
+       $this->middleware('forbiddenIfRole:GGV Semplice')->only(['creaDaPreventivo','edit', 'store', 'update','destroy']);
 
        // Invoke parent
        parent::__construct($request);

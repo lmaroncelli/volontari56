@@ -107,6 +107,8 @@ Route::group(['middleware' => ['admin']], function () {
 
 
 Route::get('admin/posts/{post_id}', 'Admin\PostsController@show')->name('posts.show');
+Route::get('admin/posts', ['uses' => 'Admin\PostsController@index', 'as' => 'posts.index']);
+
 
 Route::get('admin/documenti', ['uses' => 'Admin\DocumentiController@index', 'as' => 'documenti.index']);
 

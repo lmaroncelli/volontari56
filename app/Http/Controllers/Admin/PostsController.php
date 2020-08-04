@@ -11,10 +11,16 @@ use Illuminate\Support\Facades\Auth;
 class PostsController extends AdminController
 {   
 
-    function __construct(Request $request)
-    {
+
+  public function __construct(Request $request)
+     {
+      $this->middleware('forbiddenIfRole:GGV Avanzato')->only(['create', 'store', 'edit', 'update', 'destroy']);
+      $this->middleware('forbiddenIfRole:GGV Semplice')->only(['create', 'store', 'edit', 'update', 'destroy']);
       $this->request = $request;
-    }
+
+       // Invoke parent
+       parent::__construct($request);
+     }
 
     /**
      * Display a listing of the resource.

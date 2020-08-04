@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Storage;
 class DocumentiController extends AdminController
 {
 
+   public function __construct(Request $request)
+     {
+       $this->middleware('forbiddenIfRole:GGV Avanzato')->only(['formUpload','modifica','upload','aggiorna','elimina']);
+       $this->middleware('forbiddenIfRole:GGV Semplice')->only(['formUpload','modifica','upload','aggiorna','elimina']);
+
+       // Invoke parent
+       parent::__construct($request);
+     }
+
   public function formUpload()
     {
     $doc = new Documento;
