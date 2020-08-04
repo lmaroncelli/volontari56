@@ -40,3 +40,8 @@ $ git clone https://github.com/lmaroncelli/volontari56.git
 
 git pull remotename branchname
 # Grabs online updates and merges them with your local work
+
+
+
+# Linux - How to Remove Git Credentials
+git config --global --unset credential.helper
