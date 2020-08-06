@@ -68,7 +68,7 @@ class HomeController extends AdminController
         ///////////////////////////////
         // ultimi documenti caricati //
         ///////////////////////////////
-        $documenti = Documento::listaDocumenti($order_by = 'created_at', $order = 'desc', $paginate = 0, $limit = 2);
+        $documenti = Documento::listaDocumenti($order_by = 'created_at', $order = 'desc', $paginate = 0, $limit = 0);
 
 
         $columns_posts = [

@@ -83,7 +83,7 @@
       <div class="row justify-content-center">
           <div class="col-xs-12">
               <div class="box box-primary">
-                  <div class="box-header"><h3 class="box-title">Ultimi documenti caricati (max {{$limit}})</h3></div>
+                  <div class="box-header"><h3 class="box-title">Ultimi documenti caricati @if ($limit) (max {{$limit}}) @endif</h3></div>
                       <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                       <div class="row">
                           <div class="col-xs-12">
